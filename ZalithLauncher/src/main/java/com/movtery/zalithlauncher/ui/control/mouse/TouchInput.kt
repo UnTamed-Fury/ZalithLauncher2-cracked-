@@ -99,7 +99,7 @@ fun TouchpadLayout(
     onTap: (Offset) -> Unit = {},
     onLongPress: () -> Unit = {},
     onLongPressEnd: () -> Unit = {},
-    onPointerMove: (Offset) -> Unit = {},
+    onPointerMove: (Offset, isMoveOnly: Boolean) -> Unit = { _, _ -> },
     onMouseMove: (Offset) -> Unit = {},
     onMouseScroll: (Offset) -> Unit = {},
     onMouseButton: (button: Int, pressed: Boolean) -> Unit = { _, _ -> },
@@ -191,7 +191,7 @@ fun TouchpadLayout(
 
                                         if (!isMoveOnly && currentControlMode == MouseControlMode.CLICK) {
                                             //点击模式下，如果触摸，无论如何都应该更新指针位置
-                                            currentOnPointerMove(change.position)
+                                            currentOnPointerMove(change.position, false)
                                         }
                                     }
                                 }
@@ -205,32 +205,41 @@ fun TouchpadLayout(
                                         //是否被父级标记为仅处理滑动
                                         val isMoveOnly = isMoveOnlyPointer(pointerId)
 
-                                        if (currentControlMode == MouseControlMode.SLIDE) {
-                                            if (currentEnableMouseClick) {
-                                                val distanceFromStart = (moveChange.position - dragState.startPosition).getDistance()
-
-                                                if (distanceFromStart > viewConfig.touchSlop && !dragState.isDragging) {
-                                                    //超出了滑动检测距离，说明是真的在进行滑动
-                                                    dragState.isDragging = true
-                                                    longPressJobs.remove(pointerId)?.cancel() //取消长按计时
-                                                }
-
-                                                if (dragState.isDragging || dragState.longPressTriggered) {
-                                                    val delta = moveChange.positionChange()
-                                                    currentOnPointerMove(delta)
-                                                }
-                                            } else {
-                                                dragState.isDragging = true
-                                                val delta = moveChange.positionChange()
-                                                currentOnPointerMove(delta)
-                                            }
+                                        if (isMoveOnly) {
+                                            dragState.isDragging = true
+                                            val delta = moveChange.positionChange()
+                                            currentOnPointerMove(delta, true)
                                         } else {
-                                            if (!isMoveOnly && !dragState.longPressTriggered) {
-                                                dragState.longPressTriggered = true
-                                                longPressJobs.remove(pointerId)?.cancel()
-                                                currentOnLongPress()
+                                            when (currentControlMode) {
+                                                MouseControlMode.SLIDE -> {
+                                                    if (currentEnableMouseClick) {
+                                                        val distanceFromStart = (moveChange.position - dragState.startPosition).getDistance()
+
+                                                        if (distanceFromStart > viewConfig.touchSlop && !dragState.isDragging) {
+                                                            //超出了滑动检测距离，说明是真的在进行滑动
+                                                            dragState.isDragging = true
+                                                            longPressJobs.remove(pointerId)?.cancel() //取消长按计时
+                                                        }
+
+                                                        if (dragState.isDragging || dragState.longPressTriggered) {
+                                                            val delta = moveChange.positionChange()
+                                                            currentOnPointerMove(delta, false)
+                                                        }
+                                                    } else {
+                                                        dragState.isDragging = true
+                                                        val delta = moveChange.positionChange()
+                                                        currentOnPointerMove(delta, false)
+                                                    }
+                                                }
+                                                MouseControlMode.CLICK -> {
+                                                    if (!dragState.longPressTriggered) {
+                                                        dragState.longPressTriggered = true
+                                                        longPressJobs.remove(pointerId)?.cancel()
+                                                        currentOnLongPress()
+                                                    }
+                                                    currentOnPointerMove(moveChange.position, false)
+                                                }
                                             }
-                                            currentOnPointerMove(moveChange.position)
                                         }
 
                                         moveChange.consume()

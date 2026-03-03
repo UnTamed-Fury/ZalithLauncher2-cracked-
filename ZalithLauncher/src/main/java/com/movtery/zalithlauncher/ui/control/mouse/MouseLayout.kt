@@ -211,8 +211,8 @@ fun VirtualPointerLayout(
             },
             onLongPress = onLongPress,
             onLongPressEnd = onLongPressEnd,
-            onPointerMove = { offset ->
-                pointerPosition = if (controlMode == MouseControlMode.SLIDE) {
+            onPointerMove = { offset, isMoveOnly ->
+                pointerPosition = if (isMoveOnly || controlMode == MouseControlMode.SLIDE) {
                     updateMousePointer(true)
                     Offset(
                         x = (pointerPosition.x + offset.x * speedFactor).coerceIn(0f, screenWidth),

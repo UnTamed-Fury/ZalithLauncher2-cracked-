@@ -55,7 +55,7 @@ suspend fun HttpResponse.safeBodyAsText(): String {
         val sb = StringBuilder()
         var read: Int
         while (reader.read(buffer).also { read = it } != -1) {
-            sb.append(buffer, 0, read)
+            sb.appendRange(buffer, 0, read)
         }
         sb.toString()
     }

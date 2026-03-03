@@ -286,14 +286,14 @@ fun SwitchableMouseLayout(
                     }
                 }
             },
-            onPointerMove = { offset ->
+            onPointerMove = { offset, isMoveOnly ->
                 when (cursorMode) {
                     CURSOR_DISABLED -> {
                         updateMousePointer(false)
                         onCapturedMove(offset)
                     }
                     CURSOR_ENABLED -> {
-                        pointerPosition = if (controlMode == MouseControlMode.SLIDE) {
+                        pointerPosition = if (isMoveOnly || controlMode == MouseControlMode.SLIDE) {
                             updateMousePointer(true)
                             Offset(
                                 x = (pointerPosition.x + offset.x * speedFactor).coerceIn(0f, screenWidth),
