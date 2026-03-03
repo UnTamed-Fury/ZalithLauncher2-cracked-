@@ -18,6 +18,7 @@ import com.movtery.zalithlauncher.game.version.export.AbstractExporter
 import com.movtery.zalithlauncher.game.version.export.ExportInfo
 import com.movtery.zalithlauncher.game.version.export.PackType
 import com.movtery.zalithlauncher.game.version.installed.Version
+import com.movtery.zalithlauncher.game.version.mod.isDisabled
 import com.movtery.zalithlauncher.utils.GSON
 import com.movtery.zalithlauncher.utils.logging.Logger.lWarning
 import kotlinx.coroutines.Dispatchers
@@ -182,7 +183,9 @@ class ModrinthPackExporter: AbstractExporter(
                                         rootPath = gamePath.absolutePath
                                     ),
                                     hashes = ModrinthManifest.ManifestFile.Hashes(sha1, sha512),
-                                    env = ModrinthManifest.ManifestFile.Env(client = "optional"),
+                                    env = if (file.isDisabled()) {
+                                        ModrinthManifest.ManifestFile.Env(client = "optional")
+                                    } else null,
                                     downloads = links.toTypedArray(),
                                     fileSize = Files.size(path)
                                 )
