@@ -44,6 +44,16 @@ import java.io.FileNotFoundException
 import java.io.IOException
 import java.util.concurrent.atomic.AtomicLong
 
+/**
+ * Minecraft 安装器
+ * @param version 要安装的原版版本号
+ * @param customName 自定义目标版本名称，将安装到该名称的文件夹内
+ * @param verifyIntegrity 是否验证完整性
+ * @param onCompletion 完成安装
+ * @param onError 安装出现异常，将错误反馈给用户
+ * @param onThrowable 安装出现异常，需直接处理异常时 将覆盖 onError
+ * @param maxDownloadThreads 最大下载线程数
+ */
 class MinecraftDownloader(
     private val context: Context,
     private val version: String,
@@ -53,6 +63,7 @@ class MinecraftDownloader(
     private val mode: DownloadMode = DownloadMode.DOWNLOAD,
     private val onCompletion: () -> Unit = {},
     private val onError: (message: String) -> Unit = {},
+    private val onThrowable: ((throwable: Throwable) -> Unit)? = null,
     private val maxDownloadThreads: Int = 64
 ) {
     //已下载文件计数器
@@ -107,16 +118,20 @@ class MinecraftDownloader(
             },
             onError = { e ->
                 lError("Failed to download Minecraft!", e)
-                val message = when(e) {
-                    is CancellationException -> return@runTask
-                    is FileNotFoundException -> context.getString(R.string.minecraft_download_failed_notfound)
-                    is DownloadFailedException -> {
-                        val failedUrls = downloadFailedTasks.map { it.urls.joinToString(", ") }
-                        "${ context.getString(R.string.minecraft_download_failed_retried) }\r\n${ failedUrls.joinToString("\r\n") }"
+                if (onThrowable != null) {
+                    onThrowable(e)
+                } else {
+                    val message = when(e) {
+                        is CancellationException -> return@runTask
+                        is FileNotFoundException -> context.getString(R.string.minecraft_download_failed_notfound)
+                        is DownloadFailedException -> {
+                            val failedUrls = downloadFailedTasks.map { it.urls.joinToString(", ") }
+                            "${ context.getString(R.string.minecraft_download_failed_retried) }\r\n${ failedUrls.joinToString("\r\n") }"
+                        }
+                        else -> e.getMessageOrToString()
                     }
-                    else -> e.getMessageOrToString()
+                    onError(message)
                 }
-                onError(message)
             }
         )
     }

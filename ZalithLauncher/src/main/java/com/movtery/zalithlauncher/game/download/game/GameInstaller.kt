@@ -649,7 +649,8 @@ class GameInstaller(
             version = info.gameVersion,
             customName = info.customVersionName,
             verifyIntegrity = true,
-            downloader = downloader
+            downloader = downloader,
+            onThrowable = { throw it }
         )
 
         return mcDownloader.getDownloadTask(tempClientName, tempVersionsDir)

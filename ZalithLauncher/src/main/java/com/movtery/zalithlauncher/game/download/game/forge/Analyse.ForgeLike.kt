@@ -265,7 +265,7 @@ private suspend fun parseProcessors(
 
         val versionManifest = MinecraftVersions.getVersionManifest()
         versionManifest.versions.find { it.id == version }?.let { vanilla ->
-            val manifest = withRetry(FORGE_LIKE_ANALYSE_ID, maxRetries = 1) {
+            val manifest = withRetry(FORGE_LIKE_ANALYSE_ID, maxRetries = 2) {
                 fetchStringFromUrls(
                     vanilla.url.mapBMCLMirrorUrls()
                 ).parseTo(GameManifest::class.java)

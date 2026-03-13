@@ -112,7 +112,7 @@ object MinecraftVersions {
      */
     private suspend fun downloadVersionManifest(): VersionManifest {
         return withContext(Dispatchers.IO) {
-            withRetry("MinecraftVersions", maxRetries = 1) {
+            withRetry("MinecraftVersions", maxRetries = 2) {
                 val rawJson = fetchStringFromUrls(URL_MINECRAFT_VERSION_REPOS.mapBMCLMirrorUrls())
                 val versionManifest = GSON.fromJson(rawJson, VersionManifest::class.java)
                 PathManager.FILE_MINECRAFT_VERSIONS.writeText(rawJson)

@@ -53,7 +53,7 @@ suspend fun <T> downloadAndParseJson(
 ): T {
     suspend fun downloadAndParse(): T {
         val json = withContext(Dispatchers.IO) {
-            val string = withRetry(UTILS_LOG_TAG, maxRetries = 1) {
+            val string = withRetry(UTILS_LOG_TAG, maxRetries = 2) {
                 fetchStringFromUrls(
                     url.mapBMCLMirrorUrls()
                 )
