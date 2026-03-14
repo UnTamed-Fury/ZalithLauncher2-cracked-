@@ -262,11 +262,12 @@ class GameLauncher(
         val pickedRuntime = RuntimesManager.loadRuntime(runtime)
 
         if (AllSettings.autoPickJavaRuntime.getValue()) {
+            val modloader = version.getVersionInfo()?.loaderInfo?.loader
             //开启了自动选择，根据游戏需求的版本做选择
-            val targetJavaVersion = if (version.getVersionInfo()?.loaderInfo?.loader == ModLoader.CLEANROOM) {
-                21 //Cleanroom 要求使用 21
-            } else {
-                gameManifest.javaVersion?.majorVersion ?: 8
+            val targetJavaVersion =when (modloader) {
+                ModLoader.BABRIC -> 17 //Babric 推荐使用 17
+                ModLoader.CLEANROOM -> 21 //Cleanroom 要求使用 21
+                else -> gameManifest.javaVersion?.majorVersion ?: 8
             }
             if (pickedRuntime.javaVersion == 0 || pickedRuntime.javaVersion < targetJavaVersion) {
                 val runtime0 = RuntimesManager.getNearestJreName(targetJavaVersion)

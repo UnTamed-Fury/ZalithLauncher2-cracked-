@@ -23,7 +23,7 @@ import com.movtery.zalithlauncher.game.version.installed.VersionInfo
 import com.movtery.zalithlauncher.game.versioninfo.models.GameManifest
 
 /**
- * 依赖库加载顺序修复
+ * 依赖库加载顺序修复 & 依赖库检查
  * 为以后方便扩展考虑诞生的东西（
  */
 class LibSortFix(
@@ -35,8 +35,7 @@ class LibSortFix(
     private val mojangICU4jLib = "com.ibm.icu:icu4j-core-mojang:"
 
     /**
-     * 检查并赋值依赖库
-     * @return 是否可以在这个阶段添加这个依赖库
+     * 检查并插入依赖库
      */
     fun LinkedHashMap<GameManifest.Library, String>.insertLib(
         libItem: GameManifest.Library,
