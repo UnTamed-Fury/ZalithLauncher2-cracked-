@@ -968,8 +968,10 @@ fun VersionIconImage(
 
 private fun getLoaderIconRes(version: Version): Int {
     return when (version.getVersionInfo()?.loaderInfo?.loader) {
-        ModLoader.FABRIC -> R.drawable.img_loader_fabric
+        ModLoader.FABRIC,
+        ModLoader.BABRIC -> R.drawable.img_loader_fabric
         ModLoader.LEGACY_FABRIC -> R.drawable.img_loader_legacy_fabric
+
         ModLoader.FORGE -> R.drawable.img_anvil
         ModLoader.QUILT -> R.drawable.img_loader_quilt
         ModLoader.NEOFORGE -> R.drawable.img_loader_neoforge

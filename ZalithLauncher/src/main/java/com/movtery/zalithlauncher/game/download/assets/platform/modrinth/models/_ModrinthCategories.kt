@@ -47,7 +47,7 @@ enum class ModrinthModLoaderCategory : ModrinthFacet, ModLoaderDisplayLabel {
     },
     BABRIC {
         override fun facetValue(): String = "babric"
-        override fun getDisplayName(): String = "Babric"
+        override fun getDisplayName(): String = ModLoader.BABRIC.displayName
     },
     BTA_BABRIC {
         override fun facetValue(): String = "bta-babric"

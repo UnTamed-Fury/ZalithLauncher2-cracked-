@@ -83,7 +83,12 @@ class VersionInfo(
                 ModLoader.OPTIFINE -> "INST_OPTIFINE"
                 ModLoader.FORGE -> "INST_FORGE"
                 ModLoader.NEOFORGE -> "INST_NEOFORGE"
-                ModLoader.FABRIC, ModLoader.LEGACY_FABRIC -> "INST_FABRIC"
+
+                ModLoader.FABRIC,
+                ModLoader.LEGACY_FABRIC,
+                ModLoader.BABRIC
+                    -> "INST_FABRIC"
+
                 ModLoader.QUILT -> "INST_QUILT"
                 ModLoader.LITE_LOADER -> "INST_LITELOADER"
                 ModLoader.CLEANROOM -> "INST_CLEANROOM"

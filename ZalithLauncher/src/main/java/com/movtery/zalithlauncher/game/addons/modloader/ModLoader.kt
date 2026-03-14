@@ -32,13 +32,21 @@ enum class ModLoader(
     OPTIFINE(displayName = "OptiFine", isLoader = false, autoDownloadable = false),
     FORGE(displayName = "Forge"),
     NEOFORGE(displayName = "NeoForge"),
+
     FABRIC(displayName = "Fabric"),
     FABRIC_API(displayName = "Fabric API", isLoader = false, autoDownloadable = false),
+
     LEGACY_FABRIC(displayName = "Legacy Fabric", autoDownloadable = false),
     LEGACY_FABRIC_API(displayName = "Legacy Fabric API", isLoader = false, autoDownloadable = false),
+
+    BABRIC(displayName = "Babric", autoDownloadable = false),
+    BABRIC_API(displayName = "Babric API", isLoader = false, autoDownloadable = false),
+
     QUILT(displayName = "Quilt"),
     QUILT_API(displayName = "Quilted Fabric API", isLoader = false, autoDownloadable = false),
+
     LITE_LOADER(displayName = "LiteLoader", autoDownloadable = false),
     CLEANROOM(displayName = "Cleanroom"),
+
     PACK(displayName = "Pack", isLoader = false, autoDownloadable = false)
 }

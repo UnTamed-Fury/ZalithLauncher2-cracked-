@@ -184,8 +184,9 @@ private fun extractMinecraftVersion(json: JsonObject): String {
  * @param versionJson 版本json对象
  */
 private fun detectModLoader(versionJson: JsonObject): VersionInfo.LoaderInfo? {
-    var hasLegacyFabric = false
     var hasFabric = false
+    var hasLegacyFabric = false
+    var hasBabric = false
     var fabricLoaderVer: String? = null
 
     versionJson.getAsJsonArray("libraries")?.forEach { libElement ->
@@ -204,6 +205,11 @@ private fun detectModLoader(versionJson: JsonObject): VersionInfo.LoaderInfo? {
             //Legacy Fabric
             group == "net.legacyfabric" && artifact == "intermediary" -> {
                 hasLegacyFabric = true
+            }
+
+            //Babric
+            group == "babric" && artifact == "intermediary-upstream" -> {
+                hasBabric = true
             }
 
             //Forge
@@ -252,10 +258,13 @@ private fun detectModLoader(versionJson: JsonObject): VersionInfo.LoaderInfo? {
         }
     }
 
+    //Fabric 全家桶
     if (hasFabric && fabricLoaderVer != null) {
         //包含Fabric加载器
         val loader = if (hasLegacyFabric) {
             ModLoader.LEGACY_FABRIC
+        } else if (hasBabric) {
+            ModLoader.BABRIC
         } else {
             ModLoader.FABRIC
         }
