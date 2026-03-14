@@ -37,6 +37,7 @@ import com.movtery.zalithlauncher.game.addons.modloader.forgelike.forge.ForgeVer
 import com.movtery.zalithlauncher.game.addons.modloader.forgelike.neoforge.NeoForgeVersion
 import com.movtery.zalithlauncher.game.addons.modloader.modlike.ModVersion
 import com.movtery.zalithlauncher.game.addons.modloader.optifine.OptiFineVersion
+import com.movtery.zalithlauncher.game.version.installed.utils.isBiggerVer
 import com.movtery.zalithlauncher.utils.logging.Logger.lError
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.plugins.ResponseException
@@ -88,6 +89,27 @@ class CurrentAddon {
     var incompatibleWithQuilt by mutableStateOf<Set<ModLoader>>(emptySet())
     var incompatibleWithQuiltAPI by mutableStateOf<Set<ModLoader>>(emptySet())
     var incompatibleWithCleanroom by mutableStateOf<Set<ModLoader>>(emptySet())
+}
+
+/**
+ * 加载器对于Minecraft版本的支持情况信息
+ */
+data class LoaderVerSupports(
+    val isNeoForgeSupports: Boolean,
+    val isFabricSupports: Boolean,
+    val isQuiltSupports: Boolean,
+    val isCleanroomSupports: Boolean,
+)
+
+@Composable
+fun rememberLoaderVerSupports(mcVer: String) = remember(mcVer) {
+    val fabricLike = mcVer.isBiggerVer("1.13.2", "19w14b")
+    LoaderVerSupports(
+        isNeoForgeSupports = mcVer.isBiggerVer("1.20", "23w18a"),
+        isFabricSupports = fabricLike,
+        isQuiltSupports = fabricLike,
+        isCleanroomSupports = mcVer == "1.12.2"
+    )
 }
 
 /**

@@ -57,8 +57,10 @@ import com.movtery.zalithlauncher.ui.screens.content.download.game.CleanroomList
 import com.movtery.zalithlauncher.ui.screens.content.download.game.CurrentAddon
 import com.movtery.zalithlauncher.ui.screens.content.download.game.FabricList
 import com.movtery.zalithlauncher.ui.screens.content.download.game.ForgeList
+import com.movtery.zalithlauncher.ui.screens.content.download.game.LoaderVerSupports
 import com.movtery.zalithlauncher.ui.screens.content.download.game.NeoForgeList
 import com.movtery.zalithlauncher.ui.screens.content.download.game.QuiltList
+import com.movtery.zalithlauncher.ui.screens.content.download.game.rememberLoaderVerSupports
 import com.movtery.zalithlauncher.ui.screens.content.download.game.runWithState
 import com.movtery.zalithlauncher.utils.logging.Logger.lInfo
 import kotlinx.coroutines.async
@@ -164,7 +166,8 @@ private fun CurrentAddon.generateDiff(
 
 private class AddonsViewModel(
     private val gameVersion: String,
-    private val loaderInfo: VersionInfo.LoaderInfo
+    private val loaderInfo: VersionInfo.LoaderInfo,
+    private val loaderSupports: LoaderVerSupports
 ) : ViewModel() {
     private val mutex = Mutex()
 
@@ -184,13 +187,21 @@ private class AddonsViewModel(
         mutex.withLock {
             if (isLoaded) return@withLock
             //已经找到游戏使用的模组加载器，或者所有的模组加载器列表都加载完成
-            val isLoaded0 = isLoaderVersionFound || listOf(
-                addonList.forgeList,
-                addonList.neoforgeList,
-                addonList.fabricList,
-                addonList.quiltList,
-                addonList.cleanroomList
-            ).all { it != null }
+            val isLoaded0 = isLoaderVersionFound || buildList {
+                add(addonList.forgeList)
+                if (loaderSupports.isNeoForgeSupports) {
+                    add(addonList.neoforgeList)
+                }
+                if (loaderSupports.isFabricSupports) {
+                    add(addonList.fabricList)
+                }
+                if (loaderSupports.isQuiltSupports) {
+                    add(addonList.quiltList)
+                }
+                if (loaderSupports.isCleanroomSupports) {
+                    add(addonList.cleanroomList)
+                }
+            }.all { it != null }
             if (isLoaded0) lInfo("Game’s mod loader found, or all mod loaders loaded.")
             isLoaded = isLoaded0
         }
@@ -203,13 +214,21 @@ private class AddonsViewModel(
             return
         }
 
-        val unselectedLoader = listOfNotNull(
-            currentAddon.forgeVersion,
-            currentAddon.neoforgeVersion,
-            currentAddon.fabricVersion,
-            currentAddon.quiltVersion,
-            currentAddon.cleanroomVersion
-        ).isEmpty()
+        val unselectedLoader = buildList {
+            add(currentAddon.forgeVersion)
+            if (loaderSupports.isNeoForgeSupports) {
+                add(addonList.neoforgeList)
+            }
+            if (loaderSupports.isFabricSupports) {
+                add(addonList.fabricList)
+            }
+            if (loaderSupports.isQuiltSupports) {
+                add(addonList.quiltList)
+            }
+            if (loaderSupports.isCleanroomSupports) {
+                add(addonList.cleanroomList)
+            }
+        }.isEmpty()
         if (unselectedLoader) {
             //用户没有选择任何加载器
             canUpdate = false
@@ -345,28 +364,36 @@ private class AddonsViewModel(
      */
     private fun reloadAllLoaders() {
         viewModelScope.launch {
-            val forgeDeferred = async {
-                reloadForgeAsync()
-                updateLoadedState()
-            }
-            val neoForgeDeferred = async {
-                reloadNeoForgeAsync()
-                updateLoadedState()
-            }
-            val fabricDeferred = async {
-                reloadFabricAsync()
-                updateLoadedState()
-            }
-            val quiltDeferred = async {
-                reloadQuiltAsync()
-                updateLoadedState()
-            }
-            val cleanroomDeferred = async {
-                reloadCleanroomAsync()
-                updateLoadedState()
-            }
-
-            awaitAll(forgeDeferred, neoForgeDeferred, fabricDeferred, quiltDeferred, cleanroomDeferred)
+            buildList {
+                add(async {
+                    reloadForgeAsync()
+                    updateLoadedState()
+                })
+                if (loaderSupports.isNeoForgeSupports) {
+                    add(async {
+                        reloadNeoForgeAsync()
+                        updateLoadedState()
+                    })
+                }
+                if (loaderSupports.isFabricSupports) {
+                    add(async {
+                        reloadFabricAsync()
+                        updateLoadedState()
+                    })
+                }
+                if (loaderSupports.isQuiltSupports) {
+                    add(async {
+                        reloadQuiltAsync()
+                        updateLoadedState()
+                    })
+                }
+                if (loaderSupports.isCleanroomSupports) {
+                    add(async {
+                        reloadCleanroomAsync()
+                        updateLoadedState()
+                    })
+                }
+            }.awaitAll()
         }
     }
 
@@ -392,12 +419,15 @@ fun UpdateLoaderScreen(
     val versionInfo = version.getVersionInfo() ?: error("Using the \"Loader Update Screen\" is not supported for versions with unspecified version information.")
     val loaderInfo = versionInfo.loaderInfo ?: error("Using the \"Loader Update Screen\" is not supported for unspecified versions of the mod loader.")
 
+    val loaderSupports = rememberLoaderVerSupports(versionInfo.minecraftVersion)
+
     val viewModel = viewModel(
-        key = version.toString() + "_" + "UpdateLoader"
+        key = version.toString() + "_" + "UpdateLoader" + "_" + loaderSupports
     ) {
         AddonsViewModel(
             gameVersion = versionInfo.minecraftVersion,
-            loaderInfo = loaderInfo
+            loaderInfo = loaderInfo,
+            loaderSupports = loaderSupports
         )
     }
 
@@ -425,48 +455,56 @@ fun UpdateLoaderScreen(
                 )
             }
 
-            animatedItem(scope) { yOffset ->
-                NeoForgeList(
-                    modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
-                    currentAddon = viewModel.currentAddon,
-                    addonList = viewModel.addonList,
-                    error = unLoaded,
-                    onValueChanged = { viewModel.checkCanUpdate() },
-                    onReload = { viewModel.reloadNeoForge() }
-                )
+            if (loaderSupports.isNeoForgeSupports) {
+                animatedItem(scope) { yOffset ->
+                    NeoForgeList(
+                        modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
+                        currentAddon = viewModel.currentAddon,
+                        addonList = viewModel.addonList,
+                        error = unLoaded,
+                        onValueChanged = { viewModel.checkCanUpdate() },
+                        onReload = { viewModel.reloadNeoForge() }
+                    )
+                }
             }
 
-            animatedItem(scope) { yOffset ->
-                CleanroomList(
-                    modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
-                    currentAddon = viewModel.currentAddon,
-                    addonList = viewModel.addonList,
-                    error = unLoaded,
-                    onValueChanged = { viewModel.checkCanUpdate() },
-                    onReload = { viewModel.reloadCleanroom() }
-                )
+            if (loaderSupports.isCleanroomSupports) {
+                animatedItem(scope) { yOffset ->
+                    CleanroomList(
+                        modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
+                        currentAddon = viewModel.currentAddon,
+                        addonList = viewModel.addonList,
+                        error = unLoaded,
+                        onValueChanged = { viewModel.checkCanUpdate() },
+                        onReload = { viewModel.reloadCleanroom() }
+                    )
+                }
             }
 
-            animatedItem(scope) { yOffset ->
-                FabricList(
-                    modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
-                    currentAddon = viewModel.currentAddon,
-                    addonList = viewModel.addonList,
-                    error = unLoaded,
-                    onValueChanged = { viewModel.checkCanUpdate() },
-                    onReload = { viewModel.reloadFabric() }
-                )
+            if (loaderSupports.isFabricSupports) {
+                animatedItem(scope) { yOffset ->
+                    FabricList(
+                        modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
+                        currentAddon = viewModel.currentAddon,
+                        addonList = viewModel.addonList,
+                        error = unLoaded,
+                        onValueChanged = { viewModel.checkCanUpdate() },
+                        onReload = { viewModel.reloadFabric() }
+                    )
+                }
             }
 
-            animatedItem(scope) { yOffset ->
-                QuiltList(
-                    modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
-                    currentAddon = viewModel.currentAddon,
-                    addonList = viewModel.addonList,
-                    error = unLoaded,
-                    onValueChanged = { viewModel.checkCanUpdate() },
-                    onReload = { viewModel.reloadQuilt() }
-                )
+            if (loaderSupports.isQuiltSupports) {
+                animatedItem(scope) { yOffset ->
+                    QuiltList(
+                        modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
+                        currentAddon = viewModel.currentAddon,
+                        addonList = viewModel.addonList,
+                        error = unLoaded,
+                        onValueChanged = { viewModel.checkCanUpdate() },
+                        onReload = { viewModel.reloadQuilt() }
+                    )
+                }
             }
 
             animatedItem(scope) { yOffset ->
@@ -485,10 +523,14 @@ fun UpdateLoaderScreen(
                                     gameVersion = versionInfo.minecraftVersion,
                                     customVersionName = version.getVersionName(),
                                     forge = viewModel.currentAddon.forgeVersion,
-                                    neoforge = viewModel.currentAddon.neoforgeVersion,
-                                    fabric = viewModel.currentAddon.fabricVersion,
-                                    quilt = viewModel.currentAddon.quiltVersion,
+                                    neoforge = viewModel.currentAddon.neoforgeVersion
+                                        .takeIf { loaderSupports.isNeoForgeSupports },
+                                    fabric = viewModel.currentAddon.fabricVersion
+                                        .takeIf { loaderSupports.isFabricSupports },
+                                    quilt = viewModel.currentAddon.quiltVersion
+                                        .takeIf { loaderSupports.isQuiltSupports },
                                     cleanroom = viewModel.currentAddon.cleanroomVersion
+                                        .takeIf { loaderSupports.isCleanroomSupports }
                                 )
                             )
                         }

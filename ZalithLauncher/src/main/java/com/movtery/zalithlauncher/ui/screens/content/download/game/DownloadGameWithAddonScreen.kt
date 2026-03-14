@@ -86,7 +86,8 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 private class AddonsViewModel(
-    private val gameVersion: String
+    private val gameVersion: String,
+    loaderSupports: LoaderVerSupports
 ) : ViewModel() {
     val addonList = AddonList()
     val currentAddon = CurrentAddon()
@@ -172,12 +173,20 @@ private class AddonsViewModel(
     init {
         reloadOptiFine()
         reloadForge()
-        reloadNeoForge()
-        reloadFabric()
-        reloadFabricAPI()
-        reloadQuilt()
-        reloadQuiltAPI()
-        reloadCleanroom()
+        if (loaderSupports.isNeoForgeSupports) {
+            reloadNeoForge()
+        }
+        if (loaderSupports.isFabricSupports) {
+            reloadFabric()
+            reloadFabricAPI()
+        }
+        if (loaderSupports.isQuiltSupports) {
+            reloadQuilt()
+            reloadQuiltAPI()
+        }
+        if (loaderSupports.isCleanroomSupports) {
+            reloadCleanroom()
+        }
     }
 
     override fun onCleared() {
@@ -198,10 +207,12 @@ fun DownloadGameWithAddonScreen(
     refreshErrorCheck: Any? = null,
     onInstall: (GameDownloadInfo) -> Unit = {}
 ) {
+    val loaderSupports = rememberLoaderVerSupports(key.gameVersion)
+
     val viewModel = viewModel(
-        key = key.toString()
+        key = key.toString() + "_" + loaderSupports
     ) {
-        AddonsViewModel(key.gameVersion)
+        AddonsViewModel(key.gameVersion, loaderSupports)
     }
 
     BaseScreen(
@@ -241,12 +252,18 @@ fun DownloadGameWithAddonScreen(
                             customVersionName = customVersionName,
                             optifine = viewModel.currentAddon.optifineVersion,
                             forge = viewModel.currentAddon.forgeVersion,
-                            neoforge = viewModel.currentAddon.neoforgeVersion,
-                            fabric = viewModel.currentAddon.fabricVersion,
-                            fabricAPI = viewModel.currentAddon.fabricAPIVersion,
-                            quilt = viewModel.currentAddon.quiltVersion,
-                            quiltAPI = viewModel.currentAddon.quiltAPIVersion,
+                            neoforge = viewModel.currentAddon.neoforgeVersion
+                                .takeIf { loaderSupports.isNeoForgeSupports },
+                            fabric = viewModel.currentAddon.fabricVersion
+                                .takeIf { loaderSupports.isFabricSupports },
+                            fabricAPI = viewModel.currentAddon.fabricAPIVersion
+                                .takeIf { loaderSupports.isFabricSupports },
+                            quilt = viewModel.currentAddon.quiltVersion
+                                .takeIf { loaderSupports.isQuiltSupports },
+                            quiltAPI = viewModel.currentAddon.quiltAPIVersion
+                                .takeIf { loaderSupports.isQuiltSupports },
                             cleanroom = viewModel.currentAddon.cleanroomVersion
+                                .takeIf { loaderSupports.isCleanroomSupports }
                         )
                     )
                 }
@@ -278,116 +295,152 @@ fun DownloadGameWithAddonScreen(
                     ) { viewModel.reloadForge() }
                 }
 
-                AnimatedItem(scope) { yOffset ->
-                    NeoForgeList(
-                        modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
-                        currentAddon = viewModel.currentAddon,
-                        onValueChanged = { viewModel.refreshIcon() },
-                        addonList = viewModel.addonList
-                    ) { viewModel.reloadNeoForge() }
-                }
-
-                AnimatedItem(scope) { yOffset ->
-                    CleanroomList(
-                        modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
-                        currentAddon = viewModel.currentAddon,
-                        onValueChanged = { viewModel.refreshIcon() },
-                        addonList = viewModel.addonList
-                    ) { viewModel.reloadCleanroom() }
-                }
-
-                AnimatedItem(scope) { yOffset ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
-                    ) {
-                        val isFabricAPIWarning =
-                            viewModel.currentAddon.fabricVersion != null &&
-                                    viewModel.currentAddon.fabricAPIState == AddonState.None &&
-                                    !viewModel.addonList.fabricAPIList.isNullOrEmpty() &&
-                                    viewModel.currentAddon.fabricAPIVersion == null
-
-                        AnimatedVisibility(
-                            visible = isFabricAPIWarning
-                        ) {
-                            AddonWarningItem(
-                                modifier = Modifier.padding(bottom = 12.dp),
-                                text = stringResource(R.string.download_game_addon_warning_api, ModLoader.FABRIC_API.displayName)
-                            )
-                        }
-
-                        FabricList(
-                            modifier = Modifier.fillMaxWidth(),
-                            currentAddon = viewModel.currentAddon,
-                            onValueChanged = { version ->
-                                viewModel.refreshIcon()
-                                //如果用户手动选择了 Fabric
-                                if (version != null) {
-                                    //这里将会自动选择最新的 Fabric API
-                                    val lastAPIVersion = viewModel.addonList.fabricAPIList?.firstOrNull()
-                                    viewModel.currentAddon.fabricAPIVersion = lastAPIVersion
-                                }
+                if (loaderSupports.isNeoForgeSupports) {
+                    AnimatedItem(scope) { yOffset ->
+                        NeoForgeList(
+                            modifier = Modifier.offset {
+                                IntOffset(
+                                    x = 0,
+                                    y = yOffset.roundToPx()
+                                )
                             },
+                            currentAddon = viewModel.currentAddon,
+                            onValueChanged = { viewModel.refreshIcon() },
                             addonList = viewModel.addonList
-                        ) { viewModel.reloadFabric() }
+                        ) { viewModel.reloadNeoForge() }
                     }
                 }
 
-                AnimatedItem(scope) { yOffset ->
-                    FabricAPIList(
-                        modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
-                        currentAddon = viewModel.currentAddon,
-                        onValueChanged = { viewModel.refreshIcon() },
-                        addonList = viewModel.addonList
-                    ) { viewModel.reloadFabricAPI() }
-                }
-
-                AnimatedItem(scope) { yOffset ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
-                    ) {
-                        val isQuiltAPIWarning =
-                            viewModel.currentAddon.quiltVersion != null &&
-                                    viewModel.currentAddon.quiltAPIState == AddonState.None &&
-                                    !viewModel.addonList.quiltAPIList.isNullOrEmpty() &&
-                                    viewModel.currentAddon.quiltAPIVersion == null
-
-                        AnimatedVisibility(
-                            visible = isQuiltAPIWarning
-                        ) {
-                            AddonWarningItem(
-                                modifier = Modifier.padding(bottom = 12.dp),
-                                text = stringResource(R.string.download_game_addon_warning_api, ModLoader.QUILT_API.displayName)
-                            )
-                        }
-
-                        QuiltList(
-                            modifier = Modifier.fillMaxWidth(),
-                            currentAddon = viewModel.currentAddon,
-                            onValueChanged = { version ->
-                                viewModel.refreshIcon()
-                                //如果用户手动选择了 Quilt
-                                if (version != null) {
-                                    //这里将会自动选择最新的 Quilted Fabric API
-                                    val lastAPIVersion = viewModel.addonList.quiltAPIList?.firstOrNull()
-                                    viewModel.currentAddon.quiltAPIVersion = lastAPIVersion
-                                }
+                if (loaderSupports.isCleanroomSupports) {
+                    AnimatedItem(scope) { yOffset ->
+                        CleanroomList(
+                            modifier = Modifier.offset {
+                                IntOffset(
+                                    x = 0,
+                                    y = yOffset.roundToPx()
+                                )
                             },
+                            currentAddon = viewModel.currentAddon,
+                            onValueChanged = { viewModel.refreshIcon() },
                             addonList = viewModel.addonList
-                        ) { viewModel.reloadQuilt() }
+                        ) { viewModel.reloadCleanroom() }
                     }
                 }
 
-                AnimatedItem(scope) { yOffset ->
-                    QuiltAPIList(
-                        modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
-                        currentAddon = viewModel.currentAddon,
-                        onValueChanged = { viewModel.refreshIcon() },
-                        addonList = viewModel.addonList
-                    ) { viewModel.reloadQuiltAPI() }
+                if (loaderSupports.isFabricSupports) {
+                    AnimatedItem(scope) { yOffset ->
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
+                        ) {
+                            val isFabricAPIWarning =
+                                viewModel.currentAddon.fabricVersion != null &&
+                                        viewModel.currentAddon.fabricAPIState == AddonState.None &&
+                                        !viewModel.addonList.fabricAPIList.isNullOrEmpty() &&
+                                        viewModel.currentAddon.fabricAPIVersion == null
+
+                            AnimatedVisibility(
+                                visible = isFabricAPIWarning
+                            ) {
+                                AddonWarningItem(
+                                    modifier = Modifier.padding(bottom = 12.dp),
+                                    text = stringResource(
+                                        R.string.download_game_addon_warning_api,
+                                        ModLoader.FABRIC_API.displayName
+                                    )
+                                )
+                            }
+
+                            FabricList(
+                                modifier = Modifier.fillMaxWidth(),
+                                currentAddon = viewModel.currentAddon,
+                                onValueChanged = { version ->
+                                    viewModel.refreshIcon()
+                                    //如果用户手动选择了 Fabric
+                                    if (version != null) {
+                                        //这里将会自动选择最新的 Fabric API
+                                        val lastAPIVersion =
+                                            viewModel.addonList.fabricAPIList?.firstOrNull()
+                                        viewModel.currentAddon.fabricAPIVersion = lastAPIVersion
+                                    }
+                                },
+                                addonList = viewModel.addonList
+                            ) { viewModel.reloadFabric() }
+                        }
+                    }
+
+                    AnimatedItem(scope) { yOffset ->
+                        FabricAPIList(
+                            modifier = Modifier.offset {
+                                IntOffset(
+                                    x = 0,
+                                    y = yOffset.roundToPx()
+                                )
+                            },
+                            currentAddon = viewModel.currentAddon,
+                            onValueChanged = { viewModel.refreshIcon() },
+                            addonList = viewModel.addonList
+                        ) { viewModel.reloadFabricAPI() }
+                    }
+                }
+
+                if (loaderSupports.isQuiltSupports) {
+                    AnimatedItem(scope) { yOffset ->
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
+                        ) {
+                            val isQuiltAPIWarning =
+                                viewModel.currentAddon.quiltVersion != null &&
+                                        viewModel.currentAddon.quiltAPIState == AddonState.None &&
+                                        !viewModel.addonList.quiltAPIList.isNullOrEmpty() &&
+                                        viewModel.currentAddon.quiltAPIVersion == null
+
+                            AnimatedVisibility(
+                                visible = isQuiltAPIWarning
+                            ) {
+                                AddonWarningItem(
+                                    modifier = Modifier.padding(bottom = 12.dp),
+                                    text = stringResource(
+                                        R.string.download_game_addon_warning_api,
+                                        ModLoader.QUILT_API.displayName
+                                    )
+                                )
+                            }
+
+                            QuiltList(
+                                modifier = Modifier.fillMaxWidth(),
+                                currentAddon = viewModel.currentAddon,
+                                onValueChanged = { version ->
+                                    viewModel.refreshIcon()
+                                    //如果用户手动选择了 Quilt
+                                    if (version != null) {
+                                        //这里将会自动选择最新的 Quilted Fabric API
+                                        val lastAPIVersion =
+                                            viewModel.addonList.quiltAPIList?.firstOrNull()
+                                        viewModel.currentAddon.quiltAPIVersion = lastAPIVersion
+                                    }
+                                },
+                                addonList = viewModel.addonList
+                            ) { viewModel.reloadQuilt() }
+                        }
+                    }
+
+                    AnimatedItem(scope) { yOffset ->
+                        QuiltAPIList(
+                            modifier = Modifier.offset {
+                                IntOffset(
+                                    x = 0,
+                                    y = yOffset.roundToPx()
+                                )
+                            },
+                            currentAddon = viewModel.currentAddon,
+                            onValueChanged = { viewModel.refreshIcon() },
+                            addonList = viewModel.addonList
+                        ) { viewModel.reloadQuiltAPI() }
+                    }
                 }
 
                 Spacer(Modifier)
