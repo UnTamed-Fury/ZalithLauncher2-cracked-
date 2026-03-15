@@ -54,6 +54,11 @@
     <string name="generic_copied">Copied</string>
     <string name="generic_no_matching_items">No matching items</string>
     <string name="generic_follow_system">Follow System</string>
+    <!-- Page Title -->
+    <string name="page_title_version_list">Version List</string>
+    <string name="page_title_version_manage">Manage Versions</string>
+    <string name="page_title_account_list">Account List</string>
+    <string name="page_title_select_files">Select Path</string>
     <!-- Files -->
     <string name="files_browse_folder">Browse Folder</string>
     <string name="files_importing">Importing Files</string>

@@ -52,7 +52,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.movtery.zalithlauncher.R
@@ -60,6 +59,7 @@ import com.movtery.zalithlauncher.ui.base.BaseScreen
 import com.movtery.zalithlauncher.ui.components.fadeEdge
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.elements.CategoryIcon
 import com.movtery.zalithlauncher.ui.screens.content.elements.CategoryItem
 import com.movtery.zalithlauncher.ui.screens.content.settings.AboutInfoScreen
@@ -131,8 +131,8 @@ private val settingItems = listOf(
 private fun TabMenu(
     modifier: Modifier = Modifier,
     isVisible: Boolean,
-    settingsScreenKey: NavKey?,
-    navigateTo: (NavKey) -> Unit
+    settingsScreenKey: TitledNavKey?,
+    navigateTo: (TitledNavKey) -> Unit
 ) {
     val xOffset by swapAnimateDpAsState(
         targetValue = (-40).dp,
@@ -188,9 +188,9 @@ private fun TabMenu(
 @Composable
 private fun NavigationUI(
     key: NestedNavKey.Settings,
-    mainScreenKey: NavKey?,
-    settingsScreenKey: NavKey?,
-    onCurrentKeyChange: (NavKey?) -> Unit,
+    mainScreenKey: TitledNavKey?,
+    settingsScreenKey: TitledNavKey?,
+    onCurrentKeyChange: (TitledNavKey?) -> Unit,
     openLicenseScreen: (raw: Int) -> Unit,
     eventViewModel: EventViewModel,
     submitError: (ErrorViewModel.ThrowableMessage) -> Unit,

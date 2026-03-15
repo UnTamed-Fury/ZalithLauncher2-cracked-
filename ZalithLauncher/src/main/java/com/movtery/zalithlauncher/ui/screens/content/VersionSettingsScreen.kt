@@ -70,7 +70,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.NavBackStack
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -91,6 +90,7 @@ import com.movtery.zalithlauncher.ui.components.NotificationCheck
 import com.movtery.zalithlauncher.ui.components.fadeEdge
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.elements.CategoryIcon
 import com.movtery.zalithlauncher.ui.screens.content.elements.CategoryItem
 import com.movtery.zalithlauncher.ui.screens.content.elements.TitleTaskFlowDialog
@@ -286,8 +286,8 @@ private val settingItems = listOf(
 @Composable
 private fun TabMenu(
     isVisible: Boolean,
-    backStack: NavBackStack<NavKey>,
-    versionsScreenKey: NavKey?,
+    backStack: NavBackStack<TitledNavKey>,
+    versionsScreenKey: TitledNavKey?,
     isUpdateLoader: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -322,6 +322,13 @@ private fun TabMenu(
             NavigationRailItem(
                 selected = versionsScreenKey === item.key,
                 onClick = {
+                    if (item.key == NormalNavKey.Versions.UpdateLoader) {
+                        if (isUpdateLoader) {
+                            NormalNavKey.Versions.UpdateLoader.title = R.string.versions_update_loader
+                        } else {
+                            NormalNavKey.Versions.UpdateLoader.title = R.string.versions_install_loader
+                        }
+                    }
                     backStack.navigateOnce(item.key)
                 },
                 icon = {
@@ -330,8 +337,10 @@ private fun TabMenu(
                 label = {
                     val text = if (item.key == NormalNavKey.Versions.UpdateLoader) {
                         if (isUpdateLoader) {
+                            NormalNavKey.Versions.UpdateLoader.title = R.string.versions_update_loader
                             stringResource(item.textRes)
                         } else {
+                            NormalNavKey.Versions.UpdateLoader.title = R.string.versions_install_loader
                             stringResource(R.string.versions_install_loader)
                         }
                     } else {
@@ -357,8 +366,8 @@ private fun NavigationUI(
     key: NestedNavKey.VersionSettings,
     viewModel: UpdateLoaderViewModel,
     backScreenViewModel: ScreenBackStackViewModel,
-    versionsScreenKey: NavKey?,
-    onCurrentKeyChange: (NavKey?) -> Unit,
+    versionsScreenKey: TitledNavKey?,
+    onCurrentKeyChange: (TitledNavKey?) -> Unit,
     backToMainScreen: () -> Unit,
     onExport: () -> Unit,
     launchGameViewModel: LaunchGameViewModel,

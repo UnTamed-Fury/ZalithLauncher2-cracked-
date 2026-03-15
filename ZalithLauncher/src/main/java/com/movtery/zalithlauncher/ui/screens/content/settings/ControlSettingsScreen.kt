@@ -51,7 +51,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.bridge.CursorShape
 import com.movtery.zalithlauncher.context.copyLocalFile
@@ -86,6 +85,7 @@ import com.movtery.zalithlauncher.ui.control.mouse.resizeEWPointerFile
 import com.movtery.zalithlauncher.ui.control.mouse.resizeNSPointerFile
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.CardPosition
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.IntSliderSettingsCard
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.ListSettingsCard
@@ -106,8 +106,8 @@ import java.io.File
 @Composable
 fun ControlSettingsScreen(
     key: NestedNavKey.Settings,
-    settingsScreenKey: NavKey?,
-    mainScreenKey: NavKey?,
+    settingsScreenKey: TitledNavKey?,
+    mainScreenKey: TitledNavKey?,
     eventViewModel: EventViewModel,
     submitError: (ErrorViewModel.ThrowableMessage) -> Unit
 ) {

@@ -50,7 +50,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.context.copyLocalFile
 import com.movtery.zalithlauncher.contract.MediaPickerContract
@@ -67,6 +66,7 @@ import com.movtery.zalithlauncher.ui.components.SimpleEditDialog
 import com.movtery.zalithlauncher.ui.components.SimpleTaskDialog
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.elements.DeleteVersionDialog
 import com.movtery.zalithlauncher.ui.screens.content.elements.ImportFileButton
 import com.movtery.zalithlauncher.ui.screens.content.elements.RenameVersionDialog
@@ -84,8 +84,8 @@ import java.io.File
 
 @Composable
 fun VersionOverViewScreen(
-    mainScreenKey: NavKey?,
-    versionsScreenKey: NavKey?,
+    mainScreenKey: TitledNavKey?,
+    versionsScreenKey: TitledNavKey?,
     backToMainScreen: () -> Unit,
     onExport: () -> Unit,
     version: Version,

@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.game.download.assets.platform.Platform
 import com.movtery.zalithlauncher.game.download.assets.platform.PlatformClasses
 import com.movtery.zalithlauncher.game.download.assets.platform.PlatformDisplayLabel
@@ -47,6 +46,7 @@ import com.movtery.zalithlauncher.game.download.assets.platform.previousPage
 import com.movtery.zalithlauncher.game.download.assets.platform.searchAssets
 import com.movtery.zalithlauncher.ui.base.BaseScreen
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.download.assets.elements.AssetsPage
 import com.movtery.zalithlauncher.ui.screens.content.download.assets.elements.ResultListLayout
 import com.movtery.zalithlauncher.ui.screens.content.download.assets.elements.SearchAssetsState
@@ -132,7 +132,7 @@ private class SearchScreenViewModel(
 
 @Composable
 private fun rememberSearchAssetsViewModel(
-    navKey: NavKey,
+    navKey: TitledNavKey,
     initialPlatform: Platform,
     platformClasses: PlatformClasses
 ): SearchScreenViewModel {
@@ -161,11 +161,11 @@ private fun rememberSearchAssetsViewModel(
  */
 @Composable
 fun SearchAssetsScreen(
-    mainScreenKey: NavKey?,
-    parentScreenKey: NavKey,
-    parentCurrentKey: NavKey?,
-    screenKey: NavKey,
-    currentKey: NavKey?,
+    mainScreenKey: TitledNavKey?,
+    parentScreenKey: TitledNavKey,
+    parentCurrentKey: TitledNavKey?,
+    screenKey: TitledNavKey,
+    currentKey: TitledNavKey?,
     platformClasses: PlatformClasses,
     initialPlatform: Platform,
     enablePlatform: Boolean = true,

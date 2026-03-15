@@ -57,9 +57,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
-import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.movtery.layer_controller.event.ClickEvent
 import com.movtery.layer_controller.observable.ObservableButtonStyle
@@ -71,9 +69,11 @@ import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.ui.components.EdgeDirection
 import com.movtery.zalithlauncher.ui.components.MarqueeText
 import com.movtery.zalithlauncher.ui.components.fadeEdge
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.clearWith
 import com.movtery.zalithlauncher.ui.screens.content.elements.CategoryItem
 import com.movtery.zalithlauncher.ui.screens.rememberSwapTween
+import com.movtery.zalithlauncher.ui.screens.rememberTitledNavBackStack
 import com.movtery.zalithlauncher.ui.screens.rememberTransitionSpec
 
 private enum class EditWidgetDialogState(val alpha: Float, val buttonText: Int) {
@@ -118,7 +118,7 @@ fun EditWidgetDialog(
         enter = fadeIn(animationSpec = tween),
         exit = fadeOut(animationSpec = tween)
     ) {
-        val backStack = rememberNavBackStack(EditWidgetCategory.Info)
+        val backStack = rememberTitledNavBackStack(EditWidgetCategory.Info)
         var dialogTransparent by remember { mutableStateOf(EditWidgetDialogState.OPAQUE) }
 
         val alpha by animateFloatAsState(
@@ -270,8 +270,8 @@ fun EditWidgetDialog(
 private fun EditWidgetTabLayout(
     modifier: Modifier = Modifier,
     items: List<CategoryItem>,
-    currentKey: NavKey?,
-    navigateTo: (NavKey) -> Unit
+    currentKey: TitledNavKey?,
+    navigateTo: (TitledNavKey) -> Unit
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
@@ -305,7 +305,7 @@ private fun EditWidgetTabLayout(
 @Composable
 private fun EditWidgetNavigation(
     modifier: Modifier = Modifier,
-    backStack: NavBackStack<NavKey>,
+    backStack: NavBackStack<TitledNavKey>,
     data: ObservableWidget,
     styles: List<ObservableButtonStyle>,
     onEditWidgetText: (ObservableTranslatableString) -> Unit,

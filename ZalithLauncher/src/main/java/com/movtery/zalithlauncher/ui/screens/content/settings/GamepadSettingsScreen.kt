@@ -52,7 +52,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.setting.AllSettings
 import com.movtery.zalithlauncher.setting.unit.floatRange
@@ -69,6 +68,7 @@ import com.movtery.zalithlauncher.ui.control.gamepad.getNameByGamepadEvent
 import com.movtery.zalithlauncher.ui.control.gamepad.remapperMMKV
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.CardPosition
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.IntSliderSettingsCard
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.ListSettingsCard
@@ -100,8 +100,8 @@ private sealed interface CreateNewConfigOperation {
 @Composable
 fun GamepadSettingsScreen(
     key: NestedNavKey.Settings,
-    settingsScreenKey: NavKey?,
-    mainScreenKey: NavKey?
+    settingsScreenKey: TitledNavKey?,
+    mainScreenKey: TitledNavKey?
 ) {
     val viewModel: GamepadViewModel = viewModel()
 

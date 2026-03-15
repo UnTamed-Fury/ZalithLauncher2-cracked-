@@ -18,7 +18,7 @@
 
 package com.movtery.zalithlauncher.ui.screens
 
-import androidx.navigation3.runtime.NavKey
+import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.game.version.installed.Version
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
@@ -28,39 +28,57 @@ import kotlinx.serialization.Serializable
  */
 sealed interface NestedNavKey {
     /** 启动屏幕 */
-    @Serializable class Splash : BackStackNavKey<NavKey>()
+    @Serializable class Splash : BackStackNavKey<TitledNavKey>()
     /** 主屏幕 */
-    @Serializable class Main : BackStackNavKey<NavKey>()
+    @Serializable class Main : BackStackNavKey<TitledNavKey>()
     /** 设置屏幕 */
-    @Serializable class Settings : BackStackNavKey<NavKey>()
+    @Serializable class Settings : BackStackNavKey<TitledNavKey>(R.string.generic_setting)
     /** 版本详细设置屏幕 */
     @Serializable
-    class VersionSettings(@Contextual val version: Version) : BackStackNavKey<NavKey>() {
+    class VersionSettings(@Contextual val version: Version) : BackStackNavKey<TitledNavKey>(
+        R.string.page_title_version_manage
+    ) {
         init {
             backStack.addIfEmpty(NormalNavKey.Versions.OverView)
         }
     }
     /** 导出整合包屏幕 */
     @Serializable
-    class VersionExport(@Contextual val version: Version) : BackStackNavKey<NavKey>() {
+    class VersionExport(@Contextual val version: Version) : BackStackNavKey<TitledNavKey>(
+        R.string.versions_export
+    ) {
         init {
             backStack.addIfEmpty(NormalNavKey.VersionExports.SelectType)
         }
     }
     /** 下载屏幕 */
-    @Serializable class Download : BackStackNavKey<NavKey>()
+    @Serializable class Download : BackStackNavKey<TitledNavKey>(
+        R.string.generic_download
+    )
 
     //下载嵌套子屏幕
     /** 下载游戏屏幕 */
-    @Serializable class DownloadGame : BackStackNavKey<NavKey>()
+    @Serializable class DownloadGame : BackStackNavKey<TitledNavKey>(
+        R.string.download_category_game
+    )
     /** 下载整合包屏幕 */
-    @Serializable class DownloadModPack : BackStackNavKey<NavKey>()
+    @Serializable class DownloadModPack : BackStackNavKey<TitledNavKey>(
+        R.string.download_category_modpack
+    )
     /** 下载模组屏幕 */
-    @Serializable class DownloadMod : BackStackNavKey<NavKey>()
+    @Serializable class DownloadMod : BackStackNavKey<TitledNavKey>(
+        R.string.download_category_mod
+    )
     /** 下载资源包屏幕 */
-    @Serializable class DownloadResourcePack : BackStackNavKey<NavKey>()
+    @Serializable class DownloadResourcePack : BackStackNavKey<TitledNavKey>(
+        R.string.download_category_resource_pack
+    )
     /** 下载存档屏幕 */
-    @Serializable class DownloadSaves : BackStackNavKey<NavKey>()
+    @Serializable class DownloadSaves : BackStackNavKey<TitledNavKey>(
+        R.string.download_category_saves
+    )
     /** 下载光影包屏幕 */
-    @Serializable class DownloadShaders : BackStackNavKey<NavKey>()
+    @Serializable class DownloadShaders : BackStackNavKey<TitledNavKey>(
+        R.string.download_category_shaders
+    )
 }

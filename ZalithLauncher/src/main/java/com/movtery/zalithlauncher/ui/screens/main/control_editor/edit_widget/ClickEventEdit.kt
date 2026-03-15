@@ -52,7 +52,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation3.runtime.NavKey
 import com.movtery.layer_controller.event.ClickEvent
 import com.movtery.layer_controller.observable.ObservableNormalData
 import com.movtery.zalithlauncher.R
@@ -68,6 +67,7 @@ import com.movtery.zalithlauncher.ui.control.event.LAUNCHER_EVENT_SCROLL_UP
 import com.movtery.zalithlauncher.ui.control.event.LAUNCHER_EVENT_SCROLL_UP_SINGLE
 import com.movtery.zalithlauncher.ui.control.event.LAUNCHER_EVENT_SWITCH_IME
 import com.movtery.zalithlauncher.ui.control.event.LAUNCHER_EVENT_SWITCH_MENU
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.main.control_editor.InfoLayoutItem
 import com.movtery.zalithlauncher.ui.screens.main.control_editor.InfoLayoutSwitchItem
 import com.movtery.zalithlauncher.ui.screens.main.control_editor.InfoLayoutTextItem
@@ -76,8 +76,8 @@ private data class TabItem(val title: Int)
 
 @Composable
 fun EditWidgetClickEvent(
-    screenKey: NavKey,
-    currentKey: NavKey?,
+    screenKey: TitledNavKey,
+    currentKey: TitledNavKey?,
     data: ObservableNormalData,
     switchControlLayers: (ObservableNormalData, ClickEvent.Type) -> Unit,
     sendText: (ObservableNormalData) -> Unit

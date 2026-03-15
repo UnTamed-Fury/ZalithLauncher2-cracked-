@@ -58,7 +58,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.game.addons.modloader.ModLoader
 import com.movtery.zalithlauncher.game.addons.modloader.cleanroom.CleanroomVersions
@@ -81,6 +80,7 @@ import com.movtery.zalithlauncher.ui.components.SimpleTextInputField
 import com.movtery.zalithlauncher.ui.components.backgroundLayoutColor
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.elements.isFilenameInvalid
 import com.movtery.zalithlauncher.utils.animation.getAnimateTween
 import com.movtery.zalithlauncher.utils.animation.swapAnimateDpAsState
@@ -225,9 +225,9 @@ private class AddonsViewModel(
  */
 @Composable
 fun DownloadGameWithAddonScreen(
-    mainScreenKey: NavKey?,
-    downloadScreenKey: NavKey?,
-    downloadGameScreenKey: NavKey?,
+    mainScreenKey: TitledNavKey?,
+    downloadScreenKey: TitledNavKey?,
+    downloadGameScreenKey: TitledNavKey?,
     key: NormalNavKey.DownloadGame.Addons,
     refreshErrorCheck: Any? = null,
     onInstall: (GameDownloadInfo) -> Unit = {}

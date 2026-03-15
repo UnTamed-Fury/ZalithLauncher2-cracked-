@@ -29,7 +29,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
@@ -38,6 +37,7 @@ import com.movtery.zalithlauncher.game.download.assets.install.unpackSaveZip
 import com.movtery.zalithlauncher.game.download.assets.platform.PlatformClasses
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.download.assets.download.DownloadAssetsScreen
 import com.movtery.zalithlauncher.ui.screens.content.download.assets.elements.DownloadSingleOperation
 import com.movtery.zalithlauncher.ui.screens.content.download.assets.search.SearchSavesScreen
@@ -56,10 +56,10 @@ import java.io.File
 @Composable
 fun DownloadSavesScreen(
     key: NestedNavKey.DownloadSaves,
-    mainScreenKey: NavKey?,
-    downloadScreenKey: NavKey?,
-    downloadSavesScreenKey: NavKey?,
-    onCurrentKeyChange: (NavKey?) -> Unit,
+    mainScreenKey: TitledNavKey?,
+    downloadScreenKey: TitledNavKey?,
+    downloadSavesScreenKey: TitledNavKey?,
+    onCurrentKeyChange: (TitledNavKey?) -> Unit,
     submitError: (ErrorViewModel.ThrowableMessage) -> Unit,
     eventViewModel: EventViewModel
 ) {

@@ -65,7 +65,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.game.download.assets.platform.Platform
 import com.movtery.zalithlauncher.game.download.assets.platform.PlatformClasses
@@ -88,6 +87,7 @@ import com.movtery.zalithlauncher.ui.components.SimpleTextInputField
 import com.movtery.zalithlauncher.ui.components.backgroundLayoutColor
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.download.assets.elements.AssetsIcon
 import com.movtery.zalithlauncher.ui.screens.content.download.assets.elements.AssetsVersionItemLayout
 import com.movtery.zalithlauncher.ui.screens.content.download.assets.elements.DownloadAssetsState
@@ -293,10 +293,10 @@ private fun rememberDownloadAssetsViewModel(
  */
 @Composable
 fun DownloadAssetsScreen(
-    mainScreenKey: NavKey?,
-    parentScreenKey: NavKey,
-    parentCurrentKey: NavKey?,
-    currentKey: NavKey?,
+    mainScreenKey: TitledNavKey?,
+    parentScreenKey: TitledNavKey,
+    parentCurrentKey: TitledNavKey?,
+    currentKey: TitledNavKey?,
     key: NormalNavKey.DownloadAssets,
     eventViewModel: EventViewModel,
     onItemClicked: (PlatformClasses, PlatformVersion, iconUrl: String?, deps: List<Pair<PlatformVersion.PlatformDependency, PlatformProject>>) -> Unit

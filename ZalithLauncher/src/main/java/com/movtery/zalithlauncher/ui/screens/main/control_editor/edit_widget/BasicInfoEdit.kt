@@ -34,7 +34,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation3.runtime.NavKey
 import com.movtery.layer_controller.data.ButtonPosition
 import com.movtery.layer_controller.data.ButtonSize
 import com.movtery.layer_controller.data.MIN_SIZE_DP
@@ -45,6 +44,7 @@ import com.movtery.layer_controller.observable.ObservableTextData
 import com.movtery.layer_controller.observable.ObservableWidget
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.ui.base.BaseScreen
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.main.control_editor.InfoLayoutListItem
 import com.movtery.zalithlauncher.ui.screens.main.control_editor.InfoLayoutSliderItem
 import com.movtery.zalithlauncher.ui.screens.main.control_editor.getVisibilityText
@@ -54,8 +54,8 @@ import com.movtery.zalithlauncher.ui.screens.main.control_editor.getVisibilityTe
  */
 @Composable
 fun EditWidgetInfo(
-    screenKey: NavKey,
-    currentKey: NavKey?,
+    screenKey: TitledNavKey,
+    currentKey: TitledNavKey?,
     data: ObservableWidget,
     onPreviewRequested: () -> Unit,
     onDismissRequested: () -> Unit

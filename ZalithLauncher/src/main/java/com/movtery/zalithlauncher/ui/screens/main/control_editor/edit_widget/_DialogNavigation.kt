@@ -23,13 +23,13 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Style
 import androidx.compose.material.icons.outlined.TextFormat
 import androidx.compose.material.icons.outlined.TouchApp
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.R
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.elements.CategoryIcon
 import com.movtery.zalithlauncher.ui.screens.content.elements.CategoryItem
 import kotlinx.serialization.Serializable
 
-sealed interface EditWidgetCategory : NavKey {
+sealed interface EditWidgetCategory : TitledNavKey {
     /** 基本信息 */
     @Serializable data object Info : EditWidgetCategory
     /** 文本样式 */

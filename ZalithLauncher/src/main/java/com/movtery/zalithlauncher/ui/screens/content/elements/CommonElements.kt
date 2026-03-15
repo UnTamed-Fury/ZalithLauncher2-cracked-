@@ -81,7 +81,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.context.copyLocalFile
 import com.movtery.zalithlauncher.context.getFileName
@@ -92,6 +91,7 @@ import com.movtery.zalithlauncher.coroutine.TitledTask
 import com.movtery.zalithlauncher.ui.components.IconTextButton
 import com.movtery.zalithlauncher.ui.components.MarqueeText
 import com.movtery.zalithlauncher.ui.components.fadeEdge
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.utils.animation.getAnimateTween
 import com.movtery.zalithlauncher.utils.platform.bytesToMB
 import com.movtery.zalithlauncher.utils.platform.getTotalMemory
@@ -132,7 +132,7 @@ fun CategoryIcon(image: ImageVector, textRes: Int) {
 }
 
 data class CategoryItem(
-    val key: NavKey,
+    val key: TitledNavKey,
     val icon: @Composable () -> Unit,
     val textRes: Int,
     val division: Boolean = false

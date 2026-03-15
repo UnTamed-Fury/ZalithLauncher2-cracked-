@@ -39,7 +39,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.game.control.ControlManager
 import com.movtery.zalithlauncher.game.multirt.RuntimesManager
@@ -55,6 +54,7 @@ import com.movtery.zalithlauncher.ui.components.AnimatedColumn
 import com.movtery.zalithlauncher.ui.components.IDItem
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.elements.MemoryPreview
 import com.movtery.zalithlauncher.ui.screens.content.elements.MicrophoneCheckOperation
 import com.movtery.zalithlauncher.ui.screens.content.elements.MicrophoneCheckState
@@ -77,8 +77,8 @@ import com.movtery.zalithlauncher.viewmodel.ErrorViewModel
 
 @Composable
 fun VersionConfigScreen(
-    mainScreenKey: NavKey?,
-    versionsScreenKey: NavKey?,
+    mainScreenKey: TitledNavKey?,
+    versionsScreenKey: TitledNavKey?,
     version: Version,
     backToMainScreen: () -> Unit,
     submitError: (ErrorViewModel.ThrowableMessage) -> Unit

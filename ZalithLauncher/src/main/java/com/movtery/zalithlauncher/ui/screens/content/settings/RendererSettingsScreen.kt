@@ -41,7 +41,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.game.plugin.driver.Driver
 import com.movtery.zalithlauncher.game.plugin.driver.DriverPluginManager
@@ -54,6 +53,7 @@ import com.movtery.zalithlauncher.ui.components.AnimatedColumn
 import com.movtery.zalithlauncher.ui.components.SimpleAlertDialog
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.CardPosition
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.IntSliderSettingsCard
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.ListSettingsCard
@@ -65,8 +65,8 @@ import com.movtery.zalithlauncher.utils.isAdrenoGPU
 @Composable
 fun RendererSettingsScreen(
     key: NestedNavKey.Settings,
-    settingsScreenKey: NavKey?,
-    mainScreenKey: NavKey?
+    settingsScreenKey: TitledNavKey?,
+    mainScreenKey: TitledNavKey?
 ) {
     BaseScreen(
         Triple(key, mainScreenKey, false),

@@ -43,7 +43,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.game.download.assets.platform.Platform
 import com.movtery.zalithlauncher.game.download.assets.platform.PlatformClasses
@@ -55,6 +54,7 @@ import com.movtery.zalithlauncher.game.download.assets.platform.modrinth.models.
 import com.movtery.zalithlauncher.ui.components.MarqueeText
 import com.movtery.zalithlauncher.ui.components.SimpleAlertDialog
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.download.assets.elements.BaseFilterLayout
 import com.movtery.zalithlauncher.viewmodel.AllSupportPackDisplay
 import com.movtery.zalithlauncher.viewmodel.EventViewModel
@@ -83,10 +83,10 @@ private fun rememberModpackViewModel(): ModpackViewModel {
 
 @Composable
 fun SearchModPackScreen(
-    mainScreenKey: NavKey?,
-    downloadScreenKey: NavKey?,
-    downloadModPackScreenKey: NavKey,
-    downloadModPackScreenCurrentKey: NavKey?,
+    mainScreenKey: TitledNavKey?,
+    downloadScreenKey: TitledNavKey?,
+    downloadModPackScreenKey: TitledNavKey,
+    downloadModPackScreenCurrentKey: TitledNavKey?,
     viewModel: ModpackImportViewModel,
     eventViewModel: EventViewModel,
     swapToDownload: (Platform, projectId: String, iconUrl: String?) -> Unit = { _, _, _ -> }

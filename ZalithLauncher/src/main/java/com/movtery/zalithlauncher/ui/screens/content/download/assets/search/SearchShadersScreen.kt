@@ -19,20 +19,20 @@
 package com.movtery.zalithlauncher.ui.screens.content.download.assets.search
 
 import androidx.compose.runtime.Composable
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.game.download.assets.platform.Platform
 import com.movtery.zalithlauncher.game.download.assets.platform.PlatformClasses
 import com.movtery.zalithlauncher.game.download.assets.platform.curseforge.models.CurseForgeShadersCategory
 import com.movtery.zalithlauncher.game.download.assets.platform.modrinth.models.ModrinthFeatures
 import com.movtery.zalithlauncher.game.download.assets.platform.modrinth.models.ModrinthShadersCategory
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 
 @Composable
 fun SearchShadersScreen(
-    mainScreenKey: NavKey?,
-    downloadScreenKey: NavKey?,
-    downloadShadersScreenKey: NavKey,
-    downloadShadersScreenCurrentKey: NavKey?,
+    mainScreenKey: TitledNavKey?,
+    downloadScreenKey: TitledNavKey?,
+    downloadShadersScreenKey: TitledNavKey,
+    downloadShadersScreenCurrentKey: TitledNavKey?,
     swapToDownload: (Platform, projectId: String, iconUrl: String?) -> Unit = { _, _, _ -> }
 ) {
     SearchAssetsScreen(

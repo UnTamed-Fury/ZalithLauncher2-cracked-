@@ -18,7 +18,8 @@
 
 package com.movtery.zalithlauncher.ui.screens
 
-import androidx.navigation3.runtime.NavKey
+import androidx.annotation.StringRes
+import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.game.download.assets.platform.Platform
 import com.movtery.zalithlauncher.game.download.assets.platform.PlatformClasses
 import kotlinx.serialization.Serializable
@@ -26,65 +27,109 @@ import kotlinx.serialization.Serializable
 /**
  * 普通的屏幕
  */
-sealed interface NormalNavKey : NavKey {
+sealed interface NormalNavKey : TitledNavKey {
+    @get:StringRes
+    override val title: Int?
+        get() = null
+
     /** 解压依赖内容屏幕（启动屏幕） */
     @Serializable data object UnpackDeps: NormalNavKey
     /** 启动器主页屏幕 */
     @Serializable data object LauncherMain : NormalNavKey
     /** 账号管理屏幕 */
-    @Serializable data object AccountManager : NormalNavKey
+    @Serializable data object AccountManager : NormalNavKey {
+        override val title: Int = R.string.page_title_account_list
+    }
     /** Web屏幕 */
     @Serializable data class WebScreen(val url: String) : NormalNavKey
     /** 版本管理屏幕 */
-    @Serializable data object VersionsManager : NormalNavKey
+    @Serializable data object VersionsManager : NormalNavKey {
+        override val title: Int = R.string.page_title_version_list
+    }
     /** 文件选择屏幕 */
     @Serializable data class FileSelector(
         val startPath: String,
         val selectFile: Boolean,
-        val saveKey: NavKey,
+        val saveKey: TitledNavKey,
         val onSelected: (path: String) -> Unit
-    ) : NormalNavKey
+    ) : NormalNavKey {
+        override val title: Int = R.string.page_title_select_files
+    }
     /** 多人联机屏幕 */
-    @Serializable data object Multiplayer: NormalNavKey
+    @Serializable data object Multiplayer: NormalNavKey {
+        override val title: Int = R.string.terracotta_terracotta
+    }
 
     /** 设置嵌套子屏幕 */
     sealed interface Settings : NormalNavKey {
         /** 渲染器设置屏幕 */
-        @Serializable data object Renderer : Settings
+        @Serializable data object Renderer : Settings {
+            override val title: Int = R.string.settings_tab_renderer
+        }
         /** 游戏设置屏幕 */
-        @Serializable data object Game : Settings
+        @Serializable data object Game : Settings {
+            override val title: Int = R.string.settings_tab_game
+        }
         /** 控制设置屏幕 */
-        @Serializable data object Control : Settings
+        @Serializable data object Control : Settings {
+            override val title: Int = R.string.settings_tab_control
+        }
         /** 手柄设置屏幕 */
-        @Serializable data object Gamepad : Settings
+        @Serializable data object Gamepad : Settings {
+            override val title: Int = R.string.settings_tab_gamepad
+        }
         /** 启动器设置屏幕 */
-        @Serializable data object Launcher : Settings
+        @Serializable data object Launcher : Settings {
+            override val title: Int = R.string.settings_tab_launcher
+        }
         /** Java管理屏幕 */
-        @Serializable data object JavaManager : Settings
+        @Serializable data object JavaManager : Settings {
+            override val title: Int = R.string.settings_tab_java_manage
+        }
         /** 控制管理屏幕 */
-        @Serializable data object ControlManager : Settings
+        @Serializable data object ControlManager : Settings {
+            override val title: Int = R.string.settings_tab_control_manage
+        }
         /** 关于屏幕 */
-        @Serializable data object AboutInfo : Settings
+        @Serializable data object AboutInfo : Settings {
+            override val title: Int = R.string.settings_tab_info_about
+        }
     }
 
     /** 版本详细设置嵌套子屏幕 */
     sealed interface Versions : NormalNavKey {
         /** 版本概览屏幕 */
-        @Serializable data object OverView : Versions
+        @Serializable data object OverView : Versions {
+            override val title: Int = R.string.versions_settings_overview
+        }
         /** 版本配置屏幕 */
-        @Serializable data object Config : Versions
+        @Serializable data object Config : Versions {
+            override val title: Int = R.string.versions_settings_config
+        }
         /** 更新版本的模组加载器 */
-        @Serializable data object UpdateLoader : Versions
+        @Serializable data object UpdateLoader : Versions {
+            override var title: Int = R.string.versions_update_loader
+        }
         /** 模组管理屏幕 */
-        @Serializable data object ModsManager : Versions
+        @Serializable data object ModsManager : Versions {
+            override var title: Int = R.string.mods_manage
+        }
         /** 存档管理屏幕 */
-        @Serializable data object SavesManager : Versions
+        @Serializable data object SavesManager : Versions {
+            override var title: Int = R.string.saves_manage
+        }
         /** 资源包管理屏幕 */
-        @Serializable data object ResourcePackManager : Versions
+        @Serializable data object ResourcePackManager : Versions {
+            override var title: Int = R.string.resource_pack_manage
+        }
         /** 光影包管理屏幕 */
-        @Serializable data object ShadersManager : Versions
+        @Serializable data object ShadersManager : Versions {
+            override var title: Int = R.string.shader_pack_manage
+        }
         /** 服务器列表屏幕 */
-        @Serializable data object ServerList : Versions
+        @Serializable data object ServerList : Versions {
+            override var title: Int = R.string.servers_list
+        }
     }
 
     /** 导出整合包屏幕 */

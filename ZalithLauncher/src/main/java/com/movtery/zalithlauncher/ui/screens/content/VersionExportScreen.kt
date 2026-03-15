@@ -48,7 +48,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.google.gson.JsonSyntaxException
@@ -69,6 +68,7 @@ import com.movtery.zalithlauncher.ui.components.SimpleAlertDialog
 import com.movtery.zalithlauncher.ui.components.fadeEdge
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.clearKeys
 import com.movtery.zalithlauncher.ui.screens.content.elements.TitleTaskFlowDialog
 import com.movtery.zalithlauncher.ui.screens.content.versions.export.ExportInfoScreen
@@ -482,8 +482,8 @@ private fun NavigationUI(
     key: NestedNavKey.VersionExport,
     backScreenViewModel: ScreenBackStackViewModel,
     eventViewModel: EventViewModel,
-    exportScreenKey: NavKey?,
-    onCurrentKeyChange: (NavKey?) -> Unit,
+    exportScreenKey: TitledNavKey?,
+    onCurrentKeyChange: (TitledNavKey?) -> Unit,
     backToMainScreen: () -> Unit,
     version: Version,
     modifier: Modifier = Modifier,

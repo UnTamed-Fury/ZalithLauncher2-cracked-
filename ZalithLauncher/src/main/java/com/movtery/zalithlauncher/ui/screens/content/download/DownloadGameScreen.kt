@@ -42,7 +42,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
@@ -61,6 +60,7 @@ import com.movtery.zalithlauncher.ui.components.SimpleAlertDialog
 import com.movtery.zalithlauncher.ui.components.fadeEdge
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.download.game.DownloadGameWithAddonScreen
 import com.movtery.zalithlauncher.ui.screens.content.download.game.SelectGameVersionScreen
 import com.movtery.zalithlauncher.ui.screens.content.elements.TitleTaskFlowDialog
@@ -173,10 +173,10 @@ private fun rememberGameDownloadViewModel(
 @Composable
 fun DownloadGameScreen(
     key: NestedNavKey.DownloadGame,
-    mainScreenKey: NavKey?,
-    downloadScreenKey: NavKey?,
-    downloadGameScreenKey: NavKey?,
-    onCurrentKeyChange: (NavKey?) -> Unit,
+    mainScreenKey: TitledNavKey?,
+    downloadScreenKey: TitledNavKey?,
+    downloadGameScreenKey: TitledNavKey?,
+    onCurrentKeyChange: (TitledNavKey?) -> Unit,
     eventViewModel: EventViewModel
 ) {
     val viewModel: GameDownloadViewModel = rememberGameDownloadViewModel(key)

@@ -28,7 +28,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation3.runtime.NavBackStack
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.scene.Scene
 import com.movtery.zalithlauncher.setting.AllSettings
 import com.movtery.zalithlauncher.utils.animation.TransitionAnimationType
@@ -38,7 +37,7 @@ import kotlin.reflect.KClass
 /**
  * 兼容嵌套NavDisplay的返回事件处理
  */
-fun <E: NavKey> onBack(currentBackStack: NavBackStack<E>) {
+fun <E: TitledNavKey> onBack(currentBackStack: NavBackStack<E>) {
     when (val key = currentBackStack.lastOrNull()) {
         //普通的屏幕，直接退出当前堆栈的上层
         is NormalNavKey -> currentBackStack.removeLastOrNull()
@@ -55,12 +54,12 @@ fun <E: NavKey> onBack(currentBackStack: NavBackStack<E>) {
     }
 }
 
-fun <E: NavKey> NavBackStack<E>.navigateOnce(key: E) {
+fun <E: TitledNavKey> NavBackStack<E>.navigateOnce(key: E) {
     if (key == lastOrNull()) return //防止反复加载
     clearWith(key)
 }
 
-fun <E: NavKey> NavBackStack<E>.navigateTo(screenKey: E, useClassEquality: Boolean = false) {
+fun <E: TitledNavKey> NavBackStack<E>.navigateTo(screenKey: E, useClassEquality: Boolean = false) {
     val current = lastOrNull()
     if (useClassEquality) {
         if (current != null && screenKey::class == current::class) return //防止反复加载
@@ -70,14 +69,14 @@ fun <E: NavKey> NavBackStack<E>.navigateTo(screenKey: E, useClassEquality: Boole
     add(screenKey)
 }
 
-fun <E: NavKey> NavBackStack<E>.removeAndNavigateTo(remove: KClass<*>, screenKey: E, useClassEquality: Boolean = false) {
+fun <E: TitledNavKey> NavBackStack<E>.removeAndNavigateTo(remove: KClass<*>, screenKey: E, useClassEquality: Boolean = false) {
     removeIf { key ->
         key::class == remove
     }
     navigateTo(screenKey, useClassEquality)
 }
 
-fun <E: NavKey> NavBackStack<E>.removeAndNavigateTo(removes: List<KClass<*>>, screenKey: E, useClassEquality: Boolean = false) {
+fun <E: TitledNavKey> NavBackStack<E>.removeAndNavigateTo(removes: List<KClass<*>>, screenKey: E, useClassEquality: Boolean = false) {
     removeIf { key ->
         key::class in removes
     }
@@ -87,7 +86,7 @@ fun <E: NavKey> NavBackStack<E>.removeAndNavigateTo(removes: List<KClass<*>>, sc
 /**
  * 清除所有栈，并加入指定的key
  */
-fun <E: NavKey> NavBackStack<E>.clearWith(navKey: E) {
+fun <E: TitledNavKey> NavBackStack<E>.clearWith(navKey: E) {
     val targetClass = navKey::class.java
     if (none { it::class.java == targetClass }) {
         //提前加入，避免让 Nav3 看到空帧
@@ -99,12 +98,12 @@ fun <E: NavKey> NavBackStack<E>.clearWith(navKey: E) {
 /**
  * 清除指定的key
  */
-fun <E: NavKey> NavBackStack<E>.clearKeys(vararg navKeys: E) {
+fun <E: TitledNavKey> NavBackStack<E>.clearKeys(vararg navKeys: E) {
     val classes = navKeys.map { it::class.java }
     removeIf { it::class.java in classes }
 }
 
-fun <E: NavKey> NavBackStack<E>.addIfEmpty(navKey: E) {
+fun <E: TitledNavKey> NavBackStack<E>.addIfEmpty(navKey: E) {
     if (isEmpty()) {
         add(navKey)
     }

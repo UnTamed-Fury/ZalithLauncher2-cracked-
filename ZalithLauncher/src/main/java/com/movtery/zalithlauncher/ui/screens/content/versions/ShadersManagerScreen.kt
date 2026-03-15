@@ -87,7 +87,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.coroutine.TaskSystem
 import com.movtery.zalithlauncher.game.version.installed.Version
@@ -105,6 +104,7 @@ import com.movtery.zalithlauncher.ui.components.itemLayoutColor
 import com.movtery.zalithlauncher.ui.components.itemLayoutShadowElevation
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.elements.ImportMultipleFileButton
 import com.movtery.zalithlauncher.ui.screens.content.elements.SortByDropdownMenu
 import com.movtery.zalithlauncher.ui.screens.content.elements.SortByEnum
@@ -249,8 +249,8 @@ private fun rememberShadersManageViewModel(
 
 @Composable
 fun ShadersManagerScreen(
-    mainScreenKey: NavKey?,
-    versionsScreenKey: NavKey?,
+    mainScreenKey: TitledNavKey?,
+    versionsScreenKey: TitledNavKey?,
     version: Version,
     backToMainScreen: () -> Unit,
     swapToDownload: () -> Unit,

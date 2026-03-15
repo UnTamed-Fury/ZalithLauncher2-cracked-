@@ -46,7 +46,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.navigation3.runtime.NavKey
 import com.movtery.colorpicker.rememberColorPickerController
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.contract.MediaPickerContract
@@ -67,6 +66,7 @@ import com.movtery.zalithlauncher.ui.components.SimpleAlertDialog
 import com.movtery.zalithlauncher.ui.components.TitleAndSummary
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.CardPosition
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.EnumSettingsCard
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.IntSliderSettingsCard
@@ -97,8 +97,8 @@ private sealed interface CustomColorOperation {
 @Composable
 fun LauncherSettingsScreen(
     key: NestedNavKey.Settings,
-    settingsScreenKey: NavKey?,
-    mainScreenKey: NavKey?,
+    settingsScreenKey: TitledNavKey?,
+    mainScreenKey: TitledNavKey?,
     eventViewModel: EventViewModel,
     submitError: (ErrorViewModel.ThrowableMessage) -> Unit
 ) {

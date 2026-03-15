@@ -20,6 +20,7 @@ package com.movtery.zalithlauncher.ui.screens.main
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -77,7 +78,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.movtery.zalithlauncher.R
@@ -91,8 +91,10 @@ import com.movtery.zalithlauncher.ui.components.CardTitleLayout
 import com.movtery.zalithlauncher.ui.components.TextRailItem
 import com.movtery.zalithlauncher.ui.components.itemLayoutColor
 import com.movtery.zalithlauncher.ui.components.itemLayoutShadowElevation
+import com.movtery.zalithlauncher.ui.screens.BackStackNavKey
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.AccountManageScreen
 import com.movtery.zalithlauncher.ui.screens.content.DownloadScreen
 import com.movtery.zalithlauncher.ui.screens.content.FileSelectorScreen
@@ -233,8 +235,8 @@ fun MainScreen(
 }
 
 @Composable
-private fun TopBar(
-    mainScreenKey: NavKey?,
+private fun <E: TitledNavKey> TopBar(
+    mainScreenKey: E?,
     taskRunning: Boolean,
     isTasksExpanded: Boolean,
     modifier: Modifier = Modifier,
@@ -313,18 +315,27 @@ private fun TopBar(
                     }
                 }
             }
+            val parentRes = mainScreenKey?.title
+            val childRes = (mainScreenKey as? BackStackNavKey<*>)?.currentKey?.title
 
-            AnimatedVisibility(
-                modifier = Modifier
-                    .constrainAs(title) {
-                        centerVerticallyTo(parent)
-                        start.linkTo(backCenter.end, margin = 16.dp)
-                    },
-                enter = fadeIn(),
-                exit = fadeOut(),
-                visible = inLauncherScreen //仅在启动器主屏幕显示
-            ) {
-                Text(text = InfoDistributor.LAUNCHER_IDENTIFIER)
+            Crossfade(
+                modifier = Modifier.constrainAs(title) {
+                    centerVerticallyTo(parent)
+                    start.linkTo(backCenter.end, margin = 16.dp)
+                },
+                targetState = parentRes to childRes
+            ) { (parent, child) ->
+
+                val parentText = parent?.let { stringResource(it) }
+                    ?: InfoDistributor.LAUNCHER_IDENTIFIER
+                val childText = child?.let { stringResource(it) }
+
+                Text(
+                    text = if (childText != null) "$parentText - $childText" else parentText,
+                    style = MaterialTheme.typography.titleMedium,
+                    softWrap = false,
+                    maxLines = 1
+                )
             }
 
             Row(

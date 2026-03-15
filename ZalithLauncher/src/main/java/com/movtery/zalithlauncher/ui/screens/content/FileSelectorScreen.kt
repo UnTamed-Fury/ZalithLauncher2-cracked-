@@ -50,7 +50,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.ui.base.BaseScreen
 import com.movtery.zalithlauncher.ui.components.BackgroundCard
@@ -61,6 +60,7 @@ import com.movtery.zalithlauncher.ui.components.ScalingLabel
 import com.movtery.zalithlauncher.ui.components.itemLayoutColor
 import com.movtery.zalithlauncher.ui.components.itemLayoutShadowElevation
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.elements.BaseFileItem
 import com.movtery.zalithlauncher.ui.screens.content.elements.CreateNewDirDialog
 import com.movtery.zalithlauncher.ui.screens.navigateTo
@@ -76,10 +76,10 @@ import java.io.File
 /**
  * 导航至FileSelectorScreen
  */
-fun NavBackStack<NavKey>.navigateToFileSelector(
+fun NavBackStack<TitledNavKey>.navigateToFileSelector(
     startPath: String,
     selectFile: Boolean,
-    saveKey: NavKey,
+    saveKey: TitledNavKey,
     onSelected: (path: String) -> Unit
 ) = this.navigateTo(
     screenKey = NormalNavKey.FileSelector(

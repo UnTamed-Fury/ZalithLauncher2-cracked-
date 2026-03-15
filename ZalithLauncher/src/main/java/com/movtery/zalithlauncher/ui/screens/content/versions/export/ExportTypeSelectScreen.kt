@@ -44,7 +44,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.game.version.export.PackType
 import com.movtery.zalithlauncher.info.InfoDistributor
@@ -54,6 +53,7 @@ import com.movtery.zalithlauncher.ui.components.BackgroundCard
 import com.movtery.zalithlauncher.ui.components.WarningCard
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.CardPosition
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.rememberSettingsCardShape
 
@@ -62,8 +62,8 @@ import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.rememberSe
  */
 @Composable
 fun ExportTypeSelectScreen(
-    mainScreenKey: NavKey?,
-    exportScreenKey: NavKey?,
+    mainScreenKey: TitledNavKey?,
+    exportScreenKey: TitledNavKey?,
     onTypeSelect: (PackType) -> Unit
 ) {
     BaseScreen(

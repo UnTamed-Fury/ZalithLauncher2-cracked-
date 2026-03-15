@@ -28,7 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.navigation3.runtime.NavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 
 /**
  * 单层级基础屏幕，根据 `currentKey` 判断当前屏幕是否可见
@@ -38,8 +38,8 @@ import androidx.navigation3.runtime.NavKey
  */
 @Composable
 fun BaseScreen(
-    screenKey: NavKey,
-    currentKey: NavKey?,
+    screenKey: TitledNavKey,
+    currentKey: TitledNavKey?,
     useClassEquality: Boolean = false,
     content: @Composable (isVisible: Boolean) -> Unit,
 ) {
@@ -67,7 +67,7 @@ fun BaseScreen(
  */
 @Composable
 fun BaseScreen(
-    vararg levels: Triple<NavKey, NavKey?, Boolean>,
+    vararg levels: Triple<TitledNavKey, TitledNavKey?, Boolean>,
     content: @Composable (isVisible: Boolean) -> Unit,
 ) {
     val targetVisible = remember(levels) {
@@ -95,8 +95,8 @@ fun BaseScreen(
  */
 @Composable
 fun BaseScreen(
-    levels1: List<Pair<Class<out NavKey>, NavKey?>>,
-    vararg levels2: Triple<NavKey, NavKey?, Boolean>,
+    levels1: List<Pair<Class<out TitledNavKey>, TitledNavKey?>>,
+    vararg levels2: Triple<TitledNavKey, TitledNavKey?, Boolean>,
     content: @Composable (isVisible: Boolean) -> Unit,
 ) {
     val targetVisible = remember(levels1, levels2) {
@@ -146,14 +146,14 @@ private fun BaseScreen(
     }
 }
 
-private fun isTagVisible(key: Class<out NavKey>, current: NavKey?): Boolean {
+private fun isTagVisible(key: Class<out TitledNavKey>, current: TitledNavKey?): Boolean {
     return key.isInstance(current)
 }
 
 /**
  * @param useClassEquality 是否使用类相等判断
  */
-private fun isTagVisible(key: NavKey, current: NavKey?, useClassEquality: Boolean): Boolean {
+private fun isTagVisible(key: TitledNavKey, current: TitledNavKey?, useClassEquality: Boolean): Boolean {
     return when {
         current == null -> false
         useClassEquality -> key::class == current::class

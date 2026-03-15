@@ -53,13 +53,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.ui.base.BaseScreen
 import com.movtery.zalithlauncher.ui.components.fadeEdge
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.download.DownloadGameScreen
 import com.movtery.zalithlauncher.ui.screens.content.download.DownloadModPackScreen
 import com.movtery.zalithlauncher.ui.screens.content.download.DownloadModScreen
@@ -80,7 +80,7 @@ import com.movtery.zalithlauncher.viewmodel.ScreenBackStackViewModel
 /**
  * 导航至DownloadScreen
  */
-fun ScreenBackStackViewModel.navigateToDownload(targetScreen: NavKey? = null) {
+fun ScreenBackStackViewModel.navigateToDownload(targetScreen: TitledNavKey? = null) {
     downloadScreen.clearWith(targetScreen ?: downloadGameScreen)
     mainScreen.removeAndNavigateTo(
         removes = clearBeforeNavKeys,
@@ -126,7 +126,7 @@ fun DownloadScreen(
 private fun TabMenu(
     modifier: Modifier = Modifier,
     isVisible: Boolean,
-    backStack: NavBackStack<NavKey>,
+    backStack: NavBackStack<TitledNavKey>,
     backScreenViewModel: ScreenBackStackViewModel,
 ) {
     val downloadsList = listOf(

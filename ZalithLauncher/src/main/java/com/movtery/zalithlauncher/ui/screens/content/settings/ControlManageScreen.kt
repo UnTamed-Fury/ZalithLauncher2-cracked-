@@ -84,7 +84,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation3.runtime.NavKey
 import com.movtery.layer_controller.data.lang.createTranslatable
 import com.movtery.layer_controller.layout.ControlLayout
 import com.movtery.layer_controller.layout.EmptyControlLayout
@@ -121,6 +120,7 @@ import com.movtery.zalithlauncher.ui.components.itemLayoutColor
 import com.movtery.zalithlauncher.ui.components.itemLayoutShadowElevation
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.elements.ImportMultipleFileButton
 import com.movtery.zalithlauncher.ui.screens.main.control_editor.edit_translatable.EditTranslatableTextDialog
 import com.movtery.zalithlauncher.utils.animation.getAnimateTween
@@ -192,8 +192,8 @@ private fun rememberControlViewModel() = viewModel(
 @Composable
 fun ControlManageScreen(
     key: NestedNavKey.Settings,
-    settingsScreenKey: NavKey?,
-    mainScreenKey: NavKey?,
+    settingsScreenKey: TitledNavKey?,
+    mainScreenKey: TitledNavKey?,
     submitError: (ErrorViewModel.ThrowableMessage) -> Unit
 ) {
     val viewModel = rememberControlViewModel()

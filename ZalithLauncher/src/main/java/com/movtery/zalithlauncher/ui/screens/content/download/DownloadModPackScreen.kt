@@ -46,7 +46,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
@@ -67,6 +66,7 @@ import com.movtery.zalithlauncher.ui.components.SimpleEditDialog
 import com.movtery.zalithlauncher.ui.components.fadeEdge
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.download.assets.download.DownloadAssetsScreen
 import com.movtery.zalithlauncher.ui.screens.content.download.assets.search.SearchModPackScreen
 import com.movtery.zalithlauncher.ui.screens.content.elements.TitleTaskFlowDialog
@@ -224,10 +224,10 @@ private fun rememberModPackViewModel(
 @Composable
 fun DownloadModPackScreen(
     key: NestedNavKey.DownloadModPack,
-    mainScreenKey: NavKey?,
-    downloadScreenKey: NavKey?,
-    downloadModPackScreenKey: NavKey?,
-    onCurrentKeyChange: (NavKey?) -> Unit,
+    mainScreenKey: TitledNavKey?,
+    downloadScreenKey: TitledNavKey?,
+    downloadModPackScreenKey: TitledNavKey?,
+    onCurrentKeyChange: (TitledNavKey?) -> Unit,
     importerViewModel: ModpackImportViewModel,
     eventViewModel: EventViewModel
 ) {

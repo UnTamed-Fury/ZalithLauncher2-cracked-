@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation3.runtime.NavKey
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.game.addons.modloader.ModLoader
 import com.movtery.zalithlauncher.game.addons.modloader.cleanroom.CleanroomVersions
@@ -54,6 +53,7 @@ import com.movtery.zalithlauncher.ui.base.BaseScreen
 import com.movtery.zalithlauncher.ui.components.AnimatedLazyColumn
 import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
+import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.download.game.AddonList
 import com.movtery.zalithlauncher.ui.screens.content.download.game.CleanroomList
 import com.movtery.zalithlauncher.ui.screens.content.download.game.CurrentAddon
@@ -473,8 +473,8 @@ private class AddonsViewModel(
  */
 @Composable
 fun UpdateLoaderScreen(
-    mainScreenKey: NavKey?,
-    versionsScreenKey: NavKey?,
+    mainScreenKey: TitledNavKey?,
+    versionsScreenKey: TitledNavKey?,
     version: Version,
     onInstall: (AddonDiffs, GameDownloadInfo) -> Unit
 ) {
