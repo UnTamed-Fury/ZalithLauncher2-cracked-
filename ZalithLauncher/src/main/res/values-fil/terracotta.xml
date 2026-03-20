@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="terracotta">MultiPlayer</string>
+    <string name="terracotta_metadata_ver">Bersyon ng Terracotta: %s</string>
+    <string name="terracotta_metadata_easytier_ver">Bersyon ng EasyTier: %s</string>
+    <string name="terracotta_easytier">Tungkol sa EasyTier</string>
+    <string name="terracotta_terracotta">Terracotta | Multiplayer</string>
+    <string name="terracotta_back">Lumabas</string>
+    <string name="terracotta_enable">Paganahin ang Multiplayer</string>
+    <string name="terracotta_difficulty_easiest">Mahusay na network: halos konektado na!</string>
+    <string name="terracotta_difficulty_simple">Magandang network: maaaring magtagal ang koneksyon</string>
 </resources>
