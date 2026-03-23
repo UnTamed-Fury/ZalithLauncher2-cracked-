@@ -43,8 +43,13 @@ fun SaveData.isCompatible(minecraftVersion: String) =
  * [参考 Minecraft Wiki](https://zh.minecraft.wiki/w/%E5%AD%98%E6%A1%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E6%A0%BC%E5%BC%8F#%E5%AD%98%E5%82%A8%E6%A0%BC%E5%BC%8F)
  * @param saveFile 存档的文件夹
  * @param levelDatFile level.dat 文件
+ * @param worldGenDatFile 26.1+ 新存档格式，将世界生成设置迁移到了 /data/minecraft/world_gen_settings.dat
  */
-suspend fun parseLevelDatFile(saveFile: File, levelDatFile: File): SaveData = withContext(Dispatchers.IO) {
+suspend fun parseLevelDatFile(
+    saveFile: File,
+    levelDatFile: File,
+    worldGenDatFile: File? = null
+): SaveData = withContext(Dispatchers.IO) {
 //    val fileSize = FileUtils.sizeOf(saveFile)
     runCatching {
         if (!levelDatFile.exists()) error("The ${levelDatFile.absolutePath} file does not exist!")
@@ -52,7 +57,7 @@ suspend fun parseLevelDatFile(saveFile: File, levelDatFile: File): SaveData = wi
         val compound = NBTIO.readFile(levelDatFile)
             ?: error("Failed to read the level.dat file as a CompoundTag.")
         val data: CompoundTag = compound.asCompoundTag("Data")
-            ?: error("Data entry not found in the NBT structure tree.")
+            ?: error("{level.dat} Data entry not found in the NBT structure tree.")
 
         //存档名称，不存在则为空
         val levelName = data.asString("LevelName", "")
@@ -78,10 +83,24 @@ suspend fun parseLevelDatFile(saveFile: File, levelDatFile: File): SaveData = wi
             gameMode == GameMode.CREATIVE
         }
         //世界种子
-        val worldSeed = data.asCompoundTag("WorldGenSettings")
-            ?.asLong("seed", null)
-        //如果不存在，则尝试获取 RandomSeed
-            ?: data.asLong("RandomSeed", null)
+        val worldSeed = if (worldGenDatFile != null && worldGenDatFile.isFile && worldGenDatFile.exists()) {
+            //26.1+
+            runCatching {
+                val worldGenCompound = NBTIO.readFile(worldGenDatFile)
+                    ?: error("Failed to read the world_gen_settings.dat file as a CompoundTag.")
+                val worldData = worldGenCompound.asCompoundTag("data")
+                    ?: error("{world_gen_settings.dat} data entry not found in the NBT structure tree.")
+
+                worldData.asLong("seed", null)
+            }.onFailure {
+                lWarning("An exception occurred while reading and parsing the world_gen_settings.dat file (${worldGenDatFile.absolutePath}).", it)
+            }.getOrNull()
+        } else {
+            data.asCompoundTag("WorldGenSettings")
+                ?.asLong("seed", null)
+            //如果不存在，则尝试获取 RandomSeed
+                ?: data.asLong("RandomSeed", null)
+        }
 
         SaveData(
             saveFile = saveFile,

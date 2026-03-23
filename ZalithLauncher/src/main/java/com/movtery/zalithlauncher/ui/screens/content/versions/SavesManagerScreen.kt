@@ -178,7 +178,9 @@ private class SavesManageViewModel(
                             //解析存档 level.dat，读取必要数据
                             val data = parseLevelDatFile(
                                 saveFile = dir,
-                                levelDatFile = File(dir, "level.dat")
+                                levelDatFile = File(dir, "level.dat"),
+                                worldGenDatFile = File(dir, "data/minecraft/world_gen_settings.dat")
+                                    .takeIf { it.isFile && it.exists() }
                             )
                             tempList.add(data)
                         }
