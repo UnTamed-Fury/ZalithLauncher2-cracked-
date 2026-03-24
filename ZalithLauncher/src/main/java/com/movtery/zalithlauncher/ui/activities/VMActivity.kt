@@ -397,6 +397,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
             eventViewModel.events.collect { event ->
                 when (event) {
                     is EventViewModel.Event.Game.RefreshSize -> {
+                        LoggerBridge.append("ABCD: EventViewModel.Event.Game.RefreshSize(${mTextureView?.surfaceTexture}, $mScreenSize)")
                         refreshWindowSize(mTextureView?.surfaceTexture, mScreenSize)
                     }
                     is EventViewModel.Event.Game.SwitchIme -> {
@@ -549,6 +550,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
         val textureView = mTextureView ?: return
         val surface = textureView.surfaceTexture ?: return
         lifecycleScope.launch(Dispatchers.Main) {
+            LoggerBridge.append("ABCD: private fun refreshScreenSize($surface, $mScreenSize)")
             refreshWindowSize(surface, mScreenSize)
         }
     }
@@ -567,6 +569,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
         val windowHeight = getDisplayPixels(screenSize.height)
         surface?.setDefaultBufferSize(windowWidth, windowHeight)
         ZLBridgeStates.onWindowChange()
+        LoggerBridge.append("ABCD: CallbackBridge.sendUpdateWindowSize($windowWidth, $windowHeight)")
         CallbackBridge.sendUpdateWindowSize(windowWidth, windowHeight)
 
         return IntSize(windowWidth, windowHeight)
@@ -660,6 +663,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
         vmViewModel.isRunning = true
 
         withHandler { mIsSurfaceDestroyed = false }
+        LoggerBridge.append("ABCD: override fun onSurfaceTextureAvailable($surface, ${IntSize(width, height)})")
         val currentSize = refreshWindowSize(surface, IntSize(width, height))
         lifecycleScope.launch(Dispatchers.Default) {
             withHandler {
@@ -708,6 +712,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
 
             LaunchedEffect(screenSize) {
                 mScreenSize = screenSize
+                LoggerBridge.append("ABCD: LaunchedEffect() refreshScreenSize()")
                 refreshScreenSize()
             }
 
