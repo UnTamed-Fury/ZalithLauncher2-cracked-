@@ -142,7 +142,7 @@ sealed class AccountManageIntent {
  */
 sealed class AccountManageEffect {
     data class ShowError(val title: String, val message: String) : AccountManageEffect()
-    data class ShowToast(val messageRes: Int, val formatArgs: List<Any> = emptyList()) : AccountManageEffect()
+    data class ShowToast(val messageRes: Int, val formatArgs: List<Any> = emptyList(), val duration: Int = android.widget.Toast.LENGTH_SHORT) : AccountManageEffect()
 }
 
 @HiltViewModel
@@ -226,9 +226,9 @@ class AccountManageViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun emitToast(messageRes: Int, vararg args: Any) {
+    private fun emitToast(messageRes: Int, vararg args: Any, duration: Int = android.widget.Toast.LENGTH_SHORT) {
         viewModelScope.launch {
-            _effect.send(AccountManageEffect.ShowToast(messageRes, args.toList()))
+            _effect.send(AccountManageEffect.ShowToast(messageRes, args.toList(), duration))
         }
     }
 
@@ -282,7 +282,7 @@ class AccountManageViewModel @Inject constructor() : ViewModel() {
             runCatching { account.downloadSkin() }.onFailure { th ->
                 emitError(context.getString(R.string.account_logging_in_failed), formatAccountError(context, th))
             }
-            emitToast(R.string.account_change_skin_update_toast)
+            emitToast(R.string.account_change_skin_update_toast, duration = android.widget.Toast.LENGTH_LONG)
             onIntent(AccountManageIntent.UpdateMicrosoftSkinOp(MicrosoftChangeSkinOperation.None))
         }, onError = { th ->
             val (title, msg) = if (th is io.ktor.client.plugins.ResponseException) {
@@ -436,8 +436,9 @@ class AccountManageViewModel @Inject constructor() : ViewModel() {
         is UnknownHostException, is UnresolvedAddressException -> context.getString(R.string.error_network_unreachable)
         is ConnectException -> context.getString(R.string.error_connection_failed)
         else -> {
-            lError("Exception caught!", th)
-            context.getString(R.string.error_unknown, th.localizedMessage ?: "Unknown")
+            lError("An unknown exception was caught!", th)
+            val errorMessage = th.localizedMessage ?: th.message ?: th::class.qualifiedName ?: "Unknown error"
+            context.getString(R.string.error_unknown, errorMessage)
         }
     }
 }

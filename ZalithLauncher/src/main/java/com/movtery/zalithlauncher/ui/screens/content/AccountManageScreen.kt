@@ -142,7 +142,7 @@ fun AccountManageScreen(
                     } else {
                         context.getString(effect.messageRes, *effect.formatArgs.toTypedArray())
                     }
-                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, message, effect.duration).show()
                 }
             }
         }
@@ -264,7 +264,8 @@ private fun ServerTypeMenu(
 
         ScalingActionButton(
             modifier = Modifier
-                .padding(PaddingValues(horizontal = 12.dp, vertical = 8.dp)),
+                .padding(PaddingValues(horizontal = 12.dp, vertical = 8.dp))
+                .fillMaxWidth(),
             onClick = { actions.onIntent(AccountManageIntent.UpdateServerOp(ServerOperation.AddNew)) }
         ) {
             MarqueeText(text = stringResource(R.string.account_add_new_server_button))
@@ -373,16 +374,14 @@ private fun LocalLoginOperation(
             SimpleAlertDialog(
                 title = stringResource(R.string.account_supporting_username_invalid_title),
                 text = {
-                    Column {
-                        Text(text = stringResource(R.string.account_supporting_username_invalid_local_message_hint1))
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = stringResource(R.string.account_supporting_username_invalid_local_message_hint2), fontWeight = FontWeight.Bold)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = stringResource(R.string.account_supporting_username_invalid_local_message_hint3))
-                        Text(text = stringResource(R.string.account_supporting_username_invalid_local_message_hint4))
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = stringResource(R.string.account_supporting_username_invalid_local_message_hint5), fontWeight = FontWeight.Bold)
-                    }
+                    Text(text = stringResource(R.string.account_supporting_username_invalid_local_message_hint1))
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(text = stringResource(R.string.account_supporting_username_invalid_local_message_hint2), fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(text = stringResource(R.string.account_supporting_username_invalid_local_message_hint3))
+                    Text(text = stringResource(R.string.account_supporting_username_invalid_local_message_hint4))
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(text = stringResource(R.string.account_supporting_username_invalid_local_message_hint5), fontWeight = FontWeight.Bold)
                 },
                 confirmText = stringResource(R.string.account_supporting_username_invalid_still_use),
                 onConfirm = { actions.onIntent(AccountManageIntent.UpdateLocalLoginOp(LocalLoginOperation.Create(operation.userName, operation.userUUID))) },
@@ -556,7 +555,11 @@ private fun AccountSkinOperation(
     val context = LocalContext.current
     when (accountSkinOperation) {
         is AccountSkinOperation.None -> {}
-        is AccountSkinOperation.SaveSkin -> actions.onIntent(AccountManageIntent.SaveLocalSkin(context, account, accountSkinOperation.uri, onRefreshAvatar))
+        is AccountSkinOperation.SaveSkin -> {
+            LaunchedEffect(accountSkinOperation.uri) {
+                actions.onIntent(AccountManageIntent.SaveLocalSkin(context, account, accountSkinOperation.uri, onRefreshAvatar))
+            }
+        }
         is AccountSkinOperation.SelectSkinModel -> {
             SelectSkinModelDialog(
                 onDismissRequest = { updateOperation(AccountSkinOperation.None) },
@@ -575,7 +578,11 @@ private fun AccountSkinOperation(
                 onConfirm = { updateOperation(AccountSkinOperation.ResetSkin) }
             )
         }
-        is AccountSkinOperation.ResetSkin -> actions.onIntent(AccountManageIntent.ResetSkin(account, onRefreshAvatar))
+        is AccountSkinOperation.ResetSkin -> {
+            LaunchedEffect(Unit) {
+                actions.onIntent(AccountManageIntent.ResetSkin(account, onRefreshAvatar))
+            }
+        }
     }
 }
 
