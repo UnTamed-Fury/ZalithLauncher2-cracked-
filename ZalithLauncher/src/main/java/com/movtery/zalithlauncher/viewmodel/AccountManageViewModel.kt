@@ -20,6 +20,7 @@ package com.movtery.zalithlauncher.viewmodel
 
 import android.content.Context
 import android.net.Uri
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.movtery.zalithlauncher.R
@@ -199,7 +200,7 @@ sealed class AccountManageEffect {
     data class ShowToast(
         val messageRes: Int,
         val formatArgs: List<Any> = emptyList(),
-        val duration: Int = android.widget.Toast.LENGTH_SHORT
+        val duration: Int = Toast.LENGTH_SHORT
     ) : AccountManageEffect()
 }
 
@@ -312,7 +313,7 @@ class AccountManageViewModel @Inject constructor() : ViewModel() {
     private fun emitToast(
         messageRes: Int,
         vararg args: Any,
-        duration: Int = android.widget.Toast.LENGTH_SHORT
+        duration: Int = Toast.LENGTH_SHORT
     ) {
         viewModelScope.launch {
             _effect.send(AccountManageEffect.ShowToast(messageRes, args.toList(), duration))
@@ -412,7 +413,7 @@ class AccountManageViewModel @Inject constructor() : ViewModel() {
                     }
                     emitToast(
                         R.string.account_change_skin_update_toast,
-                        duration = android.widget.Toast.LENGTH_LONG
+                        duration = Toast.LENGTH_LONG
                     )
                     // State should already be None from the line above, but keeping for clarity if logic changes.
                     onIntent(AccountManageIntent.UpdateMicrosoftSkinOp(MicrosoftChangeSkinOperation.None))

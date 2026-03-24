@@ -63,12 +63,14 @@ import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.context.COPY_LABEL_ACCOUNT_UUID
 import com.movtery.zalithlauncher.game.account.Account
 import com.movtery.zalithlauncher.game.account.AccountsManager
+import com.movtery.zalithlauncher.game.account.auth_server.data.AuthServer
 import com.movtery.zalithlauncher.game.account.isAuthServerAccount
 import com.movtery.zalithlauncher.game.account.isLocalAccount
 import com.movtery.zalithlauncher.game.account.isMicrosoftAccount
 import com.movtery.zalithlauncher.game.account.isMicrosoftLogging
 import com.movtery.zalithlauncher.game.account.wardrobe.EmptyCape
 import com.movtery.zalithlauncher.game.account.wardrobe.capeTranslatedName
+import com.movtery.zalithlauncher.game.account.wardrobe.getLocalUUIDWithSkinModel
 import com.movtery.zalithlauncher.ui.base.BaseScreen
 import com.movtery.zalithlauncher.ui.components.BackgroundCard
 import com.movtery.zalithlauncher.ui.components.MarqueeText
@@ -230,7 +232,7 @@ private fun AccountManageContent(
 private fun ServerTypeMenu(
     isVisible: Boolean,
     modifier: Modifier = Modifier,
-    authServers: List<com.movtery.zalithlauncher.game.account.auth_server.data.AuthServer>,
+    authServers: List<AuthServer>,
     actions: AccountActions
 ) {
     val xOffset by swapAnimateDpAsState(
@@ -856,7 +858,7 @@ private fun AccountSkinOperation(
                 onSelected = { type ->
                     account.skinModelType = type
                     account.profileId =
-                        com.movtery.zalithlauncher.game.account.wardrobe.getLocalUUIDWithSkinModel(
+                        getLocalUUIDWithSkinModel(
                             account.username,
                             type
                         )
