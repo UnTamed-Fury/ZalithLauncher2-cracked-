@@ -18,7 +18,6 @@
 
 package com.movtery.zalithlauncher.notification
 
-import android.app.NotificationManager.IMPORTANCE_HIGH
 import android.app.NotificationManager.IMPORTANCE_LOW
 import android.content.Context
 import com.movtery.zalithlauncher.R
@@ -33,7 +32,7 @@ enum class NotificationChannelData(
     /**
      * Jvm 任务服务
      */
-    JVM_SERVICE_CHANNEL("jvm.service", { it.getString(R.string.notification_data_jvm_service_name) }, null, IMPORTANCE_HIGH),
+    JVM_SERVICE_CHANNEL("jvm.service", { it.getString(R.string.notification_data_jvm_service_name) }, null, IMPORTANCE_LOW),
 
     /**
      * 陶瓦联机 VPN 状态显示服务

@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
@@ -162,6 +163,39 @@ fun SimpleListItem(
         RadioButton(
             selected = selected,
             onClick = onClick
+        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                text = itemName,
+                style = MaterialTheme.typography.labelMedium
+            )
+            summary?.invoke()
+        }
+    }
+}
+
+@Composable
+fun SimpleListItem(
+    modifier: Modifier = Modifier,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    itemName: String,
+    summary: (@Composable () -> Unit)? = null,
+    enabled: Boolean = true
+) {
+    Row(
+        modifier = modifier
+            .clip(shape = MaterialTheme.shapes.large)
+            .clickable(enabled = enabled) {
+                onCheckedChange(!checked)
+            },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(
+            checked = checked,
+            onCheckedChange = onCheckedChange
         )
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp)

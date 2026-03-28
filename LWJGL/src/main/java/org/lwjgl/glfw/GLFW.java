@@ -932,8 +932,6 @@ public class GLFW
     }
 
     public static int glfwGetWindowAttrib(@NativeType("GLFWwindow *") long window, int attrib) {
-        if (attrib == GLFW_CONTEXT_VERSION_MAJOR) return 4; // TODO: report actual GL version or add an option for users to select the version
-        if (attrib == GLFW_CONTEXT_VERSION_MINOR) return 6;
         return internalGetWindow(window).windowAttribs.getOrDefault(attrib, 0);
     }
 
@@ -1053,8 +1051,28 @@ public class GLFW
         win.inputModes.put(GLFW_STICKY_MOUSE_BUTTONS, GLFW_FALSE); // TODO: Fix glfwGetMouseButton() to support this
         win.inputModes.put(GLFW_IME, GLFW_FALSE);
 
-        win.windowAttribs.put(GLFW_HOVERED, 1);
-        win.windowAttribs.put(GLFW_VISIBLE, 1);
+        // Set the Open GL version for context because Forge and derivatives ask for it
+        // Default on 3.3 because mod compat
+        int glMajor = 3;
+        int glMinor = 3;
+
+        String pojavRenderer = System.getenv("POJAV_RENDERER");
+        // Custom defaults for specific renderers
+        switch (pojavRenderer) {
+            case "vulkan_zink":
+                glMajor = 4;
+                glMinor = 6;
+                break;
+            case "gallium_virgl":
+                glMajor = 4;
+                break;
+            case "opengles3":
+                glMajor = 4;
+                glMinor = 0;
+                break;
+        }
+        win.windowAttribs.put(GLFW_CONTEXT_VERSION_MAJOR, glMajor);
+        win.windowAttribs.put(GLFW_CONTEXT_VERSION_MINOR, glMinor);
 
         mGLFWWindowMap.put(ptr, win);
         mainContext = ptr;

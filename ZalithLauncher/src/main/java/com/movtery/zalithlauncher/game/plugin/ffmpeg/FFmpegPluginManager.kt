@@ -67,11 +67,11 @@ object FFmpegPluginManager {
             if (isAvailable) {
                 cacheAppIcon(context, applicationInfo)
                 runCatching {
-                    ApkPlugin(
+                    object : ApkPlugin(
                         packageName = PLUGIN_PACKAGE_NAME,
                         appName = applicationInfo.loadLabel(manager).toString(),
                         appVersion = manager.getPackageInfo(PLUGIN_PACKAGE_NAME, 0).versionName ?: ""
-                    )
+                    ) {}
                 }.getOrNull()?.let { loaded(it) }
             }
         }.onFailure { e ->

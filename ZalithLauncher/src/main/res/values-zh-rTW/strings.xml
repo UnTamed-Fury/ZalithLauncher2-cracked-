@@ -382,6 +382,8 @@
     <string name="renderer_version_unsupported_warning">目前渲染器 %s 不支援此遊戲版本，繼續使用可能導致渲染錯誤或遊戲崩潰！您確定要忽略風險並繼續嗎？</string>
     <string name="renderer_version_storage_permissions">目前的渲染器 %s 可透過設定檔修改設定，請先為啟動器開啟外部儲存空間權限，否則將無法讀取並載入該渲染器的設定！</string>
     <string name="renderer_version_storage_permissions_sdk30">目前的渲染器 %s 可透過設定檔修改設定，請先為啟動器開啟「管理所有檔案」的權限，否則將無法讀取並載入該渲染器的設定！</string>
+    <!--  外掛  -->
+    <string name="plugin_unsupported_warning">目前外掛 %s 不支援此遊戲版本，繼續使用可能導致遊戲崩潰！您確定要忽視風險並繼續嗎？</string>
     <!--  帳號  -->
     <string name="account_no_account">找不到可用帳號</string>
     <string name="account_login">登入</string>
@@ -780,6 +782,8 @@
     <string name="settings_game_java_memory_summary">控制分配給 Minecraft 的記憶體大小</string>
     <string name="settings_game_java_memory_used_text">已使用：%1$dMB / %2$dMB</string>
     <string name="settings_game_java_memory_allocation_text">已分配：%dMB</string>
+    <string name="settings_game_native_lib_plugin_title">原生函式庫外掛</string>
+    <string name="settings_game_native_lib_plugin_summary">列出所有已載入的原生函式庫外掛，您可在清單中啟用或停用它們</string>
     <string name="settings_game_jvm_args_title">JVM 啟動參數</string>
     <string name="settings_game_jvm_args_summary">啟動 JVM 時額外加入的 JVM 參數，不建議在沒有把握的情況下修改，因為這很可能導致崩潰</string>
     <string name="settings_game_show_log_automatic_title">自動顯示日誌</string>

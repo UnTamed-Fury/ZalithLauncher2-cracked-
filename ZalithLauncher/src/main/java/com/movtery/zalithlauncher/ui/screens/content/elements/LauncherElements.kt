@@ -42,6 +42,8 @@ import coil3.request.crossfade
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.game.account.AccountsManager
 import com.movtery.zalithlauncher.game.launch.LaunchGame
+import com.movtery.zalithlauncher.game.plugin.ApkPlugin
+import com.movtery.zalithlauncher.game.plugin.natives.NativePluginManager
 import com.movtery.zalithlauncher.game.plugin.renderer.RendererPluginManager
 import com.movtery.zalithlauncher.game.renderer.RendererInterface
 import com.movtery.zalithlauncher.game.renderer.Renderers
@@ -91,6 +93,13 @@ sealed interface LaunchGameOperation {
     /** 当前渲染器不支持选中版本 */
     data class UnsupportedRenderer(
         val renderer: RendererInterface,
+        val version: Version,
+        val quickPlay: QuickPlay?
+    ): LaunchGameOperation
+
+    /** 当前已加载的插件不支持选中的版本 */
+    data class UnsupportedPlugins(
+        val plugins: List<ApkPlugin>,
         val version: Version,
         val quickPlay: QuickPlay?
     ): LaunchGameOperation
@@ -184,6 +193,22 @@ fun LaunchGameOperation(
                 }
             )
         }
+        is LaunchGameOperation.UnsupportedPlugins -> {
+            val plugins = launchGameOperation.plugins
+            val version = launchGameOperation.version
+            val quickPlay = launchGameOperation.quickPlay
+            SimpleAlertDialog(
+                title = stringResource(R.string.generic_warning),
+                text = stringResource(R.string.plugin_unsupported_warning, plugins.joinToString(", ") { it.appName }),
+                confirmText = stringResource(R.string.generic_anyway),
+                onConfirm = {
+                    updateOperation(LaunchGameOperation.RealLaunch(version, quickPlay))
+                },
+                onDismiss = {
+                    updateOperation(LaunchGameOperation.None)
+                }
+            )
+        }
         is LaunchGameOperation.TryLaunch -> {
             LaunchedEffect(Unit) {
                 val version = launchGameOperation.version ?: run {
@@ -213,12 +238,21 @@ fun LaunchGameOperation(
 
                 val mcVer = version.getVersionInfo()!!.minecraftVersion
 
-                val isUnsupported =
+                val isRendererUnsupported =
                     (rendererMinVer?.let { mcVer.isLowerTo(it) } ?: false) ||
                             (rendererMaxVer?.let { mcVer.isBiggerTo(it) } ?: false)
 
-                if (isUnsupported) {
+                if (isRendererUnsupported) {
                     updateOperation(LaunchGameOperation.UnsupportedRenderer(currentRenderer, version, quickPlay))
+                    return@LaunchedEffect
+                }
+
+                val unsupportedPlugins = NativePluginManager.getCheckedPlugins().filter { plugin ->
+                    (plugin.minMCVer?.let { mcVer.isLowerTo(it) } ?: false) ||
+                            (plugin.maxMCVer?.let { mcVer.isBiggerTo(it) } ?: false)
+                }
+                if (unsupportedPlugins.isNotEmpty()) {
+                    updateOperation(LaunchGameOperation.UnsupportedPlugins(unsupportedPlugins, version, quickPlay))
                     return@LaunchedEffect
                 }
 

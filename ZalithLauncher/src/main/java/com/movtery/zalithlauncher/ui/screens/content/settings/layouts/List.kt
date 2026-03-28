@@ -53,12 +53,111 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.setting.unit.EnumSettingUnit
+import com.movtery.zalithlauncher.setting.unit.StringListSettingUnit
 import com.movtery.zalithlauncher.setting.unit.StringSettingUnit
 import com.movtery.zalithlauncher.ui.components.IDItem
 import com.movtery.zalithlauncher.ui.components.SimpleListItem
 import com.movtery.zalithlauncher.ui.components.TitleAndSummary
 import com.movtery.zalithlauncher.ui.screens.content.elements.DisabledAlpha
 import com.movtery.zalithlauncher.utils.animation.getAnimateTween
+
+@Composable
+private fun <E> BaseListSettingsCard(
+    items: List<E>,
+    expanded: Boolean,
+    onExpandChange: (Boolean) -> Unit,
+    title: String,
+    position: CardPosition,
+    itemLayout: @Composable (E) -> Unit,
+    modifier: Modifier = Modifier,
+    outerShape: Dp = 28.dp,
+    innerShape: Dp = 4.dp,
+    summary: String? = null,
+    middleLayout: (@Composable () -> Unit)? = null,
+    enabled: Boolean = true,
+    itemListPadding: PaddingValues = PaddingValues(start = 8.dp, end = 8.dp, bottom = 8.dp),
+    titleStyle: TextStyle = MaterialTheme.typography.titleSmall,
+    summaryStyle: TextStyle = MaterialTheme.typography.labelSmall
+) {
+    require(items.isNotEmpty()) { "Items list cannot be empty" }
+
+    LaunchedEffect(enabled) {
+        if (!enabled) onExpandChange(false)
+    }
+
+    SettingsCard(
+        modifier = modifier,
+        position = position,
+        outerShape = outerShape,
+        innerShape = innerShape
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .alpha(alpha = if (enabled) 1f else DisabledAlpha)
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(enabled = enabled) { onExpandChange(!expanded) }
+                        .padding(all = 16.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        TitleAndSummary(
+                            title = title,
+                            summary = summary,
+                            titleStyle = titleStyle,
+                            summaryStyle = summaryStyle
+                        )
+                        middleLayout?.invoke()
+                    }
+                    val rotation by animateFloatAsState(
+                        targetValue = if (expanded) -180f else 0f,
+                        animationSpec = getAnimateTween()
+                    )
+                    IconButton(
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .size(34.dp)
+                            .rotate(rotation),
+                        enabled = enabled,
+                        onClick = { onExpandChange(!expanded) }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.ArrowDropDown,
+                            contentDescription = stringResource(if (expanded) R.string.generic_expand else R.string.generic_collapse)
+                        )
+                    }
+                }
+
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    AnimatedVisibility(
+                        modifier = Modifier.fillMaxWidth(),
+                        visible = expanded,
+                        enter = expandVertically(animationSpec = getAnimateTween()),
+                        exit = shrinkVertically(animationSpec = getAnimateTween()) + fadeOut(),
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(itemListPadding)
+                        ) {
+                            items.forEach { item ->
+                                itemLayout(item)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun <E> ListSettingsCard(
@@ -92,101 +191,45 @@ fun <E> ListSettingsCard(
     }
     var expanded by remember { mutableStateOf(false) }
 
-    LaunchedEffect(enabled) {
-        if (!enabled) expanded = false
-    }
-
-    SettingsCard(
-        modifier = modifier,
+    BaseListSettingsCard(
+        items = items,
+        expanded = expanded,
+        onExpandChange = { expanded = it },
+        title = title,
         position = position,
+        itemLayout = { item ->
+            SimpleListItem(
+                modifier = Modifier.fillMaxWidth(),
+                selected = getItemId(selectedItem) == getItemId(item),
+                itemName = getItemText(item),
+                summary = getItemSummary?.let {
+                    { it.invoke(item) }
+                },
+                onClick = {
+                    if (expanded && getItemId(selectedItem) != getItemId(item)) {
+                        selectedItem = item
+                        onValueChange(item)
+                        if (autoCollapse) expanded = false
+                    }
+                }
+            )
+        },
+        modifier = modifier,
         outerShape = outerShape,
-        innerShape = innerShape
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .alpha(alpha = if (enabled) 1f else DisabledAlpha)
-        ) {
-            Column(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(enabled = enabled) { expanded = !expanded }
-                        .padding(all = 16.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        TitleAndSummary(
-                            title = title,
-                            summary = summary,
-                            titleStyle = titleStyle,
-                            summaryStyle = summaryStyle
-                        )
-                        Text(
-                            modifier = Modifier.alpha(0.7f),
-                            text = stringResource(R.string.settings_element_selected, getItemText(selectedItem)),
-                            style = MaterialTheme.typography.labelSmall
-                        )
-                    }
-                    val rotation by animateFloatAsState(
-                        targetValue = if (expanded) -180f else 0f,
-                        animationSpec = getAnimateTween()
-                    )
-                    IconButton(
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .size(34.dp)
-                            .rotate(rotation),
-                        enabled = enabled,
-                        onClick = { expanded = !expanded }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.ArrowDropDown,
-                            contentDescription = stringResource(if (expanded) R.string.generic_expand else R.string.generic_collapse)
-                        )
-                    }
-                }
-
-
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    AnimatedVisibility(
-                        modifier = Modifier.fillMaxWidth(),
-                        visible = expanded,
-                        enter = expandVertically(animationSpec = getAnimateTween()),
-                        exit = shrinkVertically(animationSpec = getAnimateTween()) + fadeOut(),
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(itemListPadding)
-                        ) {
-                            items.forEach { item ->
-                                SimpleListItem(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    selected = getItemId(selectedItem) == getItemId(item),
-                                    itemName = getItemText(item),
-                                    summary = getItemSummary?.let {
-                                        { it.invoke(item) }
-                                    },
-                                    onClick = {
-                                        if (expanded && getItemId(selectedItem) != getItemId(item)) {
-                                            selectedItem = item
-                                            onValueChange(item)
-                                            if (autoCollapse) expanded = false
-                                        }
-                                    }
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+        innerShape = innerShape,
+        summary = summary,
+        middleLayout = {
+            Text(
+                modifier = Modifier.alpha(0.7f),
+                text = stringResource(R.string.settings_element_selected, getItemText(selectedItem)),
+                style = MaterialTheme.typography.labelSmall
+            )
+        },
+        enabled = enabled,
+        itemListPadding = itemListPadding,
+        titleStyle = titleStyle,
+        summaryStyle = summaryStyle
+    )
 }
 
 @Composable
@@ -273,6 +316,66 @@ fun <E: Enum<E>> ListSettingsCard(
             unit.save(item)
             onValueChange(item)
         },
+        titleStyle = titleStyle,
+        summaryStyle = summaryStyle
+    )
+}
+
+@Composable
+fun <E> StringListSettingsCard(
+    unit: StringListSettingUnit,
+    items: List<E>,
+    onItemsChange: List<String>.(check: Boolean, item: E) -> List<String>,
+    title: String,
+    position: CardPosition,
+    modifier: Modifier = Modifier,
+    outerShape: Dp = 28.dp,
+    innerShape: Dp = 4.dp,
+    summary: String? = null,
+    getItemID: (E) -> String,
+    getItemText: @Composable (E) -> String,
+    getItemSummary: (@Composable (E) -> Unit)? = null,
+    getItemCheck: (contains: Boolean) -> Boolean = { it },
+    enabled: Boolean = true,
+    itemListPadding: PaddingValues = PaddingValues(start = 8.dp, end = 8.dp, bottom = 8.dp),
+    titleStyle: TextStyle = MaterialTheme.typography.titleSmall,
+    summaryStyle: TextStyle = MaterialTheme.typography.labelSmall
+) {
+    require(items.isNotEmpty()) { "Items list cannot be empty" }
+
+    var expanded by remember { mutableStateOf(false) }
+
+    BaseListSettingsCard(
+        items = items,
+        expanded = expanded,
+        onExpandChange = { expanded = it },
+        title = title,
+        position = position,
+        itemLayout = { item ->
+            val itemID = getItemID(item)
+            val listState = unit.state
+            val contains = itemID in listState
+
+            SimpleListItem(
+                modifier = Modifier.fillMaxWidth(),
+                checked = getItemCheck(contains),
+                onCheckedChange = { value ->
+                    unit.save(
+                        listState.onItemsChange(value, item)
+                    )
+                },
+                itemName = getItemText(item),
+                summary = getItemSummary?.let {
+                    { it.invoke(item) }
+                }
+            )
+        },
+        modifier = modifier,
+        outerShape = outerShape,
+        innerShape = innerShape,
+        summary = summary,
+        enabled = enabled,
+        itemListPadding = itemListPadding,
         titleStyle = titleStyle,
         summaryStyle = summaryStyle
     )

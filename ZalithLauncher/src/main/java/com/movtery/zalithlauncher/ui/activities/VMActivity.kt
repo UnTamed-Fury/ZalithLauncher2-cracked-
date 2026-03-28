@@ -133,6 +133,8 @@ class VMViewModel : ViewModel() {
      */
     var keyHandle = true
 
+    var screenSize: IntSize = IntSize.Zero
+
     /**
      * 输入代理
      */
@@ -335,7 +337,6 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
     private val vmViewModel: VMViewModel by viewModels()
 
     private var mTextureView: TextureView? = null
-    private var mScreenSize: IntSize = IntSize.Zero
 
     private inline fun <T> withHandler(block: AbstractHandler.() -> T): T {
         return vmViewModel.session.handler.block()
@@ -397,7 +398,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
             eventViewModel.events.collect { event ->
                 when (event) {
                     is EventViewModel.Event.Game.RefreshSize -> {
-                        refreshWindowSize(mTextureView?.surfaceTexture, mScreenSize)
+                        refreshWindowSize(mTextureView?.surfaceTexture, vmViewModel.screenSize)
                     }
                     is EventViewModel.Event.Game.SwitchIme -> {
                         vmViewModel.textInputMode = event.mode ?: vmViewModel.textInputMode.switch()
@@ -513,12 +514,14 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
     override fun onResume() {
         super.onResume()
         withHandler { onResume() }
+        CallbackBridge.nativeSetWindowAttrib(LwjglGlfwKeycode.GLFW_FOCUSED, 1)
         CallbackBridge.nativeSetWindowAttrib(LwjglGlfwKeycode.GLFW_HOVERED, 1)
     }
 
     override fun onPause() {
         super.onPause()
         withHandler { onPause() }
+        CallbackBridge.nativeSetWindowAttrib(LwjglGlfwKeycode.GLFW_FOCUSED, 0)
         CallbackBridge.nativeSetWindowAttrib(LwjglGlfwKeycode.GLFW_HOVERED, 0)
     }
 
@@ -530,6 +533,11 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
     override fun onStop() {
         super.onStop()
         CallbackBridge.nativeSetWindowAttrib(LwjglGlfwKeycode.GLFW_HOVERED, 0)
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        CallbackBridge.nativeSetWindowAttrib(LwjglGlfwKeycode.GLFW_FOCUSED, if (hasFocus) 0 else 0)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -549,7 +557,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
         val textureView = mTextureView ?: return
         val surface = textureView.surfaceTexture ?: return
         lifecycleScope.launch(Dispatchers.Main) {
-            refreshWindowSize(surface, mScreenSize)
+            refreshWindowSize(surface, vmViewModel.screenSize)
         }
     }
 
@@ -660,7 +668,9 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
         vmViewModel.isRunning = true
 
         withHandler { mIsSurfaceDestroyed = false }
-        val currentSize = refreshWindowSize(surface, IntSize(width, height))
+        val screenSize = IntSize(width, height)
+        vmViewModel.screenSize = screenSize
+        val currentSize = refreshWindowSize(surface, screenSize)
         lifecycleScope.launch(Dispatchers.Default) {
             withHandler {
                 execute(
@@ -705,11 +715,6 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
                 .background(Color.Black)
         ) {
             val screenSize = rememberBoxSize()
-
-            LaunchedEffect(screenSize) {
-                mScreenSize = screenSize
-                refreshScreenSize()
-            }
 
             AndroidView(
                 modifier = Modifier

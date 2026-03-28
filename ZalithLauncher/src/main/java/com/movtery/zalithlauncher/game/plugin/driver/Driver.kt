@@ -18,9 +18,17 @@
 
 package com.movtery.zalithlauncher.game.plugin.driver
 
-data class Driver(
+import com.movtery.zalithlauncher.game.plugin.ApkPlugin
+
+class Driver(
     val id: String,
+    appName: String,
+    appVersion: String,
     val name: String,
     val summary: String? = null,
     val path: String
+): ApkPlugin(
+    packageName = id,
+    appName = appName,
+    appVersion = appVersion
 )

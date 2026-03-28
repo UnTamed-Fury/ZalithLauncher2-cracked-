@@ -20,6 +20,7 @@ package com.movtery.zalithlauncher.game.download.jvm_server
 
 import com.movtery.zalithlauncher.components.jre.Jre
 import com.movtery.zalithlauncher.context.GlobalContext
+import com.movtery.zalithlauncher.notification.NoticeProgress
 import com.movtery.zalithlauncher.utils.logging.Logger.lInfo
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -37,6 +38,8 @@ suspend fun runJvmRetryRuntimes(
     prefixArgs: (Jre) -> String?,
     jre: Jre,
     userHome: String,
+    postSummary: String? = null,
+    postProgress: NoticeProgress? = null,
     start: () -> Unit = {}
 ): Unit = withContext(Dispatchers.Default) {
     while (!isOnlyMainProcessesRunning(context = GlobalContext)) {
@@ -53,7 +56,9 @@ suspend fun runJvmRetryRuntimes(
     val exitCode = startJvmServiceAndWaitExit(
         jvmArgs = finalArgs,
         jreName = jre.jreName,
-        userHome = userHome
+        userHome = userHome,
+        postSummary = postSummary,
+        postProgress = postProgress
     )
 
     if (exitCode != 0) {
@@ -66,11 +71,13 @@ suspend fun runJvmRetryRuntimes(
         nextJava?.let { jre ->
             lInfo("Retry with jre ${jre.name}...")
             runJvmRetryRuntimes(
-                logId,
-                jvmArgs,
-                prefixArgs,
-                jre,
-                userHome
+                logId = logId,
+                jvmArgs = jvmArgs,
+                prefixArgs = prefixArgs,
+                jre = jre,
+                userHome = userHome,
+                postSummary = postSummary,
+                postProgress = postProgress
             )
         } ?: throw JvmCrashException(exitCode)
     }
@@ -79,7 +86,9 @@ suspend fun runJvmRetryRuntimes(
 suspend fun startJvmServiceAndWaitExit(
     jvmArgs: String,
     jreName: String? = null,
-    userHome: String? = null
+    userHome: String? = null,
+    postSummary: String? = null,
+    postProgress: NoticeProgress? = null,
 ): Int = withContext(Dispatchers.IO) {
     val doneSignal = CompletableDeferred<Unit>()
 
@@ -87,7 +96,9 @@ suspend fun startJvmServiceAndWaitExit(
         context = GlobalContext,
         jvmArgs = jvmArgs,
         userHome = userHome,
-        jreName = jreName
+        jreName = jreName,
+        postSummary = postSummary,
+        postProgress = postProgress
     )
 
     JVMSocketServer.start { receiveMsg ->

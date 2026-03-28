@@ -45,6 +45,7 @@ import com.movtery.zalithlauncher.utils.getSerializableSafely
 import com.movtery.zalithlauncher.utils.network.openLink
 import com.movtery.zalithlauncher.utils.string.throwableToString
 import com.movtery.zalithlauncher.viewmodel.CrashLogsUploadViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 import java.io.File
 
@@ -68,6 +69,7 @@ fun showExitMessage(context: Context, code: Int, isSignal: Boolean) {
 @Parcelize
 private data class JvmCrash(val code: Int, val isSignal: Boolean): Parcelable
 
+@AndroidEntryPoint
 class ErrorActivity : BaseAppCompatActivity(refreshData = false) {
 
     /**

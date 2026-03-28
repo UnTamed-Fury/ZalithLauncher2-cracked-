@@ -55,6 +55,7 @@ import com.movtery.zalithlauncher.ui.screens.NestedNavKey
 import com.movtery.zalithlauncher.ui.screens.NormalNavKey
 import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.download.game.AddonList
+import com.movtery.zalithlauncher.ui.screens.content.download.game.AddonState
 import com.movtery.zalithlauncher.ui.screens.content.download.game.CleanroomList
 import com.movtery.zalithlauncher.ui.screens.content.download.game.CurrentAddon
 import com.movtery.zalithlauncher.ui.screens.content.download.game.FabricList
@@ -206,23 +207,23 @@ private class AddonsViewModel(
             if (isLoaded) return@withLock
             //已经找到游戏使用的模组加载器，或者所有的模组加载器列表都加载完成
             val isLoaded0 = isLoaderVersionFound || buildList {
-                add(addonList.forgeList)
+                add(currentAddon.forgeState)
                 if (loaderSupports.isNeoForgeSupports) {
-                    add(addonList.neoforgeList)
+                    add(currentAddon.neoforgeState)
                 }
                 if (loaderSupports.isFabricSupports) {
-                    add(addonList.fabricList)
+                    add(currentAddon.fabricState)
                 }
                 if (loaderSupports.isLegacyFabricSupports) {
-                    add(addonList.legacyFabricList)
+                    add(currentAddon.legacyFabricState)
                 }
                 if (loaderSupports.isQuiltSupports) {
-                    add(addonList.quiltList)
+                    add(currentAddon.quiltState)
                 }
                 if (loaderSupports.isCleanroomSupports) {
-                    add(addonList.cleanroomList)
+                    add(currentAddon.cleanroomState)
                 }
-            }.all { it != null }
+            }.all { it == AddonState.None }
             if (isLoaded0) lInfo("Game’s mod loader found, or all mod loaders loaded.")
             isLoaded = isLoaded0
         }

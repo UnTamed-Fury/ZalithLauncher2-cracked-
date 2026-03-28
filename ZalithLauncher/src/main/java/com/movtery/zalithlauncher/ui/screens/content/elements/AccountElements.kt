@@ -118,7 +118,7 @@ import com.movtery.zalithlauncher.game.account.isMicrosoftAccount
 import com.movtery.zalithlauncher.game.account.isSkinChangeAllowed
 import com.movtery.zalithlauncher.game.account.wardrobe.EmptyCape
 import com.movtery.zalithlauncher.game.account.wardrobe.SkinModelType
-import com.movtery.zalithlauncher.game.account.wardrobe.capeTranslatedName
+import com.movtery.zalithlauncher.game.account.wardrobe.capeLocalRes
 import com.movtery.zalithlauncher.game.account.yggdrasil.PlayerProfile
 import com.movtery.zalithlauncher.game.account.yggdrasil.getFile
 import com.movtery.zalithlauncher.game.account.yggdrasil.isUsing
@@ -151,8 +151,6 @@ sealed interface MicrosoftLoginOperation {
     data object None : MicrosoftLoginOperation
     /** 微软账号相关提示Dialog流程 */
     data object Tip : MicrosoftLoginOperation
-    /** 正式开始登陆微软账号流程 */
-    data object RunTask: MicrosoftLoginOperation
 }
 
 /**
@@ -164,8 +162,6 @@ sealed interface MicrosoftChangeSkinOperation {
     data class ImportFile(val account: Account, val uri: Uri): MicrosoftChangeSkinOperation
     /** 选择皮肤模型 */
     data class SelectSkinModel(val account: Account, val file: File): MicrosoftChangeSkinOperation
-    /** 开始上传皮肤 */
-    data class RunTask(val account: Account, val file: File, val skinModel: SkinModelType): MicrosoftChangeSkinOperation
 }
 
 /**
@@ -177,8 +173,6 @@ sealed interface MicrosoftChangeCapeOperation {
     data class FetchProfiles(val account: Account): MicrosoftChangeCapeOperation
     /** 选择更改为什么披风 */
     data class SelectCape(val account: Account, val profile: PlayerProfile): MicrosoftChangeCapeOperation
-    /** 开始更改披风 */
-    data class RunTask(val account: Account, val cape: PlayerProfile.Cape): MicrosoftChangeCapeOperation
 }
 
 /**
@@ -1111,20 +1105,29 @@ fun SelectSkinModelDialog(
 @Composable
 fun SelectCapeDialog(
     capes: List<PlayerProfile.Cape>,
-    onSelected: (PlayerProfile.Cape) -> Unit,
+    onSelected: (PlayerProfile.Cape, translatedName: String) -> Unit,
     onDismiss: () -> Unit
 ) {
     val current = remember(capes) {
         capes.find { it.isUsing() }
     }
+    val capeLocals = buildMap {
+        capes.forEach { cape ->
+            val translatedName = cape.capeLocalRes()
+                ?.let { stringResource(it) }
+            put(cape, translatedName)
+        }
+    }
+
     SimpleListDialog(
         title = stringResource(R.string.account_change_cape_select_cape),
         items = capes,
         itemTextProvider = { cape ->
-            cape.capeTranslatedName()
+            capeLocals[cape] ?: cape.alias
         },
         onItemSelected = { cape ->
-            onSelected(cape)
+            val name = capeLocals[cape] ?: cape.alias
+            onSelected(cape, name)
         },
         current = current,
         itemLayout = { cape, isCurrent, text, onClick ->

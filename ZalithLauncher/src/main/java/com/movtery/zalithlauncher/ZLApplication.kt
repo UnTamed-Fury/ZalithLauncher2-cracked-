@@ -44,9 +44,11 @@ import com.movtery.zalithlauncher.utils.logging.Logger
 import com.movtery.zalithlauncher.utils.logging.Logger.lError
 import com.movtery.zalithlauncher.utils.writeCrashFile
 import com.tencent.mmkv.MMKV
+import dagger.hilt.android.HiltAndroidApp
 import okio.Path.Companion.toOkioPath
 import kotlin.properties.Delegates
 
+@HiltAndroidApp
 class ZLApplication : Application(), SingletonImageLoader.Factory {
     companion object {
         @JvmStatic

@@ -18,20 +18,29 @@
 
 package com.movtery.zalithlauncher.ui.screens.content.settings
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.game.multirt.RuntimesManager
+import com.movtery.zalithlauncher.game.plugin.natives.NativePlugin
+import com.movtery.zalithlauncher.game.plugin.natives.NativePluginManager
 import com.movtery.zalithlauncher.setting.AllSettings
 import com.movtery.zalithlauncher.setting.unit.floatRange
 import com.movtery.zalithlauncher.setting.unit.min
@@ -45,6 +54,7 @@ import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.CardPositi
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.IntSliderSettingsCard
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.ListSettingsCard
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.SettingsCardColumn
+import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.StringListSettingsCard
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.SwitchSettingsCard
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.TextInputSettingsCard
 import com.movtery.zalithlauncher.utils.platform.getMaxMemoryForSettings
@@ -121,10 +131,36 @@ fun GameSettingsScreen(
 
                     SwitchSettingsCard(
                         modifier = Modifier.fillMaxWidth(),
-                        position = CardPosition.Middle,
+                        position = if (runtimes.isNotEmpty()) CardPosition.Middle else CardPosition.Top,
                         unit = AllSettings.autoPickJavaRuntime,
                         title = stringResource(R.string.settings_game_auto_pick_java_runtime_title),
                         summary = stringResource(R.string.settings_game_auto_pick_java_runtime_summary)
+                    )
+
+                    val nativePlugins = remember {
+                        NativePluginManager.getPlugins()
+                    }
+
+                    StringListSettingsCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        position = CardPosition.Middle,
+                        unit = AllSettings.disableNativeLibPlugins,
+                        items = nativePlugins,
+                        onItemsChange = { value, item ->
+                            if (value) {
+                                this - item.packageName
+                            } else {
+                                this + item.packageName
+                            }
+                        },
+                        title = stringResource(R.string.settings_game_native_lib_plugin_title),
+                        summary = stringResource(R.string.settings_game_native_lib_plugin_summary),
+                        getItemID = { it.packageName },
+                        getItemText = { it.displayName },
+                        getItemSummary = { plugin ->
+                            NativePluginSummaryLayout(plugin)
+                        },
+                        getItemCheck = { contains -> !contains }
                     )
 
                     IntSliderSettingsCard(
@@ -197,6 +233,40 @@ fun GameSettingsScreen(
                         suffix = "ms",
                         fineTuningControl = true
                     )
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+private fun NativePluginSummaryLayout(plugin: NativePlugin) {
+    FlowRow(
+        modifier = Modifier.alpha(0.7f),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.settings_renderer_from_plugins,plugin.appName),
+            style = MaterialTheme.typography.labelSmall
+        )
+
+        val minVer = plugin.minMCVer
+        val maxVer = plugin.maxMCVer
+
+        if (minVer != null || maxVer != null) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(text = stringResource(R.string.renderer_version_support), style = MaterialTheme.typography.labelSmall)
+
+                minVer?.let {
+                    Text(text = ">= $it", style = MaterialTheme.typography.labelSmall)
+                }
+
+                maxVer?.let {
+                    Text(text = "<= $it", style = MaterialTheme.typography.labelSmall)
                 }
             }
         }

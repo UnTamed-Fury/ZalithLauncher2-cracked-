@@ -27,6 +27,8 @@ interface NeoForgeMergeableMaven<E>  {
     operator fun plus(maven: E): List<NeoForgeVersion>
 
     fun isVersionInvalid(versionId: String): Boolean {
-        return versionId == "47.1.82" //这个版本虽然在版本列表中，但不能下载
+        val cantDownload = versionId == "47.1.82" //这个版本虽然在版本列表中，但不能下载
+        val isAlpha = versionId.contains("-alpha") //Alpha版本不太稳定，避免下载
+        return cantDownload || isAlpha
     }
 }

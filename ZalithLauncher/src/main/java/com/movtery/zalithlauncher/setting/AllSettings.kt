@@ -123,6 +123,11 @@ object AllSettings : SettingsRegistry() {
     val jvmArgs = stringSetting("jvmArgs", "")
 
     /**
+     * 已禁用的原生库插件列表
+     */
+    val disableNativeLibPlugins = stringListSetting("nativeLibPlugins", emptyList())
+
+    /**
      * 启动游戏时自动展示日志，直到游戏开始渲染
      */
     val showLogAutomatic = boolSetting("showLogAutomatic", false)

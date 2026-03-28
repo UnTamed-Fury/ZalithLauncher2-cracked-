@@ -36,6 +36,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -44,6 +45,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.AddBox
 import androidx.compose.material.icons.outlined.Delete
@@ -76,6 +78,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -88,6 +91,7 @@ import com.movtery.layer_controller.data.lang.createTranslatable
 import com.movtery.layer_controller.layout.ControlLayout
 import com.movtery.layer_controller.layout.EmptyControlLayout
 import com.movtery.layer_controller.layout.EmptyLayoutInfo
+import com.movtery.layer_controller.observable.ObservableControlLayout
 import com.movtery.layer_controller.observable.ObservableTranslatableString
 import com.movtery.layer_controller.utils.AUTHOR_NAME_LENGTH
 import com.movtery.layer_controller.utils.NAME_LENGTH
@@ -131,6 +135,7 @@ import com.movtery.zalithlauncher.viewmodel.ErrorViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.util.Locale
@@ -166,6 +171,24 @@ private class ControlViewModel : ViewModel() {
         submitError: (Exception) -> Unit
     ) {
         viewModelScope.launch {
+            saveToNew(layout, submitError)
+        }
+    }
+
+    fun copyNew(
+        layout: ObservableControlLayout,
+        submitError: (Exception) -> Unit
+    ) {
+        viewModelScope.launch {
+            saveToNew(layout.pack(), submitError)
+        }
+    }
+
+    private suspend fun saveToNew(
+        layout: ControlLayout,
+        submitError: (Exception) -> Unit
+    ) {
+        withContext(Dispatchers.IO) {
             val file = File(PathManager.DIR_CONTROL_LAYOUTS, "${newRandomFileName()}.json")
             try {
                 layout.saveToFile(file)
@@ -262,6 +285,16 @@ fun ControlManageScreen(
                     },
                     onCreate = {
                         viewModel.operation = ControlOperation.CreateNew
+                    },
+                    onCopy = { data ->
+                        viewModel.copyNew(data.controlLayout) { e ->
+                            submitError(
+                                ErrorViewModel.ThrowableMessage(
+                                    title = context.getString(R.string.control_manage_failed_to_save),
+                                    message = e.getMessageOrToString()
+                                )
+                            )
+                        }
                     },
                     onDelete = { data ->
                         viewModel.operation = ControlOperation.Delete(data)
@@ -411,6 +444,7 @@ private fun ControlLayoutList(
     isLoading: Boolean,
     onRefresh: () -> Unit,
     onCreate: () -> Unit,
+    onCopy: (ControlData) -> Unit,
     onDelete: (ControlData) -> Unit,
     submitError: (ErrorViewModel.ThrowableMessage) -> Unit
 ) {
@@ -449,6 +483,7 @@ private fun ControlLayoutList(
                             locale = locale,
                             selected = data.file.name == AllSettings.controlLayout.state,
                             onSelected = { ControlManager.selectControl(data) },
+                            onCopy = { onCopy(data) },
                             onDelete = { onDelete(data) }
                         )
                     }
@@ -562,6 +597,7 @@ private fun ControlLayoutItem(
     locale: Locale,
     selected: Boolean,
     onSelected: () -> Unit,
+    onCopy: () -> Unit,
     onDelete: () -> Unit,
     color: Color = itemLayoutColor(),
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
@@ -628,6 +664,17 @@ private fun ControlLayoutItem(
                     )
                 }
             }
+            //复制
+            IconButton(
+                onClick = onCopy
+            ) {
+                Icon(
+                    modifier = Modifier.size(21.dp),
+                    imageVector = Icons.Default.ContentCopy,
+                    contentDescription = stringResource(R.string.generic_copy)
+                )
+            }
+            //删除
             IconButton(
                 onClick = onDelete
             ) {
@@ -1066,4 +1113,13 @@ private fun CreateNewLayoutDialog(
             }
         }
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun PreviewCreateNewLayoutDialog() {
+    CreateNewLayoutDialog(
+        onDismissRequest = {},
+        onCreate = { _, _, _ -> }
+    )
 }

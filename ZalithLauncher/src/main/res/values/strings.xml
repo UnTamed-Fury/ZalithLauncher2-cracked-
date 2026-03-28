@@ -420,6 +420,8 @@
     <string name="renderer_version_unsupported_warning">The current renderer %s does not support this game version. Continuing to use it may cause rendering errors or crashes! Are you sure you want to proceed?</string>
     <string name="renderer_version_storage_permissions">The current renderer %s can be configured via a config file. Please enable external storage permission for the launcher first, otherwise it will not be able to read and load the renderer\'s configuration!</string>
     <string name="renderer_version_storage_permissions_sdk30">The current renderer %s can be configured via a config file. Please enable the "Manage All Files" permission for the launcher first, otherwise it will not be able to read and load the renderer\'s configuration!</string>
+    <!-- Plugins -->
+    <string name="plugin_unsupported_warning">The plugin %s is not supported for this game version. Continuing to use it may cause the game to crash! Are you sure you want to ignore the risk and proceed?</string>
     <!-- Accounts -->
     <string name="account_no_account">No accounts available</string>
     <string name="account_login">Login</string>
@@ -859,6 +861,8 @@
     <string name="settings_game_java_memory_summary">Adjust Minecraft\'s memory usage</string>
     <string name="settings_game_java_memory_used_text">Used: %1$dMB / %2$dMB</string>
     <string name="settings_game_java_memory_allocation_text">Allocated: %dMB</string>
+    <string name="settings_game_native_lib_plugin_title">Native Library Plugins</string>
+    <string name="settings_game_native_lib_plugin_summary">Lists all loaded native library plugins. You can enable or disable them in the list.</string>
     <string name="settings_game_jvm_args_title">JVM Arguments</string>
     <string name="settings_game_jvm_args_summary">Additional JVM arguments added when starting the JVM. Modifying these without proper knowledge is not recommended, as it may cause crashes</string>
     <string name="settings_game_show_log_automatic_title">Automatically Show Logs</string>
@@ -1201,4 +1205,5 @@
     <string name="language_italian" translatable="false">Italiano</string>
     <string name="language_brazilian_portuguese" translatable="false">Português brasileiro</string>
     <string name="language_uyghur" translatable="false">ۋىغرۇچە</string>
+    <string name="language_filipino" translatable="false">Filipino</string>
 </resources>

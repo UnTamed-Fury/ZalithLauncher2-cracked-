@@ -18,6 +18,8 @@
 
 package com.movtery.zalithlauncher.ui.control.joystick
 
+import android.graphics.Rect
+import android.graphics.Region
 import androidx.annotation.FloatRange
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
@@ -41,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.asAndroidPath
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -55,6 +58,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -69,6 +73,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.math.atan2
+import kotlin.math.sqrt
 
 private const val JSON_FILE_NAME = "joystick.json"
 
@@ -229,10 +234,6 @@ fun Joystick(
     val density = LocalDensity.current
     val layoutDirection = LocalLayoutDirection.current
 
-    var joystickPosition by remember { mutableStateOf(Offset.Zero) }
-    var isLocked by remember { mutableStateOf(false) }
-    var lastDragPosition by remember { mutableStateOf(Offset.Zero) }
-
     //已经经过验证，如果使用Modifier.alpha设置不透明度，会导致摇杆强制裁切超出范围的内容
     //graphicsLayer(alpha = alpha, clip = false)也一样
     //这里暂时只能统一修改颜色的alpha
@@ -260,7 +261,15 @@ fun Joystick(
     val backgroundSizePx = remember(size) {
         with(density) { size.toPx() }
     }
-    val currentBackgroundSizePx by rememberUpdatedState(backgroundSizePx)
+
+    val backgroundRegion = remember(backgroundShape, backgroundSizePx) {
+        backgroundShape.toRegion(
+            size = Size(backgroundSizePx, backgroundSizePx),
+            density = density,
+            layoutDirection = layoutDirection
+        )
+    }
+    val currentBackgroundRegion by rememberUpdatedState(backgroundRegion)
 
     //计算摇杆大小 Px
     val joystickSizePx = remember(backgroundSizePx, joystickSize) {
@@ -292,16 +301,18 @@ fun Joystick(
     }
     val currentLockPosition by rememberUpdatedState(lockPosition)
 
+
     var internalCanLock by remember { mutableStateOf(false) }
     var direction by remember { mutableStateOf(JoystickDirection.None) }
 
+    var joystickPosition by remember { mutableStateOf(currentCenterPoint) }
+    var isLocked by remember { mutableStateOf(false) }
+    var lastDragPosition by remember { mutableStateOf(Offset.Zero) }
+
     fun updateJoystickState(position: Offset = currentCenterPoint) {
-        val clampedPosition = updateJoystickPosition(
-            newPosition = position,
-            minX = 0f,
-            maxX = currentBackgroundSizePx,
-            minY = 0f,
-            maxY = currentBackgroundSizePx
+        val clampedPosition = position.clampToRegion(
+            region = currentBackgroundRegion,
+            center = currentCenterPoint
         )
 
         joystickPosition = clampedPosition
@@ -326,6 +337,10 @@ fun Joystick(
         initialized = true
     }
 
+    LaunchedEffect(backgroundShape) {
+        updateJoystickState(joystickPosition)
+    }
+
     //状态更新回调
 
     LaunchedEffect(direction) {
@@ -345,31 +360,33 @@ fun Joystick(
     }
 
     Box(
-        modifier = modifier
-            .size(size)
-            .pointerInput(Unit) {
-                simpleDrag(
-                    onPointerMove = { offset ->
-                        lastDragPosition = offset
-                        if (isLocked) isLocked = false
-                        updateJoystickState(offset)
-                    },
-                    onPointerRelease = {
-                        if (internalCanLock) {
-                            isLocked = true
-                            updateJoystickState(currentLockPosition)
-                        } else {
-                            isLocked = false
-                            updateJoystickState(currentCenterPoint)
-                        }
-                    }
-                )
-            }
+        modifier = modifier.size(size),
+        contentAlignment = Alignment.Center
     ) {
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
-                .align(Alignment.Center)
+                .pointerInput(Unit) {
+                    simpleDrag(
+                        hitTest = { pos ->
+                            currentBackgroundRegion.contains(pos.x.toInt(), pos.y.toInt())
+                        },
+                        onPointerMove = { offset ->
+                            lastDragPosition = offset
+                            if (isLocked) isLocked = false
+                            updateJoystickState(offset)
+                        },
+                        onPointerRelease = {
+                            if (internalCanLock) {
+                                isLocked = true
+                                updateJoystickState(currentLockPosition)
+                            } else {
+                                isLocked = false
+                                updateJoystickState(currentCenterPoint)
+                            }
+                        }
+                    )
+                }
         ) {
             if (initialized) {
                 val minSide = minOf(this@Canvas.size.width, this@Canvas.size.height)
@@ -413,8 +430,10 @@ fun Joystick(
 /**
  * 从虚拟鼠标层精简过来的单指针简单拖动处理
  * [com.movtery.zalithlauncher.ui.control.mouse.TouchpadLayout]
+ * @param hitTest 是否允许处理这次触摸
  */
 private suspend fun PointerInputScope.simpleDrag(
+    hitTest: (Offset) -> Boolean,
     onPointerMove: (position: Offset) -> Unit,
     onPointerRelease: () -> Unit
 ) {
@@ -432,9 +451,12 @@ private suspend fun PointerInputScope.simpleDrag(
                         val pointerId = change.id
 
                         if (activePointer == null) {
-                            activePointer = pointerId
+                            val pos = change.position
 
-                            onPointerMove(change.position)
+                            if (hitTest(pos)) {
+                                activePointer = pointerId
+                                onPointerMove(pos)
+                            }
                         }
                     }
 
@@ -542,18 +564,39 @@ private fun DrawScope.drawJoystick(
     }
 }
 
-private fun updateJoystickPosition(
-    newPosition: Offset,
-    minX: Float,
-    maxX: Float,
-    minY: Float,
-    maxY: Float
-): Offset {
-    //限制中心点在边界内
-    val clampedX = newPosition.x.coerceIn(minX, maxX)
-    val clampedY = newPosition.y.coerceIn(minY, maxY)
+fun Shape.toRegion(size: Size, density: Density, layoutDirection: LayoutDirection): Region {
+    val outline: Outline = this.createOutline(size, layoutDirection, density)
 
-    return Offset(clampedX, clampedY)
+    val composePath: Path = when (outline) {
+        is Outline.Rectangle -> Path().apply { addRect(outline.rect) }
+        is Outline.Rounded -> Path().apply { addRoundRect(outline.roundRect) }
+        is Outline.Generic -> outline.path
+    }
+    val androidPath = composePath.asAndroidPath()
+
+    val region = Region()
+    val rect = Rect(0, 0, size.width.toInt(), size.height.toInt())
+    region.setPath(androidPath, Region(rect))
+    return region
+}
+
+fun Offset.clampToRegion(region: Region, center: Offset): Offset {
+    if (region.contains(x.toInt(), y.toInt())) return this
+
+    var low = 0f
+    var high = 1f
+    var result = center
+    repeat(10) {
+        val mid = (low + high) / 2
+        val testPoint = center + (this - center) * mid
+        if (region.contains(testPoint.x.toInt(), testPoint.y.toInt())) {
+            result = testPoint
+            low = mid
+        } else {
+            high = mid
+        }
+    }
+    return result
 }
 
 /**
@@ -569,7 +612,7 @@ private fun calculateDirection(
     }
 
     val vector = joystickPosition - backgroundCenter
-    val distance = kotlin.math.sqrt(vector.x * vector.x + vector.y * vector.y)
+    val distance = sqrt(vector.x * vector.x + vector.y * vector.y)
 
     //如果距离小于死区半径，认为是无方向
     if (distance < deadZoneRadius) {

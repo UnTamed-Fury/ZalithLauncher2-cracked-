@@ -1,6 +1,10 @@
 name: Build APK
 
 on:
+  push:
+    branches:
+      - '**'
+  workflow_dispatch:
   workflow_call:
     inputs:
       variant:
@@ -18,6 +22,7 @@ on:
 
 jobs:
   build:
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     strategy:
       matrix:

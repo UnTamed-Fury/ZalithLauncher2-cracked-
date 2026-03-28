@@ -76,10 +76,31 @@ private fun parseInherit(rawVersion: String): String {
         }
         else -> {
             val version = parseVersion(rawVersion)
-            buildString {
-                append("1.").append(version.major)
-                if (version.minor != 0) append(".").append(version.minor)
+            //优先解析26.1+新版本格式
+            parseNewInherit(version) ?: run {
+                buildString {
+                    append("1.").append(version.major)
+                    if (version.minor != 0) append(".").append(version.minor)
+                }
             }
         }
+    }
+}
+
+private fun parseNewInherit(
+    buildVersion: ForgeBuildVersion
+): String? {
+    //26.1.0.0
+    if (buildVersion.major < 26) return null
+    return buildString {
+        append(buildVersion.major)
+        append(".")
+        append(buildVersion.minor)
+        buildVersion.build
+            .takeIf { it > 0 }
+            ?.let { part ->
+                append(".")
+                append(part)
+            }
     }
 }

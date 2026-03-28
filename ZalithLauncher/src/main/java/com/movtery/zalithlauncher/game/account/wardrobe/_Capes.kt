@@ -18,8 +18,7 @@
 
 package com.movtery.zalithlauncher.game.account.wardrobe
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
+import androidx.annotation.StringRes
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.game.account.yggdrasil.PlayerProfile
 
@@ -29,11 +28,11 @@ import com.movtery.zalithlauncher.game.account.yggdrasil.PlayerProfile
 val EmptyCape = PlayerProfile.Cape("", "", "", "")
 
 /**
- * 翻译披风名称
+ * @return 披风名称字符串资源
  */
-@Composable
-fun PlayerProfile.Cape.capeTranslatedName(): String {
-    if (this == EmptyCape || id.isEmpty()) return stringResource(R.string.cape_name_none)
+@StringRes
+fun PlayerProfile.Cape.capeLocalRes(): Int? {
+    if (this == EmptyCape || id.isEmpty()) return R.string.cape_name_none
 
     val localeRes = when (alias) {
         "Migrator" -> R.string.cape_name_migrator
@@ -66,5 +65,5 @@ fun PlayerProfile.Cape.capeTranslatedName(): String {
         else -> null
     }
 
-    return localeRes?.let { stringResource(it) } ?: alias
+    return localeRes
 }

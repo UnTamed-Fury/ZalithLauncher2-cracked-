@@ -28,6 +28,7 @@ import com.movtery.zalithlauncher.setting.unit.FloatSettingUnit
 import com.movtery.zalithlauncher.setting.unit.IntSettingUnit
 import com.movtery.zalithlauncher.setting.unit.LongSettingUnit
 import com.movtery.zalithlauncher.setting.unit.NullableIntSettingUnit
+import com.movtery.zalithlauncher.setting.unit.StringListSettingUnit
 import com.movtery.zalithlauncher.setting.unit.StringSettingUnit
 import com.movtery.zalithlauncher.setting.unit.enumSettingUnit
 import com.movtery.zalithlauncher.setting.unit.parcelableSettingUnit
@@ -66,6 +67,9 @@ abstract class SettingsRegistry {
 
     protected fun stringSetting(key: String, def: String) =
         StringSettingUnit(key, def).also { refreshableList.add(it) }
+
+    protected fun stringListSetting(key: String, def: List<String>) =
+        StringListSettingUnit(key, def).also { refreshableList.add(it) }
 
     protected inline fun <reified E : Enum<E>> enumSetting(key: String, def: E) =
         enumSettingUnit(key, def).also { refreshableList.add(it) }

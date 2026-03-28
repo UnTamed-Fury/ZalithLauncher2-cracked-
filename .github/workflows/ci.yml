@@ -1,12 +1,15 @@
 name: Android CI
 
 on:
-  push:
-  workflow_dispatch:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: write
 
 jobs:
   Build:
-    if: github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/build.yml
     with:
       variant: Release
@@ -16,12 +19,34 @@ jobs:
       OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
       CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
 
-  Build-Debug:
-    uses: ./.github/workflows/build.yml
-    with:
-      variant: Debug
-    secrets:
-      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-      STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
-      OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
-      CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+  Upload-to-Release:
+    needs: Build
+    runs-on: ubuntu-latest
+    if: success()
+
+    steps:
+      - name: Download Files
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+
+      - name: Organize Artifacts
+        run: |
+          mkdir -p ./apks
+          
+          find ./artifacts -name "*.apk" -type f -exec cp {} ./apks/ \;
+          
+          # 检查是否有APK文件
+          if [ -z "$(ls -A ./apks/)" ]; then
+            echo "No APK files found to upload!"
+            exit 1
+          fi
+          
+          echo "Found $(ls ./apks/ | wc -l) APK file(s)"
+
+      - name: Upload To Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: ./apks/*.apk
+          fail_on_unmatched_files: true

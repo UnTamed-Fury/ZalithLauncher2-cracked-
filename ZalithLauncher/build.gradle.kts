@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt)
     id("com.google.devtools.ksp")
     id("kotlinx-serialization")
     id("kotlin-parcelize")
@@ -287,6 +288,10 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     //Support
     implementation(libs.proxy.client.android)
+    //Hilt
+    implementation(libs.dagger.hilt.android)
+    ksp(libs.dagger.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
     //Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
