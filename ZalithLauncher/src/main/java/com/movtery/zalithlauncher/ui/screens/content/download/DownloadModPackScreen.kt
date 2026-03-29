@@ -203,6 +203,8 @@ private class ModPackViewModel: ViewModel() {
         installer?.cancelInstall()
         installer = null
         installOperation = ModPackInstallOperation.None
+        versionNameOperation = VersionNameOperation.None
+        confirmMobileDataOperation = ConfirmMobileDataOperation.None
     }
 
     override fun onCleared() {
@@ -268,6 +270,9 @@ fun DownloadModPackScreen(
         operation = viewModel.versionNameOperation,
         onConfirmVersionName = { name ->
             viewModel.confirmVersionName(name)
+        },
+        onCancel = {
+            viewModel.cancel()
         }
     )
 
@@ -457,7 +462,8 @@ private fun ModPackInstallOperation(
 @Composable
 private fun VersionNameOperation(
     operation: VersionNameOperation,
-    onConfirmVersionName: (String) -> Unit
+    onConfirmVersionName: (String) -> Unit,
+    onCancel: () -> Unit
 ) {
     when (operation) {
         is VersionNameOperation.None -> {}
@@ -465,7 +471,8 @@ private fun VersionNameOperation(
             val modpackInfo = operation.info
             ModpackVersionNameDialog(
                 name = modpackInfo.name,
-                onConfirmVersionName = onConfirmVersionName
+                onConfirmVersionName = onConfirmVersionName,
+                onCancel = onCancel
             )
         }
     }
@@ -475,11 +482,13 @@ private fun VersionNameOperation(
  * 将要安装的整合包版本名称
  * @param name 预填写的整合包版本名称
  * @param onConfirmVersionName 用户输入并确认了版本名称
+ * @param onCancel 用户取消了导入
  */
 @Composable
 fun ModpackVersionNameDialog(
     name: String,
-    onConfirmVersionName: (String) -> Unit
+    onConfirmVersionName: (String) -> Unit,
+    onCancel: () -> Unit,
 ) {
     var name by remember { mutableStateOf(name) }
     var errorMessage by remember { mutableStateOf("") }
@@ -502,6 +511,8 @@ fun ModpackVersionNameDialog(
             }
         },
         singleLine = true,
+        onDismissRequest = {},
+        onCancel = onCancel,
         onConfirm = {
             if (!isError) {
                 onConfirmVersionName(name)

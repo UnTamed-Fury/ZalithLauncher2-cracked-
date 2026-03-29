@@ -281,6 +281,9 @@ class MainActivity : BaseAppCompatActivity() {
                     operation = modpackImportViewModel.versionNameOperation,
                     onConfirmVersionName = { name ->
                         modpackImportViewModel.confirmVersionName(name)
+                    },
+                    onCancel = {
+                        modpackImportViewModel.cancel()
                     }
                 )
 

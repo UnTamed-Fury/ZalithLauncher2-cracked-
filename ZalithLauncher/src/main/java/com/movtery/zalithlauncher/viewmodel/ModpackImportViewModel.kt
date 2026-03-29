@@ -195,6 +195,8 @@ class ModpackImportViewModel : ViewModel() {
         importer?.cancel()
         importer = null
         importOperation = ModpackImportOperation.None
+        versionNameOperation = VersionNameOperation.None
+        confirmMobileDataOperation = ConfirmMobileDataOperation.None
     }
 
     override fun onCleared() {
@@ -345,14 +347,16 @@ fun AllSupportPackDisplay(
 @Composable
 fun ModpackVersionNameOperation(
     operation: VersionNameOperation,
-    onConfirmVersionName: (String) -> Unit
+    onConfirmVersionName: (String) -> Unit,
+    onCancel: () -> Unit
 ) {
     when (operation) {
         is VersionNameOperation.None -> {}
         is VersionNameOperation.Waiting -> {
             ModpackVersionNameDialog(
                 name = operation.name,
-                onConfirmVersionName = onConfirmVersionName
+                onConfirmVersionName = onConfirmVersionName,
+                onCancel = onCancel
             )
         }
     }

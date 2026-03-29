@@ -218,6 +218,7 @@ fun SimpleEditDialog(
     extraBody: @Composable (() -> Unit)? = null,
     extraContent: @Composable (() -> Unit)? = null,
     onDismissRequest: () -> Unit = {},
+    onCancel: () -> Unit = onDismissRequest,
     onConfirm: () -> Unit = {},
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
@@ -258,7 +259,7 @@ fun SimpleEditDialog(
                     ) {
                         FilledTonalButton(
                             modifier = Modifier.weight(1f),
-                            onClick = onDismissRequest
+                            onClick = onCancel
                         ) {
                             MarqueeText(text = stringResource(R.string.generic_cancel))
                         }
