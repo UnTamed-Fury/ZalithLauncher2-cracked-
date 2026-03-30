@@ -656,8 +656,8 @@
     <string name="versions_config_auto_join_server_ip_summary">在这里填入服务器 IP，启动游戏后将自动加入目标服务器。例如 114.514.114.514:114514</string>
     <string name="versions_config_enable_touch_proxy_title">启用控制代理</string>
     <string name="versions_config_enable_touch_proxy_summary">启用为支持 Touch Controller 模组准备的控制代理</string>
-    <string name="versions_config_vibrate_duration_title">震动时长</string>
-    <string name="versions_config_vibrate_duration_summary">设置 Touch Controller 模组要求设备的震动时长</string>
+    <string name="versions_config_vibrate_duration_title">振动时长</string>
+    <string name="versions_config_vibrate_duration_summary">设置 Touch Controller 模组要求设备的振动时长</string>
     <string name="versions_config_follow_global_if_blank">留白则跟随全局设置</string>
     <string name="versions_config_disable_if_blank">留白则不使用此功能</string>
     <string name="versions_config_failed_to_save">保存版本配置时出现异常</string>
