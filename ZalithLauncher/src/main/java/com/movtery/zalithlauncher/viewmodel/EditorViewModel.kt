@@ -176,14 +176,14 @@ class EditorViewModel() : ViewModel() {
     fun cloneWidgetToLayers(widget: ObservableWidget, layers: List<ObservableControlLayer>) {
         when (widget) {
             is ObservableNormalData -> {
-                val newData = widget.cloneNormal()
                 layers.forEach { layer ->
+                    val newData = widget.cloneNormal()
                     layer.addNormalButton(newData)
                 }
             }
             is ObservableTextData -> {
-                val newData = widget.cloneText()
                 layers.forEach { layer ->
+                    val newData = widget.cloneText()
                     layer.addTextBox(newData)
                 }
             }
