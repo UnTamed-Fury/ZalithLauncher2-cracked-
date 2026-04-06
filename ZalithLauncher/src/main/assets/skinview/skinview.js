@@ -26,6 +26,22 @@ if (skinViewer.camera.lookAt) {
     skinViewer.camera.lookAt(0, 16, 0);
 }
 
+// Double-click / double-tap to reset to front view
+function resetCamera() {
+    skinViewer.camera.position.set(0, 10, 50);
+    skinViewer.controls.target.set(0, 16, 0);
+    skinViewer.controls.update();
+}
+
+skinViewer.canvas.addEventListener("dblclick", resetCamera);
+
+let lastTap = 0;
+skinViewer.canvas.addEventListener("touchend", () => {
+    const now = Date.now();
+    if (now - lastTap < 300) resetCamera();
+    lastTap = now;
+});
+
 function resize() {
     const w = getWidth();
     const h = getHeight();
@@ -44,7 +60,6 @@ function loadSkin(skinUrl, model = "auto-detect") {
 }
 
 function loadSkinFromData(base64Data, model = "auto-detect") {
-    // base64Data should be a data URL: "data:image/png;base64,..."
     skinViewer.loadSkin(base64Data, { model: model });
 }
 
