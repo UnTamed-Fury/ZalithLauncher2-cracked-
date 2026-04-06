@@ -98,6 +98,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -145,6 +146,7 @@ import com.movtery.zalithlauncher.ui.components.SingleLineTextCheck
 import com.movtery.zalithlauncher.ui.components.fadeEdge
 import com.movtery.zalithlauncher.ui.components.itemLayoutColor
 import com.movtery.zalithlauncher.ui.components.itemLayoutShadowElevation
+import com.movtery.zalithlauncher.ui.screens.main.control_editor.InfoLayoutTextItem
 import com.movtery.zalithlauncher.utils.animation.getAnimateTween
 import com.movtery.zalithlauncher.utils.logging.Logger.lError
 import java.io.IOException
@@ -1146,8 +1148,9 @@ fun ChangeSkinDialog(
     ) {
         BoxWithConstraints(
             modifier = Modifier
+                .padding(all = 16.dp)
                 .fillMaxHeight()
-                .fillMaxWidth(0.8f),
+                .fillMaxWidth(0.6f),
             contentAlignment = Alignment.Center
         ) {
             Surface(
@@ -1163,14 +1166,9 @@ fun ChangeSkinDialog(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Text(
-                        text = stringResource(R.string.account_change_skin),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-
                     Row(
                         modifier = Modifier.weight(1f),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         Box(
                             modifier = Modifier
@@ -1235,59 +1233,73 @@ fun ChangeSkinDialog(
 
                         Column(
                             modifier = Modifier
-                                .fillMaxWidth(0.4f)
-                                .fillMaxHeight(),
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .verticalScroll(rememberScrollState()),
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             //更换皮肤：选择皮肤图片文件
-                            Button(
+                            InfoLayoutTextItem(
                                 modifier = Modifier.fillMaxWidth(),
+                                title = stringResource(R.string.account_change_skin),
+                                icon = {
+                                    Icon(
+                                        modifier = Modifier.size(22.dp),
+                                        imageVector = Icons.Outlined.FileUpload,
+                                        contentDescription = null
+                                    )
+                                },
                                 onClick = {
                                     skinPicker.launch(arrayOf("image/png"))
                                 }
-                            ) {
-                                Icon(Icons.Outlined.FileUpload, contentDescription = null)
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = stringResource(R.string.account_change_skin))
-                            }
+                            )
 
                             //仅微软账号支持更改披风
                             if (account.isMicrosoftAccount()) {
-                                Button(
+                                InfoLayoutTextItem(
                                     modifier = Modifier.fillMaxWidth(),
+                                    title = if (isFetchingCapes) {
+                                        stringResource(R.string.account_change_cape_fetch_all)
+                                    } else {
+                                        stringResource(R.string.account_change_cape)
+                                    },
+                                    icon = {
+                                        if (isFetchingCapes) {
+                                            CircularProgressIndicator(
+                                                modifier = Modifier.size(22.dp),
+                                                strokeWidth = 2.dp
+                                            )
+                                        } else {
+                                            Icon(
+                                                modifier = Modifier.size(22.dp),
+                                                painter = painterResource(R.drawable.ic_styler),
+                                                contentDescription = null
+                                            )
+                                        }
+                                    },
                                     onClick = {
                                         showCapeSelector = true
                                     },
                                     enabled = !isFetchingCapes
-                                ) {
-                                    if (isFetchingCapes) {
-                                        CircularProgressIndicator(
-                                            modifier = Modifier.size(18.dp),
-                                            strokeWidth = 2.dp
-                                        )
-                                    } else {
-                                        Icon(Icons.Outlined.Checkroom, contentDescription = null)
-                                    }
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Text(
-                                        text = if (isFetchingCapes) stringResource(R.string.account_change_cape_fetch_all)
-                                        else stringResource(R.string.account_change_cape)
-                                    )
-                                }
+                                )
                             }
 
                             //离线账号重置皮肤
                             if (account.isLocalAccount() && account.hasSkinFile && pendingSkinData != ChangeSkin.ResetSkin) {
-                                FilledTonalButton(
+                                InfoLayoutTextItem(
                                     modifier = Modifier.fillMaxWidth(),
+                                    title = stringResource(R.string.generic_reset),
+                                    icon = {
+                                        Icon(
+                                            modifier = Modifier.size(22.dp),
+                                            imageVector = Icons.Default.RestartAlt,
+                                            contentDescription = null
+                                        )
+                                    },
                                     onClick = {
                                         pendingSkinData = ChangeSkin.ResetSkin
                                     }
-                                ) {
-                                    Icon(Icons.Default.RestartAlt, contentDescription = null)
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Text(text = stringResource(R.string.generic_reset))
-                                }
+                                )
                             }
                         }
                     }

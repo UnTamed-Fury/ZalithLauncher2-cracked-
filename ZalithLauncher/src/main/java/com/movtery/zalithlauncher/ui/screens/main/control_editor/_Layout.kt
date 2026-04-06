@@ -365,14 +365,48 @@ fun InfoLayoutTextItem(
     showArrow: Boolean = true,
     selected: Boolean = false,
     color: Color = itemLayoutColorOnSurface(),
-    contentColor: Color = MaterialTheme.colorScheme.onSurface
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    enabled: Boolean = true,
+) {
+    InfoLayoutTextItem(
+        modifier = modifier,
+        title = title,
+        icon = {
+            if (showArrow) {
+                Icon(
+                    modifier = Modifier
+                        .size(28.dp),
+                    imageVector = Icons.AutoMirrored.Rounded.ArrowRight,
+                    contentDescription = null
+                )
+            }
+        },
+        onClick = onClick,
+        selected = selected,
+        color = color,
+        contentColor = contentColor,
+        enabled = enabled,
+    )
+}
+
+@Composable
+fun InfoLayoutTextItem(
+    modifier: Modifier = Modifier,
+    title: String,
+    icon: @Composable () -> Unit,
+    onClick: () -> Unit,
+    selected: Boolean = false,
+    color: Color = itemLayoutColorOnSurface(),
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    enabled: Boolean = true,
 ) {
     InfoLayoutItem(
         modifier = modifier,
         onClick = onClick,
         selected = selected,
         color = color,
-        contentColor = contentColor
+        contentColor = contentColor,
+        enabled = enabled,
     ) {
         MarqueeText(
             modifier = Modifier
@@ -381,14 +415,7 @@ fun InfoLayoutTextItem(
             text = title,
             style = MaterialTheme.typography.bodyMedium
         )
-        if (showArrow) {
-            Icon(
-                modifier = Modifier
-                    .size(28.dp),
-                imageVector = Icons.AutoMirrored.Rounded.ArrowRight,
-                contentDescription = null
-            )
-        }
+        icon()
     }
 }
 
