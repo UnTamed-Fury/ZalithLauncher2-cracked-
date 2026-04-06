@@ -20,7 +20,9 @@ package com.movtery.zalithlauncher.ui.theme.feativals
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.movtery.zalithlauncher.setting.enums.isLauncherInDarkTheme
 import com.movtery.zalithlauncher.utils.festival.Festival
 import kotlin.random.Random
 
@@ -29,7 +31,10 @@ fun FestivalEffects(
     festivals: List<Festival>,
     modifier: Modifier = Modifier,
 ) {
+    val isDark = isLauncherInDarkTheme()
+
     if (Festival.QING_MING in festivals) {
+        val color = if (isDark) Color.White else Color(0xFF707070)
         RainEffect(
             modifier = modifier,
             count = 40,
@@ -39,13 +44,15 @@ fun FestivalEffects(
                 dropX + dropLength < -width * 0.3f || dropX > width * 1.3f || dropY > height
             },
             getAngle = { Random.nextFloat() * (-8f) - 5f },
+            getColor = { color },
         )
     }
 
     if (Festival.CHRISTMAS in festivals) {
+        val color = if (isDark) Color.White else Color(0xFFDFF6FF)
         RainEffect(
             modifier = modifier,
-            count = 200,
+            count = 150,
             getX = { Random.nextFloat() * it * 1.5f - it * 0.25f },
             isOutOfScreen = { dropLength, dropX, dropY, width, height ->
                 dropX + dropLength < -width * 0.3f || dropX > width * 1.3f || dropY > height
@@ -53,7 +60,8 @@ fun FestivalEffects(
             getLength = { Random.nextFloat() * 12f + 8f },
             getSpeed = { Random.nextFloat() * 8f + 6f },
             getAngle = { Random.nextFloat() * 15f + 10f },
-            getAlpha = { Random.nextFloat() * 0.6f + 0.1f }
+            getAlpha = { Random.nextFloat() * 0.4f + 0.4f },
+            getColor = { color },
         )
     }
 }

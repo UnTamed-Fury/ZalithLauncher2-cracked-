@@ -63,7 +63,8 @@ fun RainEffect(
     getLength: () -> Float = { Random.nextFloat() * 25f + 50f },
     getSpeed: () -> Float = { Random.nextFloat() * 12f + 50f },
     getAngle: () -> Float = { 0f },
-    getAlpha: () -> Float = { Random.nextFloat() * 0.2f + 0.1f }
+    getAlpha: () -> Float = { Random.nextFloat() * 0.2f + 0.1f },
+    getColor: () -> Color = { Color.White },
 ) {
     var width by remember { mutableFloatStateOf(0f) }
     var height by remember { mutableFloatStateOf(0f) }
@@ -139,7 +140,7 @@ fun RainEffect(
             val endY = drop.y - drop.dy * (drop.length / sqrt(drop.dx * drop.dx + drop.dy * drop.dy))
 
             drawLine(
-                color = Color.White.copy(alpha = drop.alpha),
+                color = getColor().copy(alpha = drop.alpha),
                 start = Offset(drop.x, drop.y),
                 end = Offset(endX, endY),
                 strokeWidth = strokeWidth.toPx(),

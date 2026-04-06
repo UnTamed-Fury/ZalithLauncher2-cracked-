@@ -24,8 +24,6 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,10 +31,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import com.movtery.zalithlauncher.ui.screens.content.versions.elements.MinecraftColorText
 import com.movtery.zalithlauncher.utils.festival.Festival
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -45,7 +43,6 @@ import kotlinx.coroutines.isActive
 fun FestivalTitleText(
     festivals: List<Festival>,
     style: TextStyle,
-    softWrap: Boolean,
     maxLines: Int,
     modifier: Modifier = Modifier
 ) {
@@ -77,15 +74,14 @@ fun FestivalTitleText(
         }
     }
 
-    Text(
+    val text = stringResource(festival.textRes)
+    MinecraftColorText(
         modifier = modifier.graphicsLayer {
             scaleX = scale
             scaleY = scale
         },
-        text = stringResource(festival.textRes),
+        inputText = "§e$text",
+        maxLines = maxLines,
         style = style,
-        color = Color.Yellow,
-        softWrap = softWrap,
-        maxLines = maxLines
     )
 }

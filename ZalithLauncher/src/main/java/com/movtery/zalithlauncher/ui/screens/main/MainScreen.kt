@@ -348,7 +348,6 @@ private fun <E: TitledNavKey> TopBar(
                         FestivalTitleText(
                             festivals = festivals,
                             style = style,
-                            softWrap = softWarp,
                             maxLines = maxLines
                         )
                     }

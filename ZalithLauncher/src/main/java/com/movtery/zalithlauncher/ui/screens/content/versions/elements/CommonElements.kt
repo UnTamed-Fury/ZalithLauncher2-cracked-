@@ -20,6 +20,7 @@ package com.movtery.zalithlauncher.ui.screens.content.versions.elements
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -154,6 +155,7 @@ fun MinecraftColorTextNormal(
             inputText = inputText,
             fontSize = style.fontSize,
             maxLines = maxLines,
+            style = style,
         )
     } else {
         val density = LocalDensity.current
@@ -186,6 +188,7 @@ fun MinecraftColorText(
     inputText: String,
     fontSize: TextUnit = TextUnit.Unspecified,
     maxLines: Int = Int.MAX_VALUE,
+    style: TextStyle = LocalTextStyle.current,
 ) {
     val (foreground, background) = remember(inputText) {
         val segments = parseSegments(inputText)
@@ -199,6 +202,7 @@ fun MinecraftColorText(
         background = background,
         fontSize = fontSize,
         maxLines = maxLines,
+        style = style,
     )
 }
 
@@ -210,16 +214,19 @@ private fun MinecraftColorText(
     fontSize: TextUnit = TextUnit.Unspecified,
     maxLines: Int = Int.MAX_VALUE,
     softWrap: Boolean = false,
+    style: TextStyle = LocalTextStyle.current.merge(fontSize = fontSize),
 ) {
     val density = LocalDensity.current
 
     val lineHeight: TextUnit = with(density) {
-        (fontSize.toPx() * 1.1f).toSp()
+        (style.fontSize.toPx() * 1.1f).toSp()
     }
 
     //计算出合适的偏移量
     val offsetFactor = 1f / 16f
-    val offsetDp = with(density) { (fontSize.toPx() * offsetFactor).toDp() }
+    val offsetDp = with(density) {
+        (style.fontSize.toPx() * offsetFactor).toDp()
+    }
 
     Box(
         modifier = modifier
@@ -232,6 +239,7 @@ private fun MinecraftColorText(
             modifier = Modifier.offset(x = offsetDp, y = offsetDp),
             lineHeight = lineHeight,
             softWrap = softWrap,
+            style = style,
         )
         //前景层
         Text(
@@ -240,6 +248,7 @@ private fun MinecraftColorText(
             maxLines = maxLines,
             lineHeight = lineHeight,
             softWrap = softWrap,
+            style = style,
         )
     }
 }
