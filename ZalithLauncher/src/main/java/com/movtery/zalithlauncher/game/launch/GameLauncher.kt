@@ -28,6 +28,7 @@ import com.movtery.zalithlauncher.ZLApplication
 import com.movtery.zalithlauncher.bridge.LoggerBridge.append
 import com.movtery.zalithlauncher.bridge.LoggerBridge.appendTitle
 import com.movtery.zalithlauncher.bridge.ZLBridge
+import com.movtery.zalithlauncher.components.lwjgl.LWJGL
 import com.movtery.zalithlauncher.context.readAssetFile
 import com.movtery.zalithlauncher.game.account.Account
 import com.movtery.zalithlauncher.game.account.AccountType
@@ -70,6 +71,32 @@ class GameLauncher(
 ) : Launcher(onExit, openPath) {
     private lateinit var gameManifest: GameManifest
     private val offlineServer = OfflineYggdrasilServer(0)
+    private var lwjgl: LWJGL = LWJGL.LWJGL3_3_3
+
+    private fun GameManifest.initLWJGL() {
+        var lwjglVersion = 0
+        libraries.forEach { libItem ->
+            if (libItem.isLWJGL()) {
+                val versionStart = listOf(
+                    "org.lwjgl.lwjgl:lwjgl:",
+                    "org.lwjgl:lwjgl:"
+                ).firstOrNull { libItem.name.startsWith(it) }
+
+                if (versionStart != null && lwjglVersion !in 200..999) {
+                    lwjglVersion = libItem.name
+                        .substring(versionStart.length)
+                        .takeWhile { it == '.' || it.isDigit() }
+                        .filter { it.isDigit() }
+                        .fold(0) { acc, digit -> acc * 10 + (digit - '0') }
+                }
+            }
+        }
+        lwjgl = if (lwjglVersion >= 341) LWJGL.LWJGL3_4_1 else LWJGL.LWJGL3_3_3
+    }
+
+    private fun GameManifest.Library.isLWJGL(): Boolean {
+        return name?.contains("org.lwjgl") == true
+    }
 
     override fun exit() {
         offlineServer.stop()
@@ -80,7 +107,9 @@ class GameLauncher(
             Renderers.setCurrentRenderer(activity, version.getRenderer())
         }
 
-        gameManifest = getGameManifest(version)
+        gameManifest = getGameManifest(version).also { manifest ->
+            manifest.initLWJGL()
+        }
         CallbackBridge.nativeSetUseInputStackQueue(gameManifest.arguments != null)
 
         val currentAccount = AccountsManager.currentAccountFlow.value!!
@@ -118,6 +147,9 @@ class GameLauncher(
             put("sort.patch", "true")
         }
 
+        val javaLibraryPaths = mutableListOf<String>()
+        javaLibraryPaths.add(PathManager.DIR_NATIVE_LIB)
+
         //jna
         gameManifest.libraries?.find { library ->
             library.name.startsWith("net.java.dev.jna:jna:")
@@ -126,11 +158,17 @@ class GameLauncher(
         }?.let { jnaVersion ->
             val jnaDir = File(LibPath.JNA, jnaVersion)
             if (jnaDir.exists()) {
-                val dirPath = jnaDir.absolutePath
-                put("java.library.path", "$dirPath:${PathManager.DIR_NATIVE_LIB}")
-                put("jna.boot.library.path", dirPath) //覆盖父类添加的jna路径
+                val jnaPath = jnaDir.absolutePath
+                javaLibraryPaths.add(jnaPath)
+                put("jna.boot.library.path", jnaPath) //覆盖父类添加的jna路径
             }
         }
+
+        val lwjglNatives = lwjgl.getNativesDir().absolutePath
+        javaLibraryPaths.add(lwjglNatives)
+
+        put("java.library.path", javaLibraryPaths.joinToString(":"))
+        put("org.lwjgl.librarypath", lwjglNatives)
     }
 
     override fun chdir(): String {
@@ -201,6 +239,7 @@ class GameLauncher(
             gameDirPath = gameDirPath,
             version = version,
             gameManifest = gameManifest,
+            lwjgl = lwjgl,
             runtime = runtime,
             readAssetsFile = { path -> activity.readAssetFile(path) },
             getCacioJavaArgs = { isJava8 ->

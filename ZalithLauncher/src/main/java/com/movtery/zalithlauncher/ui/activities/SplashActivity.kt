@@ -37,6 +37,8 @@ import com.movtery.zalithlauncher.components.UnpackComponentsTask
 import com.movtery.zalithlauncher.components.jre.Jre
 import com.movtery.zalithlauncher.components.jre.UnpackJnaTask
 import com.movtery.zalithlauncher.components.jre.UnpackJreTask
+import com.movtery.zalithlauncher.components.lwjgl.LWJGL
+import com.movtery.zalithlauncher.components.lwjgl.UnpackLWJGLTask
 import com.movtery.zalithlauncher.setting.AllSettings
 import com.movtery.zalithlauncher.ui.base.BaseAppCompatActivity
 import com.movtery.zalithlauncher.ui.screens.splash.SplashScreen
@@ -115,6 +117,18 @@ class SplashActivity : BaseAppCompatActivity(refreshData = false) {
                 unpackItems.add(
                     InstallableItem(
                         component.displayName,
+                        getString(component.summary),
+                        task
+                    )
+                )
+            }
+        }
+        LWJGL.entries.forEach { component ->
+            val task = UnpackLWJGLTask(this@SplashActivity, component)
+            if (!task.isCheckFailed()) {
+                unpackItems.add(
+                    InstallableItem(
+                        component.component,
                         getString(component.summary),
                         task
                     )

@@ -34,7 +34,7 @@ abstract class UnpackSingleTask(
     val assetsDirName: String,
     val fileDirName: String,
 ) : AbstractUnpackTask() {
-    private lateinit var am: AssetManager
+    protected lateinit var am: AssetManager
     private lateinit var versionFile: File
     private lateinit var input: InputStream
     private var isCheckFailed: Boolean = false

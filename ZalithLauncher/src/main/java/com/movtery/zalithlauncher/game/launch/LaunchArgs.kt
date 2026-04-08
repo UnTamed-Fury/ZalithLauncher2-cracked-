@@ -21,6 +21,7 @@ package com.movtery.zalithlauncher.game.launch
 import androidx.collection.ArrayMap
 import com.movtery.zalithlauncher.BuildConfig
 import com.movtery.zalithlauncher.bridge.LoggerBridge
+import com.movtery.zalithlauncher.components.lwjgl.LWJGL
 import com.movtery.zalithlauncher.game.account.Account
 import com.movtery.zalithlauncher.game.account.isAuthServerAccount
 import com.movtery.zalithlauncher.game.account.isLocalAccount
@@ -59,6 +60,7 @@ class LaunchArgs(
     private val gameDirPath: File,
     private val version: Version,
     private val gameManifest: GameManifest,
+    private val lwjgl: LWJGL,
     private val runtime: Runtime,
     private val readAssetsFile: (path: String) -> String,
     private val getCacioJavaArgs: (isJava8: Boolean) -> List<String>
@@ -150,11 +152,23 @@ class LaunchArgs(
         }
     }
 
-    private fun getLWJGL3ClassPath(): String =
-        File(PathManager.DIR_COMPONENTS, "lwjgl3")
-            .listFiles { file -> file.name.endsWith(".jar") }
-            ?.joinToString(":") { it.absolutePath }
-            ?: ""
+    private fun getLWJGL3ClassPath(lwjgl: LWJGL): String {
+        val root = lwjgl.getRoot()
+
+        val lwjglCore = File(root, "lwjgl.jar")
+
+        return buildList {
+            add(lwjglCore)
+
+            lwjgl.getRoot()
+                .listFiles { file ->
+                    file.name.endsWith(".jar") &&
+                    file.name != "lwjgl.jar" &&
+                    !file.name.endsWith("lwjglx.jar")
+                }?.also { addAll(it) }
+
+        }.joinToString(":") { it.absolutePath }
+    }
 
     private fun getJavaArgs(): List<String> {
         val argsList: MutableList<String> = ArrayList()
@@ -219,7 +233,7 @@ class LaunchArgs(
 //        }
 
         val varArgMap: MutableMap<String, String> = android.util.ArrayMap()
-        val launchClassPath = "${getLWJGL3ClassPath()}:${generateLaunchClassPath(gameManifest)}"
+        val launchClassPath = generateLaunchClassPath(gameManifest)
         var hasClasspath = false //是否已经在jvm参数中包含 ${classpath} 配置
 
         varArgMap["classpath_separator"] = ":"
@@ -266,6 +280,11 @@ class LaunchArgs(
     }
 
     /**
+     * 通过分析依赖库尝试获取的 LWJGL 版本
+     */
+    private var lwjglVersion = 0
+
+    /**
      * [Modified from PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher/blob/a6f3fc0/app_pojavlauncher/src/main/java/net/kdt/pojavlaunch/Tools.java#L572-L592)
      */
     private fun generateLaunchClassPath(gameManifest: GameManifest): String {
@@ -288,7 +307,15 @@ class LaunchArgs(
             classpathList.add(clientClasspath)
         }
 
-        return classpathList.joinToString(":")
+        // Anything LWJGL2 gets LWJGLX
+        if (lwjglVersion <= 299) {
+            val lwjglX = File(lwjgl.getRoot(), "lwjgl-lwjglx.jar")
+            classpathList.add(lwjglX.absolutePath)
+        }
+
+        val classPath = classpathList.joinToString(":")
+
+        return "${getLWJGL3ClassPath(lwjgl)}:$classPath"
     }
 
     /**

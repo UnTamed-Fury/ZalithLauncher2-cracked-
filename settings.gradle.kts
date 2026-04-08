@@ -27,7 +27,7 @@ dependencyResolutionManagement {
 rootProject.name = "ZalithLauncher"
 include(":ZalithLauncher")
 include(":LWJGL")
-include(":LWJGL:3.3.6")
+include(":LWJGL:3.3.3")
 include(":LWJGL:3.4.1")
 include(":LayerController")
 include(":ColorPicker")
