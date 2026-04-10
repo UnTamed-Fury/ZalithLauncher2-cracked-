@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.IntSize
 import com.movtery.zalithlauncher.bridge.LoggerBridge
 import com.movtery.zalithlauncher.bridge.ZLBridge
 import com.movtery.zalithlauncher.bridge.ZLNativeInvoker
+import com.movtery.zalithlauncher.components.lwjgl.LWJGL
 import com.movtery.zalithlauncher.game.multirt.Runtime
 import com.movtery.zalithlauncher.game.multirt.RuntimesManager
 import com.movtery.zalithlauncher.game.path.GamePathManager
@@ -76,6 +77,7 @@ abstract class Launcher(
         jvmArgs: List<String>,
         userHome: String? = null,
         userArgs: String,
+        lwjgl: LWJGL = LWJGL.LWJGL3_3_3,
         screenSize: IntSize,
         useLocalLanguage: Boolean = true
     ): Int {
@@ -96,6 +98,7 @@ abstract class Launcher(
             jvmArgs = jvmArgs,
             userHome = userHome,
             userArgs = userArgs,
+            lwjgl = lwjgl,
             screenSize = screenSize,
             useLocalLanguage = useLocalLanguage
         )
@@ -107,6 +110,7 @@ abstract class Launcher(
         jvmArgs: List<String>,
         userHome: String?,
         userArgs: String,
+        lwjgl: LWJGL,
         screenSize: IntSize,
         useLocalLanguage: Boolean
     ): Int {
@@ -116,7 +120,7 @@ abstract class Launcher(
             screenSize = screenSize,
             useLocalLanguage = useLocalLanguage
         ).toMutableList()
-        progressFinalUserArgs(args)
+        progressFinalUserArgs(args, lwjgl)
 
         args.addAll(jvmArgs)
         args.add(0, "$runtimeHome/bin/java")
@@ -246,6 +250,7 @@ abstract class Launcher(
      */
     protected open fun progressFinalUserArgs(
         args: MutableList<String>,
+        lwjgl: LWJGL,
         ramAllocation: Int = AllSettings.ramAllocation.getOrMin()
     ) {
         args.purgeArg("-Xms")
@@ -271,7 +276,7 @@ abstract class Launcher(
 
         // Force LWJGL to use the Freetype library intended for it, instead of using the one
         // that we ship with Java (since it may be older than what's needed)
-        args.add("-Dorg.lwjgl.freetype.libname=${PathManager.DIR_NATIVE_LIB}/libfreetype.so")
+        args.add("-Dorg.lwjgl.freetype.libname=${lwjgl.getNativesDir()}/libfreetype.so")
 
         // Our spirv-cross is compiled shared, so it gets named shared.
         args.add("-Dorg.lwjgl.spvc.libname=spirv-cross-c-shared")

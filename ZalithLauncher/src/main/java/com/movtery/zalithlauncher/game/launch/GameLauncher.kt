@@ -209,8 +209,12 @@ class GameLauncher(
         }
     }
 
-    override fun progressFinalUserArgs(args: MutableList<String>, ramAllocation: Int) {
-        super.progressFinalUserArgs(args, version.getRamAllocation(activity))
+    override fun progressFinalUserArgs(
+        args: MutableList<String>,
+        lwjgl: LWJGL,
+        ramAllocation: Int
+    ) {
+        super.progressFinalUserArgs(args, lwjgl, version.getRamAllocation(activity))
         if (Renderers.isCurrentRendererValid()) {
             args.add("-Dorg.lwjgl.opengl.libname=${loadGraphicsLibrary()}")
         }
@@ -253,6 +257,7 @@ class GameLauncher(
             context = activity,
             jvmArgs = launchArgs,
             userArgs = customArgs,
+            lwjgl = lwjgl,
             screenSize = screenSize
         )
     }
