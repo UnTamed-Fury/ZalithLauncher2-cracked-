@@ -1165,4 +1165,7 @@
     <string name="vibrate_kind_double_click">Clique Duplo</string>
     <string name="vibrate_kind_heavy_click">Clique Potente</string>
     <string name="vibrate_kind_tick">Tick</string>
+    <string name="account_change_skin_arm_style">Estilo de braço</string>
+    <string name="account_change_skin_arm_wide">Braços Masculino</string>
+    <string name="account_change_skin_arm_slim">Braços Feminino</string>
 </resources>
