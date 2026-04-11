@@ -595,14 +595,13 @@ class AccountManageViewModel @Inject constructor(
 
                     val capeFile = cape.getFile(PathManager.DIR_ACCOUNT_CAPE)
                     val targetCape = account.getCapeFile()
-                    if (isReset || capeFile.exists()) {
+                    FileUtils.deleteQuietly(targetCape)
+                    if (!isReset && capeFile.exists()) {
                         runCatching {
-                            FileUtils.deleteQuietly(targetCape)
                             capeFile.copyTo(targetCape)
                         }
-                    } else {
-                        FileUtils.deleteQuietly(targetCape)
                     }
+
                     AccountsManager.refreshWardrobe()
 
                     _accountCapeOpMap.update { capesMap ->
