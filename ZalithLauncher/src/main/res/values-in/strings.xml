@@ -1163,7 +1163,10 @@
     <string name="vibrate_kind_click">Klik</string>
     <string name="vibrate_kind_double_click">Klik dua kali</string>
     <string name="vibrate_kind_heavy_click">Klik kuat</string>
-    <string name="vibrate_kind_tick">Centang</string>
+    <string name="vibrate_kind_tick">Halus</string>
     <string name="account_change_skin_arm_style">Gaya Lengan</string>
     <string name="account_change_skin_arm_wide">Lengan Lebar</string>
+    <string name="settings_game_graphics_api_title">API Grafis</string>
+    <string name="settings_game_graphics_api_summary">Atur API grafis yang digunakan oleh Minecraft 26.2+</string>
+    <string name="settings_game_graphics_api_default">Ikuti pengaturan game</string>
 </resources>
