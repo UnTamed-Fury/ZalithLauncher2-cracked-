@@ -13,6 +13,8 @@ We are currently building our official website [zalithlauncher.cn](https://zalit
 Additionally, we are aware that a third-party website has been set up using the name “Zalith Launcher”, appearing to be official. Please note: **this site was not created by us**. It exploits the name to display ads for profit. We **do not participate in, endorse, or trust** such content.  
 Please stay vigilant and **protect your personal privacy**!  
 
+[Discord Server Shutdown Announcement](/.github/notice/DiscordStatus.md)  
+
 ## 🌐 Language and Translation Support
 
 We are using the Weblate platform to translate Zalith Launcher 2. You're welcome to join our [Weblate project](https://hosted.weblate.org/projects/zalithlauncher2) and contribute to the translations!  
