@@ -18,16 +18,19 @@
 
 package com.movtery.zalithlauncher.components
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 abstract class AbstractUnpackTask {
-    /**
-     * 描述当前解压任务进度的状态
-     */
-    var taskMessage by mutableStateOf<String?>(null)
+    private val _taskMessage = MutableStateFlow<String?>(null)
+    /** 描述当前解压任务进度的状态 */
+    val taskMessage = _taskMessage.asStateFlow()
 
-    abstract fun isNeedUnpack(): Boolean
+    fun updateMessage(message: String?) {
+        _taskMessage.update { message }
+    }
+
+    abstract fun checkState(): InstallableItem.State
     abstract suspend fun run()
 }

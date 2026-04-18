@@ -18,19 +18,37 @@
 
 package com.movtery.zalithlauncher.components
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class InstallableItem(
     val name: String,
     val summary: String?,
     val task: AbstractUnpackTask
 ) : Comparable<InstallableItem> {
-    var isRunning by mutableStateOf(false)
-    var isFinished by mutableStateOf(false)
+    private val _state = MutableStateFlow(State.NOT_STARTED)
+    /** 当前项的安装状态 */
+    val state = _state.asStateFlow()
+
+    fun updateState(state: State) {
+        this._state.update { state }
+    }
 
     override fun compareTo(other: InstallableItem): Int {
         return name.compareTo(other.name, ignoreCase = true)
+    }
+
+    enum class State {
+        /** 未安装 */
+        NOT_STARTED,
+        /** 需要更新 */
+        PENDING,
+        /** 安装中 */
+        RUNNING,
+        /** 已完成/已安装 */
+        FINISHED,
+        /** 资源不存在，不可安装 */
+        NOT_EXISTS
     }
 }

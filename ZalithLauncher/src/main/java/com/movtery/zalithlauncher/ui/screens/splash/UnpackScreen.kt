@@ -36,6 +36,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.outlined.FolderZip
+import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -51,6 +53,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.components.InstallableItem
 import com.movtery.zalithlauncher.ui.base.BaseScreen
@@ -187,6 +190,9 @@ private fun TaskItem(
     item: InstallableItem,
     modifier: Modifier = Modifier
 ) {
+    val state by item.state.collectAsStateWithLifecycle()
+    val message by item.task.taskMessage.collectAsStateWithLifecycle()
+
     Surface(
         modifier = modifier,
         shape = MaterialTheme.shapes.large,
@@ -211,8 +217,8 @@ private fun TaskItem(
                         style = MaterialTheme.typography.labelSmall
                     )
                 }
-                if (item.isRunning) {
-                    item.task.taskMessage?.let { taskMessage ->
+                if (state == InstallableItem.State.RUNNING) {
+                    message?.let { taskMessage ->
                         Text(
                             text = taskMessage,
                             style = MaterialTheme.typography.labelSmall,
@@ -226,17 +232,35 @@ private fun TaskItem(
                 .align(Alignment.CenterVertically)
                 .padding(PaddingValues(horizontal = 12.dp, vertical = 8.dp))
                 .size(18.dp)
-            if (item.isRunning) {
-                CircularProgressIndicator(
-                    modifier = iconModifier,
-                    strokeWidth = 2.dp
-                )
-            } else if (item.isFinished) {
-                Icon(
-                    modifier = iconModifier,
-                    imageVector = Icons.Default.Done,
-                    contentDescription = null
-                )
+            when (state) {
+                InstallableItem.State.NOT_STARTED -> {
+                    Icon(
+                        modifier = iconModifier,
+                        imageVector = Icons.Outlined.FolderZip,
+                        contentDescription = null
+                    )
+                }
+                InstallableItem.State.PENDING -> {
+                    Icon(
+                        modifier = iconModifier,
+                        imageVector = Icons.Outlined.Update,
+                        contentDescription = null
+                    )
+                }
+                InstallableItem.State.RUNNING -> {
+                    CircularProgressIndicator(
+                        modifier = iconModifier,
+                        strokeWidth = 2.dp
+                    )
+                }
+                InstallableItem.State.FINISHED -> {
+                    Icon(
+                        modifier = iconModifier,
+                        imageVector = Icons.Default.Done,
+                        contentDescription = null
+                    )
+                }
+                else -> {}
             }
         }
     }

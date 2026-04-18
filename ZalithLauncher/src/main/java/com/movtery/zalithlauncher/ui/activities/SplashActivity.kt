@@ -153,8 +153,9 @@ class SplashActivity : BaseAppCompatActivity(refreshData = false) {
         }
 
         unpackItems.forEach { item ->
-            if (!item.task.isNeedUnpack()) {
-                item.isFinished = true
+            val state = item.task.checkState()
+            item.updateState(state)
+            if (state == InstallableItem.State.FINISHED) {
                 finishedTaskCount.incrementAndGet()
             }
         }
@@ -187,18 +188,21 @@ class SplashActivity : BaseAppCompatActivity(refreshData = false) {
     private fun startAllTask() {
         lifecycleScope.launch {
             val jobs = unpackItems
-                .filter { !it.isFinished }
+                .filter {
+                    val state = it.state.value
+                    state == InstallableItem.State.NOT_STARTED ||
+                    state == InstallableItem.State.PENDING
+                }
                 .map { item ->
                     launch(Dispatchers.IO) {
-                        item.isRunning = true
+                        item.updateState(InstallableItem.State.RUNNING)
                         runCatching {
                             item.task.run()
                         }.onFailure {
                             throw SplashException(it)
                         }
                         finishedTaskCount.incrementAndGet()
-                        item.isRunning = false
-                        item.isFinished = true
+                        item.updateState(InstallableItem.State.FINISHED)
                     }
                 }
             jobs.joinAll()

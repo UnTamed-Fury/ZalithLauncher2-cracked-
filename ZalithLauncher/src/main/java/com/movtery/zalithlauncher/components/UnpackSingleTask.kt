@@ -22,6 +22,7 @@ import android.content.Context
 import android.content.res.AssetManager
 import com.movtery.zalithlauncher.context.copyAssetFile
 import com.movtery.zalithlauncher.utils.file.readString
+import com.movtery.zalithlauncher.utils.logging.Logger.lError
 import com.movtery.zalithlauncher.utils.logging.Logger.lInfo
 import com.movtery.zalithlauncher.utils.logging.Logger.lWarning
 import org.apache.commons.io.FileUtils
@@ -53,23 +54,30 @@ abstract class UnpackSingleTask(
 
     fun isCheckFailed() = isCheckFailed
 
-    override fun isNeedUnpack(): Boolean {
-        if (isCheckFailed) return false
+    override fun checkState(): InstallableItem.State {
+        if (isCheckFailed) return InstallableItem.State.NOT_EXISTS
 
-        if (!versionFile.exists()) {
+        return if (!versionFile.exists()) {
             requestEmptyParentDir(versionFile)
             lInfo("$fileDirName: Pack was installed manually, or does not exist...")
-            return true
+            InstallableItem.State.NOT_STARTED
         } else {
-            val fis = FileInputStream(versionFile)
-            val release1 = input.readString()
-            val release2 = fis.readString()
-            if (release1 != release2) {
-                requestEmptyParentDir(versionFile)
-                return true
-            } else {
-                lInfo("$fileDirName: Pack is up-to-date with the launcher, continuing...")
-                return false
+            runCatching {
+                val fis = FileInputStream(versionFile)
+                val release1 = input.readString()
+                val release2 = fis.readString()
+                if (release1 != release2) {
+                    requestEmptyParentDir(versionFile)
+                    InstallableItem.State.PENDING
+                } else {
+                    lInfo("$fileDirName: Pack is up-to-date with the launcher, continuing...")
+                    InstallableItem.State.FINISHED
+                }
+            }.onFailure { e ->
+                lError("An exception occurred while detecting the assets resource.", e)
+            }.getOrElse {
+                //检查失败，要求重新进行安装
+                InstallableItem.State.NOT_STARTED
             }
         }
     }
@@ -78,16 +86,25 @@ abstract class UnpackSingleTask(
         val dir = File(rootDir, fileDirName)
         FileUtils.deleteDirectory(dir)
 
-        val fileList = am.list("$assetsDirName/$fileDirName")
-        for (fileName in fileList!!) {
-            val file = File(dir, fileName)
+        val fileList = am.list("$assetsDirName/$fileDirName")!!
+            .map { fileName -> File(dir, fileName) }
+        val versionFile = fileList.find { it.name == "version" }!!
+
+        for (file in fileList) {
             context.copyAssetFile(
-                "$assetsDirName/$fileDirName/$fileName",
-                file,
-                true
+                fileName = "$assetsDirName/$fileDirName/${file.name}",
+                output = file,
+                overwrite = true
             )
             moreProgress(file)
         }
+
+        //最后才写入version
+        context.copyAssetFile(
+            fileName = "$assetsDirName/$fileDirName/version",
+            output = versionFile,
+            overwrite = true
+        )
     }
 
     /**

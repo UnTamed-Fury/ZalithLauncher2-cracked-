@@ -22,10 +22,12 @@ import android.content.Context
 import android.content.res.AssetManager
 import com.movtery.zalithlauncher.ZLApplication
 import com.movtery.zalithlauncher.components.AbstractUnpackTask
+import com.movtery.zalithlauncher.components.InstallableItem
 import com.movtery.zalithlauncher.game.multirt.RuntimesManager
 import com.movtery.zalithlauncher.utils.device.Architecture
 import com.movtery.zalithlauncher.utils.file.readString
 import com.movtery.zalithlauncher.utils.logging.Logger.lError
+import com.movtery.zalithlauncher.utils.logging.Logger.lWarning
 
 class UnpackJreTask(
     private val context: Context,
@@ -39,22 +41,31 @@ class UnpackJreTask(
         runCatching {
             assetManager = context.assets
             launcherRuntimeVersion = assetManager.open(jre.jrePath + "/version").readString()
-        }.getOrElse {
+        }.onFailure { e ->
+            lWarning("Failed to init jre version. assetsPath=${jre.jrePath}/version", e)
             isCheckFailed = true
         }
     }
 
     fun isCheckFailed() = isCheckFailed
 
-    override fun isNeedUnpack(): Boolean {
-        if (isCheckFailed) return false
+    override fun checkState(): InstallableItem.State {
+        if (isCheckFailed) return InstallableItem.State.NOT_EXISTS
 
         return runCatching {
             val installedRuntimeVersion = RuntimesManager.loadInternalRuntimeVersion(jre.jreName)
-            return launcherRuntimeVersion != installedRuntimeVersion
+            when {
+                //未安装该环境
+                installedRuntimeVersion == null -> InstallableItem.State.NOT_STARTED
+                launcherRuntimeVersion != installedRuntimeVersion -> InstallableItem.State.PENDING
+                else -> InstallableItem.State.FINISHED
+            }
         }.onFailure { e ->
             lError("An exception occurred while detecting the Java Runtime.", e)
-        }.getOrElse { false }
+        }.getOrElse {
+            //检查失败，要求重新进行安装
+            InstallableItem.State.NOT_STARTED
+        }
     }
 
     override suspend fun run() {
@@ -67,7 +78,7 @@ class UnpackJreTask(
                 name = jre.jreName,
                 binPackVersion = launcherRuntimeVersion,
                 updateProgress = { textRes, textArgs ->
-                    taskMessage = context.getString(textRes, *textArgs)
+                    updateMessage(context.getString(textRes, *textArgs))
                 }
             )
             RuntimesManager.postPrepare(jre.jreName)
