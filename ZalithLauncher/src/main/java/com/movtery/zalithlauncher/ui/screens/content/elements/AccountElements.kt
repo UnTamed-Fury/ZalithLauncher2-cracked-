@@ -328,6 +328,7 @@ fun AccountItem(
     color: Color = itemLayoutColor(),
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     shadowElevation: Dp = itemLayoutShadowElevation(),
+    enabled: Boolean = true,
     refreshKey: Any? = null,
     onSelected: (Account) -> Unit = {},
     openChangeSkinDialog: () -> Unit = {},
@@ -347,9 +348,10 @@ fun AccountItem(
         shape = MaterialTheme.shapes.large,
         shadowElevation = shadowElevation,
         onClick = {
-            if (selected) return@Surface
+            if (selected || !enabled) return@Surface
             onSelected(account)
-        }
+        },
+        enabled = enabled
     ) {
         Row(
             modifier = Modifier

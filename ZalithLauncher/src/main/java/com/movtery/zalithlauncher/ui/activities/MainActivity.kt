@@ -258,8 +258,10 @@ class MainActivity : BaseAppCompatActivity() {
                         submitError = {
                             errorViewModel.showError(it)
                         },
-                        toAccountManageScreen = {
-                            screenBackStackModel.mainScreen.navigateTo(NormalNavKey.AccountManager)
+                        toAccountManageScreen = { menu ->
+                            screenBackStackModel.mainScreen.navigateTo(
+                                screenKey = NormalNavKey.AccountManager(menu)
+                            )
                         },
                         toVersionManageScreen = {
                             screenBackStackModel.mainScreen.removeAndNavigateTo(

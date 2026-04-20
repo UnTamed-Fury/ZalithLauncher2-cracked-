@@ -22,6 +22,7 @@ import androidx.annotation.StringRes
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.game.download.assets.platform.Platform
 import com.movtery.zalithlauncher.game.download.assets.platform.PlatformClasses
+import com.movtery.zalithlauncher.ui.screens.content.FirstLoginMenu
 import kotlinx.serialization.Serializable
 
 /**
@@ -37,7 +38,9 @@ sealed interface NormalNavKey : TitledNavKey {
     /** 启动器主页屏幕 */
     @Serializable data object LauncherMain : NormalNavKey
     /** 账号管理屏幕 */
-    @Serializable data object AccountManager : NormalNavKey {
+    @Serializable data class AccountManager(
+        val loginMenu: FirstLoginMenu = FirstLoginMenu.NONE
+    ) : NormalNavKey {
         override val title: Int = R.string.page_title_account_list
     }
     /** Web屏幕 */

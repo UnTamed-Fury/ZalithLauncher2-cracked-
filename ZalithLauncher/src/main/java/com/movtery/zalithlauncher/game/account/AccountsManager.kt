@@ -20,12 +20,14 @@ package com.movtery.zalithlauncher.game.account
 
 import android.content.Context
 import com.movtery.zalithlauncher.R
+import com.movtery.zalithlauncher.context.GlobalContext
 import com.movtery.zalithlauncher.coroutine.Task
 import com.movtery.zalithlauncher.coroutine.TaskSystem
 import com.movtery.zalithlauncher.database.AppDatabase
 import com.movtery.zalithlauncher.game.account.auth_server.data.AuthServer
 import com.movtery.zalithlauncher.game.account.auth_server.data.AuthServerDao
 import com.movtery.zalithlauncher.setting.AllSettings
+import com.movtery.zalithlauncher.utils.isChinaMainland
 import com.movtery.zalithlauncher.utils.logging.Logger.lError
 import com.movtery.zalithlauncher.utils.logging.Logger.lInfo
 import com.movtery.zalithlauncher.utils.network.isNetworkAvailable
@@ -57,6 +59,9 @@ object AccountsManager {
     private val _refreshWardrobe = MutableStateFlow(false)
     /** 控制刷新所有账号衣橱 */
     val refreshWardrobe = _refreshWardrobe.asStateFlow()
+
+    private val _isOffline = MutableStateFlow(false)
+    val isOffline = _isOffline
 
     private lateinit var database: AppDatabase
     private lateinit var accountDao: AccountDao
@@ -182,7 +187,7 @@ object AccountsManager {
     /**
      * 获取当前已登录的账号
      */
-    fun getCurrentAccount(): Account? {
+    private fun getCurrentAccount(): Account? {
         return _accounts.find {
             it.uniqueUUID == AllSettings.currentAccount.getValue()
         } ?: _accounts.firstOrNull()
@@ -196,8 +201,17 @@ object AccountsManager {
         refreshCurrentAccountState()
     }
 
+    /**
+     * 刷新当前账号，同时刷新非中国大陆地区的正版状态
+     */
     private fun refreshCurrentAccountState() {
-        _currentAccountFlow.value = getCurrentAccount()
+        val currentAccount = getCurrentAccount()
+        val isOffline = !isChinaMainland(GlobalContext) && !hasMicrosoftAccount()
+        _currentAccountFlow.update {
+            //若处于非正版状态，不允许使用账号
+            if (isOffline) null else currentAccount
+        }
+        _isOffline.update { isOffline }
     }
 
     /**

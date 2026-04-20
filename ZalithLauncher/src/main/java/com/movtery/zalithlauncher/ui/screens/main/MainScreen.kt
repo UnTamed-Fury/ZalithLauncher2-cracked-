@@ -539,8 +539,9 @@ private fun NavigationUI(
                         backStackViewModel = screenBackStackModel
                     )
                 }
-                entry<NormalNavKey.AccountManager> {
+                entry<NormalNavKey.AccountManager> { key ->
                     AccountManageScreen(
+                        key = key,
                         backStackViewModel = screenBackStackModel,
                         backToMainScreen = toMainScreen,
                         openLink = { url ->

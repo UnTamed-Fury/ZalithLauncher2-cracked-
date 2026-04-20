@@ -92,7 +92,9 @@ fun LauncherScreen(
             )
 
             val toAccountManageScreen: () -> Unit = {
-                backStackViewModel.mainScreen.navigateTo(NormalNavKey.AccountManager)
+                backStackViewModel.mainScreen.navigateTo(
+                    screenKey = NormalNavKey.AccountManager(FirstLoginMenu.NONE)
+                )
             }
             val toVersionManageScreen: () -> Unit = {
                 backStackViewModel.mainScreen.removeAndNavigateTo(

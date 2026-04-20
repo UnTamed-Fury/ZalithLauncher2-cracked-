@@ -56,7 +56,7 @@ object LaunchGame {
         submitError: (ErrorViewModel.ThrowableMessage) -> Unit
     ) {
         if (isLaunching) return
-        val account = AccountsManager.getCurrentAccount() ?: return
+        val account = AccountsManager.currentAccountFlow.value ?: return
         isLaunching = true
 
         //检查是否联网，根据这个条件决定是否登录账号

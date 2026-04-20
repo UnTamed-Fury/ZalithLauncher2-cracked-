@@ -122,6 +122,16 @@ private data class AccountActions(
 )
 
 /**
+ * 进入账号管理器时，可附加的打开登录菜单选项
+ * @property NONE 不打开菜单
+ * @property MICROSOFT 打开微软登录菜单
+ * @property NORMAL 打开总登录菜单
+ */
+enum class FirstLoginMenu {
+    NONE, MICROSOFT, NORMAL
+}
+
+/**
  * 账号管理主界面
  *
  * @param backStackViewModel 屏幕堆栈管理器
@@ -132,6 +142,7 @@ private data class AccountActions(
  */
 @Composable
 fun AccountManageScreen(
+    key: NormalNavKey.AccountManager,
     backStackViewModel: ScreenBackStackViewModel,
     backToMainScreen: () -> Unit,
     openLink: (url: String) -> Unit,
@@ -142,25 +153,6 @@ fun AccountManageScreen(
     val loginUiState by viewModel.loginUiState.collectAsStateWithLifecycle()
     val profileUiState by viewModel.profileUiState.collectAsStateWithLifecycle()
     val operationUiState by viewModel.operationUiState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(Unit) {
-        viewModel.effect.collect { effect ->
-            when (effect) {
-                is AccountManageEffect.ShowError -> {
-                    submitError(ErrorViewModel.ThrowableMessage(effect.title, effect.message))
-                }
-
-                is AccountManageEffect.ShowToast -> {
-                    val message = if (effect.formatArgs.isEmpty()) {
-                        context.getString(effect.messageRes)
-                    } else {
-                        context.getString(effect.messageRes, *effect.formatArgs.toTypedArray())
-                    }
-                    Toast.makeText(context, message, effect.duration).show()
-                }
-            }
-        }
-    }
 
     val actions = remember(
         viewModel,
@@ -180,8 +172,37 @@ fun AccountManageScreen(
         )
     }
 
+    LaunchedEffect(Unit) {
+        when (key.loginMenu) {
+            FirstLoginMenu.NONE -> {}
+            FirstLoginMenu.MICROSOFT -> {
+                actions.onIntent(AccountManageIntent.UpdateMicrosoftLoginOp(MicrosoftLoginOperation.Tip))
+            }
+            FirstLoginMenu.NORMAL -> {
+                actions.onIntent(AccountManageIntent.UpdateLoginMenuOp(LoginMenuOperation.Login))
+            }
+        }
+
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is AccountManageEffect.ShowError -> {
+                    submitError(ErrorViewModel.ThrowableMessage(effect.title, effect.message))
+                }
+
+                is AccountManageEffect.ShowToast -> {
+                    val message = if (effect.formatArgs.isEmpty()) {
+                        context.getString(effect.messageRes)
+                    } else {
+                        context.getString(effect.messageRes, *effect.formatArgs.toTypedArray())
+                    }
+                    Toast.makeText(context, message, effect.duration).show()
+                }
+            }
+        }
+    }
+
     BaseScreen(
-        screenKey = NormalNavKey.AccountManager,
+        screenKey = key,
         currentKey = backStackViewModel.mainScreen.currentKey
     ) { isVisible ->
         AccountManageContent(
@@ -215,6 +236,7 @@ private fun AccountManageContent(
                 .padding(all = 12.dp)
                 .weight(3f),
             currentAccount = profileUiState.currentAccount,
+            isOffline = profileUiState.isOffline,
             actions = actions
         )
 
@@ -226,6 +248,7 @@ private fun AccountManageContent(
                 .weight(7f),
             accounts = profileUiState.accounts,
             currentAccount = profileUiState.currentAccount,
+            isOffline = profileUiState.isOffline,
             accountOperation = operationUiState.accountOp,
             accountSkinOperation = operationUiState.accountSkinOp,
             accountSkinDialogState = operationUiState.accountSkinDialogState,
@@ -249,6 +272,7 @@ private fun ActionsLayout(
     isVisible: Boolean,
     modifier: Modifier = Modifier,
     currentAccount: Account?,
+    isOffline: Boolean,
     actions: AccountActions
 ) {
     val xOffset by swapAnimateDpAsState(
@@ -325,7 +349,12 @@ private fun ActionsLayout(
             modifier = Modifier
                 .fillMaxWidth(),
             onClick = {
-                actions.onIntent(AccountManageIntent.UpdateLoginMenuOp(LoginMenuOperation.Login))
+                if (isOffline) {
+                    //非正版状态下，只允许创建微软账号
+                    actions.onIntent(AccountManageIntent.UpdateMicrosoftLoginOp(MicrosoftLoginOperation.Tip))
+                } else {
+                    actions.onIntent(AccountManageIntent.UpdateLoginMenuOp(LoginMenuOperation.Login))
+                }
             }
         ) {
             MarqueeText(text = stringResource(R.string.account_add_new_account))
@@ -645,6 +674,7 @@ private fun AccountsLayout(
     modifier: Modifier = Modifier,
     accounts: List<Account>,
     currentAccount: Account?,
+    isOffline: Boolean,
     accountOperation: AccountOperation,
     accountSkinOperation: AccountSkinOperation,
     accountSkinDialogState: AccountManageViewModel.AccountSkinDialogState,
@@ -681,6 +711,7 @@ private fun AccountsLayout(
                             .padding(vertical = 6.dp),
                         currentAccount = currentAccount,
                         account = account,
+                        enabled = !isOffline, //非正版状态下不允许选择任何状态
                         onSelected = { AccountsManager.setCurrentAccount(it) },
                         openChangeSkinDialog = {
                             if (!account.isAuthServerAccount()) {
