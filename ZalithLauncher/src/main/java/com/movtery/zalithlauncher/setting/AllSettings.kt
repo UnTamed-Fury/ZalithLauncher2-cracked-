@@ -111,139 +111,166 @@ object AllSettings : SettingsRegistry() {
     //Game
     /**
      * 版本隔离
+     * Version isolation
      */
-    val versionIsolation = boolSetting("versionIsolation", true)
+    val versionIsolation = boolSetting(\"versionIsolation\", true)
 
     /**
      * 不检查游戏完整性
+     * Skip game integrity check
      */
-    val skipGameIntegrityCheck = boolSetting("skipGameIntegrityCheck", false)
+    val skipGameIntegrityCheck = boolSetting(\"skipGameIntegrityCheck\", false)
 
     /**
      * 版本自定义信息
+     * Version custom info
      */
-    val versionCustomInfo = stringSetting("versionCustomInfo", "${InfoDistributor.LAUNCHER_IDENTIFIER}[zl_version]")
+    val versionCustomInfo = stringSetting(\"versionCustomInfo\", \"${InfoDistributor.LAUNCHER_IDENTIFIER}[zl_version]\")
 
     /**
      * 启动器的Java环境
+     * Launcher Java environment
      */
-    val javaRuntime = stringSetting("javaRuntime", "")
+    val javaRuntime = stringSetting(\"javaRuntime\", \"\")
 
     /**
      * 自动选择Java环境
+     * Auto pick Java environment
      */
-    val autoPickJavaRuntime = boolSetting("autoPickJavaRuntime", true)
+    val autoPickJavaRuntime = boolSetting(\"autoPickJavaRuntime\", true)
 
     /**
      * 游戏内存分配大小
+     * Game memory allocation size
      */
-    val ramAllocation = intSetting("ramAllocation", null, min = 256)
+    val ramAllocation = intSetting(\"ramAllocation\", null, min = 256)
 
     /**
      * 自定义Jvm启动参数
+     * Custom JVM startup arguments
      */
-    val jvmArgs = stringSetting("jvmArgs", "")
+    val jvmArgs = stringSetting(\"jvmArgs\", \"\")
 
     /**
      * 已禁用的原生库插件列表
+     * List of disabled native library plugins
      */
-    val disableNativeLibPlugins = stringListSetting("nativeLibPlugins", emptyList())
+    val disableNativeLibPlugins = stringListSetting(\"nativeLibPlugins\", emptyList())
 
     /**
      * 启动游戏时自动展示日志，直到游戏开始渲染
+     * Automatically show logs when starting the game until it begins rendering
      */
-    val showLogAutomatic = boolSetting("showLogAutomatic", false)
+    val showLogAutomatic = boolSetting(\"showLogAutomatic\", false)
 
     /**
      * 日志字体大小
+     * Log font size
      */
-    val logTextSize = intSetting("logTextSize", 15, 5..20)
+    val logTextSize = intSetting(\"logTextSize\", 15, 5..20)
 
     /**
      * 日志缓冲区刷新时间
+     * Log buffer flush interval
      */
-    val logBufferFlushInterval = intSetting("logBufferFlushInterval", 200, 100..1000)
+    val logBufferFlushInterval = intSetting(\"logBufferFlushInterval\", 200, 100..1000)
 
     //Control
     /**
      * 实体鼠标控制
+     * Physical mouse control
      */
-    val physicalMouseMode = boolSetting("physicalMouseMode", true)
+    val physicalMouseMode = boolSetting(\"physicalMouseMode\", true)
 
     /**
      * 按键键值，按下按键呼出输入法
+     * Key value to trigger the input method
      */
-    val physicalKeyImeCode = intSetting("physicalKeyImeCode", null)
+    val physicalKeyImeCode = intSetting(\"physicalKeyImeCode\", null)
 
     /**
      * 隐藏虚拟鼠标
+     * Hide virtual mouse
      */
-    val hideMouse = boolSetting("hideMouse", false)
+    val hideMouse = boolSetting(\"hideMouse\", false)
 
     /**
      * 虚拟鼠标大小（Dp）
+     * Virtual mouse size (Dp)
      */
-    val mouseSize = intSetting("mouseSize", 24, 5..50)
+    val mouseSize = intSetting(\"mouseSize\", 24, 5..50)
 
     /**
      * 虚拟鼠标箭头热点坐标
+     * Virtual mouse arrow hotspot coordinates
      */
-    val arrowMouseHotspot = parcelableSetting("arrowMouseHotspot", LEFT_TOP_HOTSPOT)
+    val arrowMouseHotspot = parcelableSetting(\"arrowMouseHotspot\", LEFT_TOP_HOTSPOT)
 
     /**
      * 虚拟鼠标链接选择热点坐标
+     * Virtual mouse link selection hotspot coordinates
      */
-    val linkMouseHotspot = parcelableSetting("linkMouseHotspot", CursorHotspot(xPercent = 23, yPercent = 0))
+    val linkMouseHotspot = parcelableSetting(\"linkMouseHotspot\", CursorHotspot(xPercent = 23, yPercent = 0))
 
     /**
      * 虚拟鼠标输入选择热点坐标
+     * Virtual mouse text input selection hotspot coordinates
      */
-    val iBeamMouseHotspot = parcelableSetting("iBeamMouseHotspot", CENTER_HOTSPOT)
+    val iBeamMouseHotspot = parcelableSetting(\"iBeamMouseHotspot\", CENTER_HOTSPOT)
 
     /**
      * 虚拟鼠标十字热点坐标
+     * Virtual mouse crosshair hotspot coordinates
      */
-    val crossHairMouseHotspot = parcelableSetting("crossHairMouseHotspot", CENTER_HOTSPOT)
+    val crossHairMouseHotspot = parcelableSetting(\"crossHairMouseHotspot\", CENTER_HOTSPOT)
 
     /**
      * 虚拟鼠标调整大小（上下）热点坐标
+     * Virtual mouse resize (North-South) hotspot coordinates
      */
-    val resizeNSMouseHotspot = parcelableSetting("resizeNSMouseHotspot", CENTER_HOTSPOT)
+    val resizeNSMouseHotspot = parcelableSetting(\"resizeNSMouseHotspot\", CENTER_HOTSPOT)
 
     /**
      * 虚拟鼠标调整大小（左右）热点坐标
+     * Virtual mouse resize (East-West) hotspot coordinates
      */
-    val resizeEWMouseHotspot = parcelableSetting("resizeEWMouseHotspot", CENTER_HOTSPOT)
+    val resizeEWMouseHotspot = parcelableSetting(\"resizeEWMouseHotspot\", CENTER_HOTSPOT)
 
     /**
      * 虚拟鼠标调整大小（全部方向）热点坐标
+     * Virtual mouse resize (All directions) hotspot coordinates
      */
-    val resizeAllMouseHotspot = parcelableSetting("resizeAllMouseHotspot", CENTER_HOTSPOT)
+    val resizeAllMouseHotspot = parcelableSetting(\"resizeAllMouseHotspot\", CENTER_HOTSPOT)
 
     /**
      * 虚拟鼠标禁止/无效操作热点坐标
+     * Virtual mouse not allowed/invalid action hotspot coordinates
      */
-    val notAllowedMouseHotspot = parcelableSetting("notAllowedMouseHotspot", CENTER_HOTSPOT)
+    val notAllowedMouseHotspot = parcelableSetting(\"notAllowedMouseHotspot\", CENTER_HOTSPOT)
 
     /**
      * 虚拟鼠标灵敏度
+     * Virtual mouse sensitivity
      */
-    val cursorSensitivity = intSetting("cursorSensitivity", 100, 25..300)
+    val cursorSensitivity = intSetting(\"cursorSensitivity\", 100, 25..300)
 
     /**
      * 被抓获指针移动灵敏度
+     * Captured pointer movement sensitivity
      */
-    val mouseCaptureSensitivity = intSetting("mouseCaptureSensitivity", 100, 25..300)
+    val mouseCaptureSensitivity = intSetting(\"mouseCaptureSensitivity\", 100, 25..300)
 
     /**
      * 虚拟鼠标控制模式
+     * Virtual mouse control mode
      */
-    val mouseControlMode = enumSetting("mouseControlMode", MouseControlMode.SLIDE)
+    val mouseControlMode = enumSetting(\"mouseControlMode\", MouseControlMode.SLIDE)
 
     /**
      * 鼠标控制长按延迟
+     * Mouse control long press delay
      */
-    val mouseLongPressDelay = intSetting("mouseLongPressDelay", 300, 100..1000)
+    val mouseLongPressDelay = intSetting(\"mouseLongPressDelay\", 300, 100..1000)
 
     /**
      * 是否开启虚拟鼠标点击操作
