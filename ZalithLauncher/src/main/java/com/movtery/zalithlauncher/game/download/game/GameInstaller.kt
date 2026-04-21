@@ -108,13 +108,15 @@ class GameInstaller(
     /**
      * 目标游戏客户端目录（缓存）
      * versions/<client-name>/...
+     * Target game client directory (cache)
      */
     private var targetClientDir: File? = null
-    private val overrideClientJar: File get() = File(PathManager.DIR_CACHE, "override_${info.customVersionName}_jar")
-    private val overrideClientJson: File get() = File(PathManager.DIR_CACHE, "override_${info.customVersionName}_json")
+    private val overrideClientJar: File get() = File(PathManager.DIR_CACHE, \"override_${info.customVersionName}_jar\")
+    private val overrideClientJson: File get() = File(PathManager.DIR_CACHE, \"override_${info.customVersionName}_json\")
 
     /**
      * 目标游戏目录
+     * Target game directory
      */
     private val targetGameFolder: File = File(getGameHome())
 
@@ -732,15 +734,19 @@ class GameInstaller(
 
     /**
      * 安装失败、取消安装时，都应该清除目标客户端版本文件夹
+     * The target client version folder should be cleared when the installation fails or is cancelled
      */
     private fun clearTargetClient() {
         val dirToDelete = targetClientDir //临时变量
+        //Temporary variable
         targetClientDir = null
 
         CoroutineScope(Dispatchers.IO).launch {
 //            clearTempGameDir() 考虑到用户可能操作快，双线程清理同一个文件夹可能导致一些问题
+            //clearTempGameDir() Considering that users may operate quickly, two-thread cleaning of the same folder may lead to some problems
             dirToDelete?.let {
                 //直接清除上一次安装的目标目录
+                //Directly clear the target directory of the last installation
                 FileUtils.deleteQuietly(it)
                 lInfo("Successfully deleted version directory: ${it.name} at path: ${it.absolutePath}")
             }
@@ -778,12 +784,14 @@ class GameInstaller(
 
     /**
      * 获取下载原版 Task
+     * Get the task to download the vanilla game
      */
     private fun createMinecraftDownloadTask(
         tempClientName: String,
         tempVersionsDir: File
     ): Task {
-        val mcDownloader = MinecraftDownloader(
+        val mcDownloader = MinecraftDownloader( // Minecraft 下载器
+            // Minecraft downloader
             context = context,
             version = info.gameVersion,
             customName = info.customVersionName,
@@ -997,6 +1005,7 @@ class GameInstaller(
         dispatcher = Dispatchers.IO,
         task = { task ->
             //合并版本 Json
+            //Merge version Json
             task.updateProgress(0.1f)
             mergeGameJson(
                 info = info,
@@ -1012,8 +1021,9 @@ class GameInstaller(
             )
 
             //迁移游戏文件
+            //Migrate game files
             copyDirectoryContents(
-                File(tempMinecraftDir, "libraries"),
+                File(tempMinecraftDir, \"libraries\"),
                 File(targetMinecraftDir, "libraries"),
                 onProgress = { percentage ->
                     task.updateProgress(percentage)
@@ -1021,6 +1031,7 @@ class GameInstaller(
             )
 
             //复制客户端文件
+            //Copy client files
             copyVanillaFiles(
                 sourceGameFolder = tempMinecraftDir,
                 sourceVersion = info.gameVersion,
@@ -1029,23 +1040,28 @@ class GameInstaller(
             )
 
             //复制Mods
+            //Copy mods
             tempModsDir.listFiles()?.let {
                 val targetModsDir = VersionFolders.MOD.getDir(targetClientDir)
                 it.forEach { modFile ->
                     val targetMod = File(targetModsDir, modFile.name)
                     if (!targetMod.exists()) {
                         //如果已经安装了，那就不覆盖
+                        //If it's already installed, don't overwrite it
                         //用户可能是覆盖安装，所以检查这个很有必要
+                        //Users might be performing an overwrite installation, so this check is necessary
                         modFile.copyTo(targetMod)
                     }
                 }
                 if (createIsolation) {
                     //开启版本隔离
+                    //Enable version isolation
                     VersionConfig.createIsolation(targetClientDir).save()
                 }
             }
 
             //清除临时游戏目录
+            //Clear temporary game directory
             task.updateProgress(-1f, R.string.download_install_clear_temp)
             clearTempGameDir()
 
@@ -1055,15 +1071,17 @@ class GameInstaller(
 
     /**
      * 仅原本客户端文件复制任务 json、jar
+     * Only vanilla client file copy task (json, jar)
      */
     private fun createVanillaFilesCopyTask(
         tempMinecraftDir: File,
         onComplete: suspend () -> Unit = {}
     ): Task {
         return Task.runTask(
-            id = "VanillaFilesCopy",
+            id = \"VanillaFilesCopy\",
             task = { task ->
                 //复制客户端文件
+                //Copy client files
                 copyVanillaFiles(
                     sourceGameFolder = tempMinecraftDir,
                     sourceVersion = info.gameVersion,
@@ -1072,6 +1090,7 @@ class GameInstaller(
                 )
 
                 //清除临时游戏目录
+                //Clear temporary game directory
                 task.updateProgress(-1f, R.string.download_install_clear_temp)
                 clearTempGameDir()
 
