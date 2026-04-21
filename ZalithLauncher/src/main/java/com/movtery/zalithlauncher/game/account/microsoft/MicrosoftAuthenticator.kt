@@ -347,13 +347,13 @@ private suspend fun createAccount(
 
     val profileId = profile.id
     //避免同一个账号反复添加
-    val account = AccountsManager.loadFromProfileID(profileId, AccountType.MICROSOFT.tag) ?: Account()
+    val account = AccountsManager.loadFromProfileID(profileId, "Microsoft") ?: Account()
 
     return account.apply {
         this.username = profile.name
         this.accessToken = authResponse.accessToken
         this.expiresAt = System.currentTimeMillis() + authResponse.expiresIn * 1000
-        this.accountType = AccountType.MICROSOFT.tag
+        this.accountType = "Microsoft"
         this.clientToken = InfoDistributor.LAUNCHER_NAME.toUuidStr().replace("-", "")
         this.profileId = profileId
         this.refreshToken = refreshToken.ifEmpty { "None" }

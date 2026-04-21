@@ -43,6 +43,7 @@ object AccountsManager {
     private val scope = CoroutineScope(Dispatchers.IO)
 
     //账号相关
+    // Account related
     private val _accounts = CopyOnWriteArrayList<Account>()
     private val _accountsFlow = MutableStateFlow<List<Account>>(emptyList())
     val accountsFlow = _accountsFlow.asStateFlow()
@@ -51,12 +52,14 @@ object AccountsManager {
     val currentAccountFlow = _currentAccountFlow.asStateFlow()
 
     //认证服务器
+    // Auth server
     private val _authServers = CopyOnWriteArrayList<AuthServer>()
     private val _authServersFlow = MutableStateFlow<List<AuthServer>>(emptyList())
     val authServersFlow = _authServersFlow.asStateFlow()
 
     private val _refreshWardrobe = MutableStateFlow(false)
     /** 控制刷新所有账号衣橱 */
+    /** Control to refresh all account wardrobes */
     val refreshWardrobe = _refreshWardrobe.asStateFlow()
 
     private val _isOffline = MutableStateFlow(false)
@@ -68,6 +71,7 @@ object AccountsManager {
 
     /**
      * 初始化整个账号系统
+     * Initialize the entire account system
      */
     fun initialize(context: Context) {
         database = AppDatabase.getInstance(context)
@@ -77,6 +81,7 @@ object AccountsManager {
 
     /**
      * 刷新当前已登录的账号，已登录的账号保存在数据库中
+     * Refresh the currently logged-in account, logged-in accounts are saved in the database
      */
     fun reloadAccounts() {
         scope.launch {
@@ -86,6 +91,7 @@ object AccountsManager {
 
     /**
      * 刷新所有账号的衣橱
+     * Refresh all account wardrobes
      */
     fun refreshWardrobe() {
         _refreshWardrobe.update { !it }

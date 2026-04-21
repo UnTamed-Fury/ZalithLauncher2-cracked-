@@ -123,6 +123,7 @@ class ZLApplication : Application(), SingletonImageLoader.Factory {
                 MemoryCache.Builder()
                     .maxSizeBytes(20L * 1024 * 1024) // 20MB
                     .weakReferencesEnabled(true) //弱引用
+                    // Weak references
                     .build()
             }
             .diskCachePolicy(CachePolicy.ENABLED)
