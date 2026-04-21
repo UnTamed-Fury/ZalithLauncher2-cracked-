@@ -55,6 +55,7 @@ import java.net.URL
 
 /**
  * @return 当前网络是否可用
+ * @return Whether the current network is available
  */
 fun isNetworkAvailable(context: Context): Boolean {
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager ?: return false
@@ -67,6 +68,7 @@ fun isNetworkAvailable(context: Context): Boolean {
 
 /**
  * @return 当前是否正在使用移动网络
+ * @return Whether mobile data is currently in use
  */
 fun isUsingMobileData(context: Context): Boolean {
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager ?: return false
@@ -77,11 +79,17 @@ fun isUsingMobileData(context: Context): Boolean {
 
 /**
  * 同步下载文件到本地
+ * Synchronously download file to local
  * @param url 要下载的文件URL
+ * @param url The URL of the file to download
  * @param outputFile 要保存的目标文件
+ * @param outputFile The target file to save
  * @param bufferSize 缓冲区大小
+ * @param bufferSize Buffer size
  * @param sha1 文件SHA1验证值
+ * @param sha1 File SHA1 verification value
  * @param sizeCallback 正在下载的大小回调
+ * @param sizeCallback Callback for the size currently being downloaded
  */
 fun downloadFileWithHttp(
     url: String,
@@ -97,6 +105,7 @@ fun downloadFileWithHttp(
     while (true) {
         attempt++
         //本次尝试中已回调的大小
+        //Size that has been called back in this attempt
         var attemptReportedBytes = 0L
 
         try {
@@ -147,20 +156,24 @@ fun downloadFileWithHttp(
             }
 
             return //下载并验证成功
+            //Download and verification successful
         } catch (e: Exception) {
             FileUtils.deleteQuietly(outputFile)
 
             if (attemptReportedBytes > 0) {
                 //回退本次尝试的下载量
+                //Roll back the download volume of this attempt
                 sizeCallback(-attemptReportedBytes)
                 totalReportedBytes -= attemptReportedBytes
             }
 
             if (e.isInterruptedIOException()) {
-                lDebug("Download task cancelled. url: $url")
+                lDebug(\"Download task cancelled. url: $url\")
                 return //取消了，不需要抛出异常
+                //Cancelled, no need to throw exception
             } else if (e is FileNotFoundException) {
                 if (attempt >= maxAttempts) throw e //目标不存在
+                //Target does not exist
             } else {
                 if (attempt >= maxAttempts) {
                     throw IOException("Download failed after $maxAttempts attempts: $url", e)
@@ -172,11 +185,17 @@ fun downloadFileWithHttp(
 
 /**
  * 同步下载文件到本地
+ * Synchronously download file to local
  * @param url 要下载的文件URL
+ * @param url The URL of the file to download
  * @param outputFile 要保存的目标文件
+ * @param outputFile The target file to save
  * @param bufferSize 缓冲区大小
+ * @param bufferSize Buffer size
  * @param sha1 文件SHA1验证值
+ * @param sha1 File SHA1 verification value
  * @param sizeCallback 正在下载的大小回调
+ * @param sizeCallback Callback for the size currently being downloaded
  */
 suspend fun downloadFileSuspend(
     url: String,
@@ -198,11 +217,17 @@ suspend fun downloadFileSuspend(
 
 /**
  * 从多个下载地址中尝试下载
+ * Attempt to download from multiple download addresses
  * @param urls 要下载的文件链接列表
+ * @param urls List of file links to download
  * @param outputFile 要保存的目标文件
+ * @param outputFile The target file to save
  * @param bufferSize 缓冲区大小
+ * @param bufferSize Buffer size
  * @param sha1 文件SHA1验证值
+ * @param sha1 File SHA1 verification value
  * @param sizeCallback 正在下载的大小回调
+ * @param sizeCallback Callback for the size currently being downloaded
  */
 fun downloadFromMirrorList(
     urls: List<String>,
@@ -224,6 +249,7 @@ fun downloadFromMirrorList(
         while (attempt < maxAttempts) {
             attempt++
             //本次镜像尝试中已回调的大小
+            //Size that has been called back in this mirror attempt
             var mirrorAttemptReported = 0L
 
             try {
@@ -243,12 +269,14 @@ fun downloadFromMirrorList(
                     sizeCallback = mirrorCallback
                 )
                 return //下载成功
+                //Download successful
             } catch (e: Exception) {
                 FileUtils.deleteQuietly(outputFile)
                 lastException = e
 
                 if (mirrorAttemptReported > 0) {
                     //回退本次镜像尝试的下载量
+                    //Roll back the download volume of this mirror attempt
                     sizeCallback(-mirrorAttemptReported)
                     totalReportedBytes -= mirrorAttemptReported
                 }
@@ -274,11 +302,17 @@ fun downloadFromMirrorList(
 
 /**
  * 从多个下载地址中尝试下载
+ * Attempt to download from multiple download addresses
  * @param urls 要下载的文件链接列表
+ * @param urls List of file links to download
  * @param outputFile 要保存的目标文件
+ * @param outputFile The target file to save
  * @param bufferSize 缓冲区大小
+ * @param bufferSize Buffer size
  * @param sha1 文件SHA1验证值
+ * @param sha1 File SHA1 verification value
  * @param sizeCallback 正在下载的大小回调
+ * @param sizeCallback Callback for the size currently being downloaded
  */
 suspend fun downloadFromMirrorListSuspend(
     urls: List<String>,
@@ -300,10 +334,15 @@ suspend fun downloadFromMirrorListSuspend(
 
 /**
  * 同步获取 URL 返回的字符串内容
+ * Synchronously get the string content returned by the URL
  * @param url 要请求的URL地址
+ * @param url The URL address to request
  * @return 服务器返回的字符串内容
+ * @return The string content returned by the server
  * @throws IllegalArgumentException 当URL无效时
+ * @throws IllegalArgumentException When the URL is invalid
  * @throws IOException 当网络请求失败或响应解析失败时
+ * @throws IOException When the network request fails or response parsing fails
  */
 @Throws(IOException::class, IllegalArgumentException::class)
 suspend fun fetchStringFromUrl(url: String): String = withContext(Dispatchers.IO) {
@@ -322,10 +361,15 @@ suspend fun fetchStringFromUrl(url: String): String = withContext(Dispatchers.IO
 
 /**
  * 同步获取 URL 返回的字符串内容
+ * Synchronously get the string content returned by the URL
  * @param urls 要请求的URL源地址
+ * @param urls The source URL addresses to request
  * @return 服务器返回的字符串内容
+ * @return The string content returned by the server
  * @throws IllegalArgumentException 当URL无效时
+ * @throws IllegalArgumentException When the URL is invalid
  * @throws IOException 当网络请求失败或响应解析失败时
+ * @throws IOException When the network request fails or response parsing fails
  */
 @Throws(IOException::class, IllegalArgumentException::class)
 suspend fun fetchStringFromUrls(urls: List<String>): String = withContext(Dispatchers.IO) {
@@ -359,7 +403,9 @@ private fun <T> call(url: String, call: (Call) -> T): T {
 
 /**
  * 展示一个提示弹窗，告知用户接下来将要在浏览器内访问的链接，用户可以选择不进行访问
+ * Show a prompt dialog to inform the user of the link they are about to access in the browser; the user can choose not to access it
  * @param link 要访问的链接
+ * @param link The link to access
  */
 fun Activity.openLink(link: String) {
     this.openLink(link, null)
@@ -367,8 +413,11 @@ fun Activity.openLink(link: String) {
 
 /**
  * 展示一个提示弹窗，告知用户接下来将要在浏览器内访问的链接，用户可以选择不进行访问
+ * Show a prompt dialog to inform the user of the link they are about to access in the browser; the user can choose not to access it
  * @param link 要访问的链接
+ * @param link The link to access
  * @param dataType 设置 intent 的数据以及显式 MIME 数据类型
+ * @param dataType Set the intent's data and explicit MIME data type
  */
 fun Activity.openLink(link: String, dataType: String?) {
     if (link.isEmptyOrBlank()) {
@@ -393,6 +442,7 @@ fun Activity.openLink(link: String, dataType: String?) {
 
 /**
  * 直接在浏览器打开指定链接
+ * Open the specified link directly in the browser
  */
 fun Activity.openLinkInternal(link: String, dataType: String? = null) {
     try {
@@ -412,6 +462,7 @@ fun Activity.openLinkInternal(link: String, dataType: String? = null) {
 
 /**
  * 检查是不是单纯的中断异常，而不是网络超时导致的中断
+ * Check if it is a simple interruption exception rather than an interruption caused by network timeout
  */
 fun Throwable.isInterruptedIOException(): Boolean {
     return this is InterruptedIOException && this !is SocketTimeoutException
