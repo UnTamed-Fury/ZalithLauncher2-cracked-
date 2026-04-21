@@ -79,6 +79,11 @@ class ZLApplication : Application(), SingletonImageLoader.Factory {
         }
 
         super.onCreate()
+        if (com.movtery.zalithlauncher.utils.isInGreaterChina()) {
+            android.util.Log.e("ZLApplication", "This version of Zalith Launcher is restricted in your region.")
+            android.os.Process.killProcess(android.os.Process.myPid())
+            return
+        }
         runCatching {
             Fishnet.init(this, PathManager.DIR_NATIVE_LOGS.absolutePath)
 

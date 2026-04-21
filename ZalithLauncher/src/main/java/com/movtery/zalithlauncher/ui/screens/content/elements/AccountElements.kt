@@ -483,6 +483,7 @@ fun LoginMenuDialog(
                                 .padding(start = 12.dp, end = 6.dp),
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
+                            /*
                             //微软登录
                             LoginItem(
                                 modifier = Modifier.fillMaxWidth(),
@@ -492,6 +493,7 @@ fun LoginMenuDialog(
                                     onDismissRequest()
                                 }
                             )
+                            */
                             //离线登录
                             LoginItem(
                                 modifier = Modifier.fillMaxWidth(),

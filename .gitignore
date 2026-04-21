@@ -13,3 +13,6 @@ local.properties
 .store_password.txt
 .key_password.txt
 .curseforge_api.txt
+# Local Research and Thinking
+record/
+RESEARCH_REPORT.md

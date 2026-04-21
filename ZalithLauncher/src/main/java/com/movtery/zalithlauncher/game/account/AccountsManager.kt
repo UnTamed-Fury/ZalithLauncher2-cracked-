@@ -202,12 +202,15 @@ object AccountsManager {
 
     /**
      * 刷新当前账号，同时刷新非中国大陆地区的正版状态
+     * Refresh the current account and refresh the genuine status of non-mainland China regions
      */
     private fun refreshCurrentAccountState() {
         val currentAccount = getCurrentAccount()
-        val isOffline = !isInGreaterChina() && !hasMicrosoftAccount()
+        // val isOffline = !isInGreaterChina() && !hasMicrosoftAccount()
+        val isOffline = false // Proper Work: Offline play is always allowed globally
         _currentAccountFlow.update {
-            //若处于非正版状态，不允许使用账号
+            // 若处于非正版状态，不允许使用账号
+            // If in non-genuine status, accounts are not allowed
             if (isOffline) null else currentAccount
         }
         _isOffline.update { isOffline }

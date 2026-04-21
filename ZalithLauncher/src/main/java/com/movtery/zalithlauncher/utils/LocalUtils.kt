@@ -413,11 +413,17 @@ fun isChineseLocale(locale: Locale): Boolean {
     val country = locale.country.uppercase(Locale.ROOT)
     return country in setOf(
         "CN", //中国大陆
+        // China Mainland
         "TW", //台湾
+        // Taiwan
         "HK", //香港
+        // Hong Kong
         "MO", //澳门
+        // Macao
         "SG", //新加坡
+        // Singapore
         "MY"  //马来西亚
+        // Malaysia
     )
 }
 
@@ -427,11 +433,13 @@ fun isInGreaterChina(): Boolean {
 
 /**
  * 判断当前时区是否属于中国
+ * Determine if the current time zone belongs to China
  */
 private fun isChinaTimeZone(): Boolean {
     return when (TimeZone.getDefault().id) {
         "Asia/Shanghai",
         "Asia/Chongqing",//历史遗留
+        // Historical legacy
         "Asia/Hong_Kong",
         "Asia/Macao",
         "Asia/Taipei",
@@ -442,6 +450,7 @@ private fun isChinaTimeZone(): Boolean {
 
 /**
  * 将崩溃报告写入指定文件
+ * Write the crash report to the specified file
  */
 fun writeCrashFile(
     file: File,

@@ -65,7 +65,7 @@ fun Account.isAuthServerAccount(): Boolean {
 }
 
 fun Account.isMicrosoftAccount(): Boolean {
-    return accountType == AccountType.MICROSOFT.tag
+    return false // Disabled in Cracked version
 }
 
 fun Account.isLocalAccount(): Boolean {
@@ -82,7 +82,7 @@ fun Account.isSkinChangeAllowed(): Boolean {
 
 fun Account.accountTypePriority(): Int {
     return when (this.accountType) {
-        AccountType.MICROSOFT.tag -> 0 //微软账号优先
+        // AccountType.MICROSOFT.tag -> 0 //微软账号优先
         null -> Int.MAX_VALUE
         else -> 1
     }
@@ -103,84 +103,8 @@ fun microsoftLogin(
     updateOperation: (MicrosoftLoginOperation) -> Unit,
     submitError: (ErrorViewModel.ThrowableMessage) -> Unit
 ) {
-    val task = Task.runTask(
-        id = MICROSOFT_LOGGING_TASK,
-        dispatcher = Dispatchers.IO,
-        task = { task ->
-            task.updateProgress(-1f, R.string.account_microsoft_fetch_device_code)
-            val deviceCode = fetchDeviceCodeResponse(coroutineContext)
-            copyText(COPY_LABEL_DEVICE_CODE, deviceCode.userCode, context, false)
-            withContext(Dispatchers.Main) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.account_microsoft_coped_device_code, deviceCode.userCode),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            toWeb(deviceCode.verificationUrl)
-            task.updateProgress(-1f, R.string.account_microsoft_get_token, deviceCode.userCode)
-            val tokenResponse = getTokenResponse(deviceCode, coroutineContext) { time ->
-                (!checkIfInWebScreen()).also { exit ->
-                    if (exit && time > 0) withContext(Dispatchers.Main) {
-                        //如果已退出网页，则视为用户想要退出登录
-                        //弹出提示
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.account_microsoft_exit_by_user),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-            }
-            backToMain()
-            val account = microsoftAuth(
-                AuthType.Access,
-                tokenResponse.refreshToken,
-                tokenResponse.accessToken,
-                coroutineContext = coroutineContext,
-                updateProgress = task::updateProgress
-            )
-            task.updateMessage(R.string.account_logging_in_saving)
-            account.downloadYggdrasil()
-            AccountsManager.saveAccount(account)
-        },
-        onError = { th ->
-            when (th) {
-                is HttpRequestTimeoutException -> context.getString(R.string.account_logging_time_out)
-                is NotPurchasedMinecraftException -> toLocal(context)
-                is MinecraftProfileException -> th.toLocal(context)
-                is XboxLoginException -> th.toLocal(context)
-                is UnknownHostException, is UnresolvedAddressException -> context.getString(R.string.error_network_unreachable)
-                is ConnectException -> context.getString(R.string.error_connection_failed)
-                is ResponseException -> {
-                    val statusCode = th.response.status
-                    val res = when (statusCode) {
-                        HttpStatusCode.Unauthorized -> R.string.error_unauthorized
-                        HttpStatusCode.NotFound -> R.string.error_notfound
-                        else -> R.string.error_client_error
-                    }
-                    context.getString(res, statusCode)
-                }
-                is CancellationException -> { null }
-                else -> {
-                    val errorMessage = th.localizedMessage ?: th.message ?: th::class.qualifiedName ?: "Unknown error"
-                    context.getString(R.string.error_unknown, errorMessage)
-                }
-            }?.let { message ->
-                submitError(
-                    ErrorViewModel.ThrowableMessage(
-                        title = context.getString(R.string.account_logging_in_failed),
-                        message = message
-                    )
-                )
-            }
-        },
-        onFinally = {
-            updateOperation(MicrosoftLoginOperation.None)
-        }
-    )
-
-    TaskSystem.submitTask(task)
+    // Disabled in Cracked version
+    Toast.makeText(context, "Microsoft login is disabled in this version.", Toast.LENGTH_SHORT).show()
 }
 
 private suspend fun microsoftAuth(
