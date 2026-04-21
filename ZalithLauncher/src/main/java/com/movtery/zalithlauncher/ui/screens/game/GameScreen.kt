@@ -149,27 +149,37 @@ private class GameViewModel(
     private val onChangeTextInputMode: (TextInputMode?) -> Unit
 ) : ViewModel() {
     /** 游戏菜单操作状态 */
+    /** Game menu operation state */
     var gameMenuState by mutableStateOf(MenuState.NONE)
     /** 游戏菜单-控制设置区域Tab选择的索引 */
+    /** Game menu - selected tab index in control settings area */
     var controlMenuTabIndex by mutableIntStateOf(0)
     /** 强制关闭弹窗操作状态 */
+    /** Force close dialog operation state */
     var forceCloseState by mutableStateOf<ForceCloseOperation>(ForceCloseOperation.None)
     /** 发送键值操作状态 */
+    /** Send keycode operation state */
     var sendKeycodeState by mutableStateOf<SendKeycodeState>(SendKeycodeState.None)
     /** 更换控制布局操作状态 */
+    /** Replacement control layout operation state */
     var replacementControlState by mutableStateOf<ReplacementControlState>(ReplacementControlState.None)
     /** 被控制布局层标记为仅滑动的指针列表 */
+    /** Pointer list marked as move-only by the control layout layer */
     var moveOnlyPointers = mutableSetOf<PointerId>()
     /** 鼠标触摸指针处理层占用指针列表 */
+    /** Pointer list occupied by the mouse touch pointer processing layer */
     var occupiedPointers = mutableSetOf<PointerId>()
 
     /** 游戏内帧率状态 */
+    /** In-game FPS state */
     var gameFps by mutableIntStateOf(0)
         private set
     private var fpsJob: Job? = null
     /** 开始帧率捕获 */
+    /** Start FPS capture */
     fun startFpsCapture() {
         //开启一个新的协程，每秒更新一次帧率数据
+        //Start a new coroutine to update FPS data every second
         fpsJob = viewModelScope.launch(Dispatchers.Default) {
             while (true) {
                 runCatching {
@@ -189,8 +199,10 @@ private class GameViewModel(
     }
 
     /** 启动器默认摇杆样式 */
+    /** Default launcher joystick style */
     var launcherJoystickStyle by mutableStateOf(DefaultObservableJoystickStyle)
     /** 保存启动器默认摇杆样式 */
+    /** Save the default launcher joystick style */
     fun saveLauncherJoystickStyle(
         onFailed: (Throwable) -> Unit,
         onSuccess: suspend () -> Unit
