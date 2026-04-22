@@ -224,7 +224,7 @@ fun AboutInfoScreen(
                         ButtonIconItem(
                             icon = painterResource(R.drawable.ic_chat_info),
                             title = stringResource(R.string.about_ecosystem_community),
-                            text = stringResource(R.string.about_fork_discord_text),
+                            text = stringResource(R.string.about_fork_join_discord),
                             button = {
                                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                     OutlinedButton(onClick = { openLink(URL_COMMUNITY) }) {
@@ -267,7 +267,7 @@ fun AboutInfoScreen(
                                         OutlinedButton(onClick = { openLink(URL_BASE_PROJECT) }) {
                                             Text(text = stringResource(R.string.about_base_github))
                                         }
-                                        OutlinedButton(onClick = { openLicense(R.raw.gpl_3_license) }) {
+                                        OutlinedButton(onClick = { openLicense(R.raw.lgpl_3_license) }) {
                                             Text(text = "License")
                                         }
                                     }
