@@ -160,7 +160,7 @@ fun AboutInfoScreen(
                         )
 
                         ButtonIconItem(
-                            icon = painterResource(R.drawable.ic_discord),
+                            icon = painterResource(R.drawable.ic_chat_info),
                             title = "Discord Community",
                             text = stringResource(R.string.about_fork_discord_text),
                             button = {
