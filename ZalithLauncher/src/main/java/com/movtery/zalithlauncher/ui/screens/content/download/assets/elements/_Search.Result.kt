@@ -215,7 +215,11 @@ fun ResultListLayout(
 
                 ScalingLabel(
                     modifier = Modifier.align(Alignment.Center),
-                    text = stringResource(R.string.download_assets_failed_to_get_result, message),
+                    text = if (state.message == R.string.feature_disabled_curseforge) {
+                        stringResource(R.string.generic_restricted) + ": " + message
+                    } else {
+                        stringResource(R.string.download_assets_failed_to_get_result, message)
+                    },
                     onClick = onReload
                 )
             }

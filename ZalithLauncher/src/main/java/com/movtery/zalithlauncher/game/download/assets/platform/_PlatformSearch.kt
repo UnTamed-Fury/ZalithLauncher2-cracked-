@@ -110,12 +110,17 @@ fun mirroredCurseForgeSource(
 ): List<CurseForgeSearcher> {
     val source = AllSettings.assetSearchSource.getValue()
     val mirrorSource = mirrorCurseForgeSearcher.takeIf { enabledMirror }
-    return when (source) {
+    val searchers = when (source) {
         MirrorSourceType.OFFICIAL_FIRST ->
             listOfNotNull(curseForgeSearcher, mirrorSource)
         MirrorSourceType.MIRROR_FIRST ->
             listOfNotNull(mirrorSource, curseForgeSearcher)
     }
+    // Proper Work: If no mirror is available (international users), throw error to show disabled message
+    if (searchers.all { it.apiKey == null && it.api == CURSEFORGE_API }) {
+        throw IllegalStateException("CURSEFORGE_DISABLED")
+    }
+    return searchers
 }
 
 /**

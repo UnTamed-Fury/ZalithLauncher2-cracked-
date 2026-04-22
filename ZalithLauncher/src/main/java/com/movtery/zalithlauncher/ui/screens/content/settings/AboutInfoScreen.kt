@@ -57,7 +57,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.movtery.zalithlauncher.BuildConfig
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.game.plugin.ApkPlugin
@@ -147,7 +149,12 @@ fun AboutInfoScreen(
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         ButtonIconItem(
-                            icon = painterResource(R.drawable.ic_github),
+                            icon = rememberAsyncImagePainter(
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data("https://avatars.githubusercontent.com/u/168332215?v=4")
+                                    .crossfade(true)
+                                    .build()
+                            ),
                             title = stringResource(R.string.about_fork_contributor_title),
                             text = stringResource(R.string.about_fork_contributor_text),
                             button = {
@@ -165,7 +172,7 @@ fun AboutInfoScreen(
                             text = stringResource(R.string.about_fork_discord_text),
                             button = {
                                 OutlinedButton(
-                                    onClick = { openLink("https://discord.gg/your-link-here") }
+                                    onClick = { openLink("https://discord.gg/dwYVAbuhyW") }
                                 ) {
                                     Text(text = "Join Discord")
                                 }

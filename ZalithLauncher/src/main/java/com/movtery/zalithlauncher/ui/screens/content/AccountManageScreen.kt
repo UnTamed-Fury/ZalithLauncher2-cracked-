@@ -257,8 +257,9 @@ private fun AccountManageContent(
         )
     }
 
+    val context = LocalContext.current
     LoginMenuOperation(loginUiState.menuOp, actions, profileUiState.authServers)
-    MicrosoftLoginOperation(loginUiState.microsoftOp, actions)
+    MicrosoftLoginOperation(loginUiState.microsoftOp, actions, context)
     LocalLoginOperation(loginUiState.localOp, actions)
     OtherLoginOperation(loginUiState.otherOp, actions)
     ServerTypeOperation(operationUiState.serverOp, actions)
@@ -418,7 +419,8 @@ private fun LoginMenuOperation(
 @Composable
 private fun MicrosoftLoginOperation(
     operation: MicrosoftLoginOperation,
-    actions: AccountActions
+    actions: AccountActions,
+    context: Context
 ) {
     when (operation) {
         is MicrosoftLoginOperation.None -> {}
@@ -437,13 +439,11 @@ private fun MicrosoftLoginOperation(
                             MicrosoftLoginOperation.None
                         )
                     )
-                    actions.onIntent(
-                        AccountManageIntent.PerformMicrosoftLogin(
-                            toWeb = actions.navigateToWeb,
-                            backToMain = actions.backToMainScreen,
-                            checkIfInWebScreen = actions.checkIfInWebScreen
-                        )
-                    )
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.feature_disabled_microsoft_auth),
+                        Toast.LENGTH_LONG
+                    ).show()
                 },
                 openLink = actions.openLink
             )

@@ -156,6 +156,9 @@ private fun downloadSingleFile(
 }
 
 fun mapExceptionToMessage(e: Throwable): Pair<Int, Array<Any>?> {
+    if (e.message == "CURSEFORGE_DISABLED") {
+        return Pair(R.string.feature_disabled_curseforge, null)
+    }
     return when (e) {
         is HttpRequestTimeoutException -> Pair(R.string.error_timeout, null)
         is UnknownHostException, is UnresolvedAddressException -> Pair(R.string.error_network_unreachable, null)

@@ -3,6 +3,7 @@
     <string name="generic_cancel">Cancel</string>
     <string name="generic_confirm">Confirm</string>
     <string name="generic_error">Error</string>
+    <string name="generic_restricted">Feature Restricted</string>
     <string name="generic_tip">Tip</string>
     <string name="generic_warning">Warning</string>
     <string name="generic_back">Back</string>
@@ -1178,6 +1179,9 @@
     <string name="about_fork_contributor_text">Lead maintainer of the Cracked Fork modifications</string>
     <string name="about_fork_discord_text">Join our Discord community for support and updates</string>
     <string name="about_fork_github_link">Fork GitHub</string>
+    <string name="feature_disabled_microsoft_auth">Official Microsoft Authentication is currently disabled in this fork. Please use an Offline account or provide a custom OAuth Client ID.</string>
+    <string name="feature_disabled_curseforge">CurseForge integration is temporarily unavailable as this fork does not bundle an API key. Support for other platforms remains active.</string>
+    <string name="account_supporting_microsoft_tip_hint_t6">Official login is currently restricted. Please check the "Cracked Fork" section in About for more information.</string>
     <string name="about_sponsor">Sponsorship Support</string>
     <string name="about_acknowledgements_title">Acknowledgements</string>
     <string name="about_acknowledgements_pojav_text">%s uses the launch backend from PojavLauncher</string>
