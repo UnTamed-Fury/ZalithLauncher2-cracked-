@@ -145,17 +145,6 @@ fun AboutInfoScreen(
                                 }
                             }
                         )
-                        Column(modifier = Modifier.padding(horizontal = 4.dp)) {
-                            Text(
-                                text = stringResource(R.string.about_fork_status),
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            Text(
-                                text = stringResource(R.string.about_fork_status_text),
-                                style = MaterialTheme.typography.bodySmall
-                            )
-                        }
                     }
                 }
             }

@@ -1177,8 +1177,6 @@
     <string name="about_fork_primary_title">Fork Build (Primary)</string>
     <string name="about_fork_name">Zalith Launcher 2 — Fork</string>
     <string name="about_fork_maintained_by">Maintained by</string>
-    <string name="about_fork_status">Status</string>
-    <string name="about_fork_status_text">Active Development • Community Driven</string>
     <string name="about_fork_releases_link">Releases / Download</string>
     <string name="about_fork_join_discord">Join Discord</string>
 
