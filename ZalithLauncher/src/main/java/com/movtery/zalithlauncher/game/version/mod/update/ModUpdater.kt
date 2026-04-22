@@ -45,9 +45,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 import org.apache.commons.io.FileUtils
 import java.io.File
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * 全自动模组检查更新，自动检查传入的模组列表，检查并获取模组最新版本，匹配现有MC版本、现有模组加载器
@@ -193,22 +196,39 @@ class ModUpdater(
                     dataList.addAll(loadedData)
                 }
 
-                //检查更新
+                // 检查更新
                 addTask(
                     id = "ModUpdater.CheckUpdate",
                     title = context.getString(R.string.mods_update_task_check_update),
                     icon = Icons.Default.Checklist
                 ) { task ->
-                    dataList.forEachIndexed { index, data ->
-                        task.updateProgress(
-                            percentage = (index + 1).toFloat() / dataList.size,
-                            message = R.string.empty_holder,
-                            data.project.title
-                        )
-                        // 检查更新
-                        data.checkUpdate(minecraft, modLoader)?.let { version ->
-                            allModsUpdate[data] = version
+                    // 最大并发数为 5
+                    val semaphore = Semaphore(5)
+                    val completedCount = AtomicInteger(0)
+                    val totalSize = dataList.size
+
+                    val updateResults = dataList.map { data ->
+                        async(Dispatchers.IO) {
+                            semaphore.withPermit {
+                                // 检查更新
+                                val version = data.checkUpdate(minecraft, modLoader)
+
+                                // 线程安全地更新进度条：以完成的数量来计算进度
+                                val currentCompleted = completedCount.incrementAndGet()
+                                task.updateProgress(
+                                    percentage = currentCompleted.toFloat() / totalSize,
+                                    message = R.string.empty_holder,
+                                    data.project.title
+                                )
+
+                                // 如果有新版本，返回键值对；否则返回 null
+                                if (version != null) data to version else null
+                            }
                         }
+                    }.awaitAll().filterNotNull() // 等待所有任务完成，并过滤掉不需要更新的 null 结果
+
+                    updateResults.forEach { (data, version) ->
+                        allModsUpdate[data] = version
                     }
 
                     if (allModsUpdate.isEmpty()) {
