@@ -391,10 +391,3 @@ class ModUpdater(
         return this
     }
 }
-
-    private fun File.createDirAndLog(): File {
-        this.mkdirs()
-        lDebug("Created directory: $this")
-        return this
-    }
-}

@@ -134,9 +134,3 @@ data class ModData(
         }
     }
 }
-            }.onFailure { th ->
-                lWarning("An error occurred while fetching all versions of the mod.", th)
-            }.getOrNull()
-        }
-    }
-}
