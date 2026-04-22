@@ -86,13 +86,7 @@ import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.CardPosition
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.SettingsCard
 
-import com.movtery.zalithlauncher.path.URL_BASE_PROJECT
-import com.movtery.zalithlauncher.path.URL_DEV_ALT_DISCORD
-import com.movtery.zalithlauncher.path.URL_DEV_DISCORD
-import com.movtery.zalithlauncher.path.URL_DEV_GITHUB
-import com.movtery.zalithlauncher.path.URL_DEV_INSTAGRAM
-import com.movtery.zalithlauncher.path.URL_MOVTERY_SUPPORT
-import com.movtery.zalithlauncher.path.URL_PROJECT_RELEASES
+import com.movtery.zalithlauncher.path.URL_DEV_SUPPORT
 
 @Composable
 fun AboutInfoScreen(
@@ -112,7 +106,7 @@ fun AboutInfoScreen(
             isVisible = isVisible,
             contentPadding = PaddingValues(all = 12.dp)
         ) { scope ->
-            // CARD: FORK BUILD (PRIMARY)
+            // CARD 1: FORK BUILD (PRIMARY)
             animatedItem(scope) { yOffset ->
                 ChunkLayout(
                     modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
@@ -122,23 +116,23 @@ fun AboutInfoScreen(
                         ButtonIconItem(
                             icon = painterResource(R.drawable.img_launcher),
                             title = stringResource(R.string.about_fork_name),
-                            text = stringResource(R.string.about_fork_maintained_by) + ": " + stringResource(R.string.about_developer_handle_github_value),
+                            text = stringResource(R.string.about_fork_maintained_by) + ": Untamed Fury",
                             button = {
                                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        OutlinedButton(onClick = checkUpdate) {
+                                            Text(text = stringResource(R.string.upgrade_title))
+                                        }
                                         OutlinedButton(onClick = { openLink(URL_PROJECT) }) {
                                             Text(text = stringResource(R.string.about_launcher_project_link))
                                         }
-                                        OutlinedButton(onClick = { openLink(URL_PROJECT_RELEASES) }) {
-                                            Text(text = stringResource(R.string.about_fork_releases_link))
-                                        }
                                     }
                                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                        OutlinedButton(onClick = { openLink(URL_DEV_DISCORD) }) {
+                                        OutlinedButton(onClick = { openLink(URL_COMMUNITY_DISCORD) }) {
                                             Text(text = stringResource(R.string.about_fork_join_discord))
                                         }
-                                        OutlinedButton(onClick = { openLink(URL_COMMUNITY) }) {
-                                            Text(text = stringResource(R.string.about_acknowledgements_github_community))
+                                        OutlinedButton(onClick = { openLink(URL_DEV_SUPPORT) }) {
+                                            Text(text = stringResource(R.string.about_ecosystem_support))
                                         }
                                     }
                                 }
@@ -159,7 +153,7 @@ fun AboutInfoScreen(
                 }
             }
 
-            // CARD: DEVELOPER (UNTAMED FURY)
+            // CARD 2: DEVELOPER (UNTAMED FURY)
             animatedItem(scope) { yOffset ->
                 ChunkLayout(
                     modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
@@ -181,76 +175,26 @@ fun AboutInfoScreen(
                                         OutlinedButton(onClick = { openLink(URL_DEV_GITHUB) }) {
                                             Text(text = stringResource(R.string.about_developer_handle_github))
                                         }
-                                        OutlinedButton(onClick = { openLink(URL_DEV_DISCORD) }) {
-                                            Text(text = stringResource(R.string.about_developer_handle_discord))
-                                        }
-                                    }
-                                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                         OutlinedButton(onClick = { openLink(URL_DEV_INSTAGRAM) }) {
                                             Text(text = stringResource(R.string.about_developer_handle_instagram))
                                         }
+                                    }
+                                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        OutlinedButton(onClick = { openLink(URL_DEV_DISCORD) }) {
+                                            Text(text = stringResource(R.string.about_developer_handle_discord_main))
+                                        }
                                         OutlinedButton(onClick = { openLink(URL_DEV_ALT_DISCORD) }) {
-                                            Text(text = stringResource(R.string.about_developer_alt_discord))
+                                            Text(text = stringResource(R.string.about_developer_handle_discord_alt))
                                         }
                                     }
                                 }
                             }
                         )
-                        Column(
-                            modifier = Modifier.padding(horizontal = 4.dp),
-                            verticalArrangement = Arrangement.spacedBy(4.dp)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.about_developer_handles),
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            HandleRow(stringResource(R.string.about_developer_handle_github), stringResource(R.string.about_developer_handle_github_value))
-                            HandleRow(stringResource(R.string.about_developer_handle_discord), stringResource(R.string.about_developer_handle_discord_value))
-                            HandleRow(stringResource(R.string.about_developer_handle_alt_tag), stringResource(R.string.about_developer_handle_alt_tag_value))
-                            HandleRow(stringResource(R.string.about_developer_handle_instagram), stringResource(R.string.about_developer_handle_instagram_value))
-                        }
                     }
                 }
             }
 
-            // CARD: PROJECT ECOSYSTEM
-            animatedItem(scope) { yOffset ->
-                ChunkLayout(
-                    modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
-                    title = stringResource(R.string.about_ecosystem_title)
-                ) {
-                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        ButtonIconItem(
-                            icon = painterResource(R.drawable.ic_chat_info),
-                            title = stringResource(R.string.about_ecosystem_community),
-                            text = stringResource(R.string.about_fork_join_discord),
-                            button = {
-                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    OutlinedButton(onClick = { openLink(URL_COMMUNITY) }) {
-                                        Text(text = stringResource(R.string.about_acknowledgements_github_community))
-                                    }
-                                    OutlinedButton(onClick = { openLink(URL_WEBLATE) }) {
-                                        Text(text = "Weblate")
-                                    }
-                                }
-                            }
-                        )
-                        ButtonIconItem(
-                            icon = painterResource(R.drawable.ic_chat_info),
-                            title = stringResource(R.string.about_ecosystem_support),
-                            text = "Support the development of this fork",
-                            button = {
-                                OutlinedButton(onClick = checkUpdate) {
-                                    Text(text = stringResource(R.string.upgrade_title))
-                                }
-                            }
-                        )
-                    }
-                }
-            }
-
-            // CARD: ORIGINAL PROJECT
+            // CARD 4: ORIGINAL PROJECT
             animatedItem(scope) { yOffset ->
                 ChunkLayout(
                     modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
@@ -281,7 +225,7 @@ fun AboutInfoScreen(
                 }
             }
 
-            // CARD: ACKNOWLEDGEMENTS
+            // CARD 5: ACKNOWLEDGEMENTS
             animatedItem(scope) { yOffset ->
                 ChunkLayout(
                     modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
@@ -386,13 +330,132 @@ fun AboutInfoScreen(
 }
 
 @Composable
-private fun HandleRow(label: String, value: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+private fun AcknowledgementSection(title: String, content: @Composable ColumnScope.() -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.padding(start = 4.dp, top = 4.dp)
+        )
+        content()
+    }
+}
+
+@Composable
+private fun ChunkLayout(
+    modifier: Modifier = Modifier,
+    title: String,
+    content: @Composable () -> Unit
+) {
+    SettingsCard(
+        modifier = modifier,
+        position = CardPosition.Single
     ) {
-        Text(text = label + "    :", style = MaterialTheme.typography.bodySmall, modifier = Modifier.alpha(0.7f))
-        Text(text = value, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
+        Column(modifier = Modifier.fillMaxWidth()) {
+            CardTitleLayout {
+                Text(
+                    modifier = Modifier.padding(all = 16.dp),
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = 12.dp)
+            ) {
+                content()
+            }
+        }
+    }
+}
+
+@Composable
+private fun LinkIconItem(
+    modifier: Modifier = Modifier,
+    icon: Painter,
+    title: String,
+    text: String,
+    openLicense: (() -> Unit)? = null,
+    openLink: (() -> Unit)? = null,
+    color: Color = itemLayoutColor(),
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    shadowElevation: Dp = itemLayoutShadowElevation(),
+    useImage: Boolean = true
+) {
+    Surface(
+        modifier = modifier,
+        color = color,
+        contentColor = contentColor,
+        shape = MaterialTheme.shapes.large,
+        shadowElevation = shadowElevation,
+        onClick = {}
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 14.dp, vertical = 8.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val iconModifier = Modifier
+                .size(34.dp)
+                .clip(shape = RoundedCornerShape(6.dp))
+            if (useImage) {
+                Image(
+                    modifier = iconModifier,
+                    painter = icon,
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit
+                )
+            } else {
+                Icon(
+                    modifier = iconModifier,
+                    painter = icon,
+                    contentDescription = null
+                )
+            }
+
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall
+                )
+                Text(
+                    modifier = Modifier.alpha(0.7f),
+                    text = text,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            Row {
+                openLicense?.let {
+                    IconButton(
+                        onClick = it
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(22.dp),
+                            imageVector = Icons.Outlined.Copyright,
+                            contentDescription = "License"
+                        )
+                    }
+                }
+                openLink?.let {
+                    IconButton(
+                        onClick = it
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Link,
+                            contentDescription = stringResource(R.string.generic_open_link)
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 

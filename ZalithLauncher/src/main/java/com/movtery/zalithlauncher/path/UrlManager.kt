@@ -46,9 +46,12 @@ const val URL_COMMUNITY: String = "https://github.com/UnTamed-Fury/ZalithLaunche
 const val URL_WEBLATE: String = "https://hosted.weblate.org/projects/zalithlauncher2"
 
 const val URL_DEV_GITHUB: String = "https://github.com/UnTamed-Fury"
-const val URL_DEV_DISCORD: String = "https://discord.gg/dwYVAbuhyW"
+const val URL_DEV_DISCORD: String = "https://discord.com/users/1130510553266278501"
 const val URL_DEV_INSTAGRAM: String = "https://www.instagram.com/untamed_fury_"
-const val URL_DEV_ALT_DISCORD: String = "https://discord.com/users/1449434581374730391"
+const val URL_DEV_ALT_DISCORD: String = "https://discord.com/users/756132198578651196"
+
+const val URL_COMMUNITY_DISCORD: String = "https://discord.gg/dwYVAbuhyW"
+const val URL_DEV_SUPPORT: String = "https://buymeacoffee.com/UnTamedFury"
 
 const val URL_BASE_PROJECT: String = "https://github.com/ZalithLauncher/ZalithLauncher2"
 const val URL_MOVTERY_SUPPORT: String = "https://ifdian.net/a/MovTery"

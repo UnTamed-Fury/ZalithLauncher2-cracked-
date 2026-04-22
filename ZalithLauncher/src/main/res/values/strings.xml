@@ -1184,20 +1184,13 @@
 
     <string name="about_developer_title">Developer (Untamed Fury)</string>
     <string name="about_developer_presence">Profiles &amp; Presence</string>
-    <string name="about_developer_handles">Handles</string>
-    <string name="about_developer_handle_github">GitHub</string>
-    <string name="about_developer_handle_discord">Discord</string>
-    <string name="about_developer_handle_alt_tag">Alt Tag</string>
+    <string name="about_developer_handle_github">GitHub Profile</string>
     <string name="about_developer_handle_instagram">Instagram</string>
-    <string name="about_developer_handle_github_value">Untamed Fury</string>
-    <string name="about_developer_handle_discord_value">untamed_fury</string>
-    <string name="about_developer_handle_alt_tag_value">enchanted netherite sword</string>
-    <string name="about_developer_handle_instagram_value">untamed_fury_</string>
+    <string name="about_developer_handle_discord_main">Discord Main</string>
+    <string name="about_developer_handle_discord_alt">Discord Alt</string>
     <string name="about_developer_alt_discord">Alt Discord</string>
 
-    <string name="about_ecosystem_title">Project Ecosystem</string>
-    <string name="about_ecosystem_community">Community &amp; Contribution</string>
-    <string name="about_ecosystem_support">Support Project</string>
+    <string name="about_ecosystem_support">Support the Project</string>
 
     <string name="about_base_title">Original Project</string>
     <string name="about_base_name">Zalith Launcher (Base)</string>
