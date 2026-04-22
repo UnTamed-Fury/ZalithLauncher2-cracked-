@@ -40,9 +40,19 @@ const val URL_MINECRAFT_VERSION_REPOS: String = "https://piston-meta.mojang.com/
 const val URL_MINECRAFT_ASSETS_INDEX: String = "https://launchermeta.mojang.com/v1/packages"
 const val URL_MINECRAFT_PURCHASE = "https://www.xbox.com/games/store/minecraft-java-bedrock-edition-for-pc/9nxp44l49shj"
 const val URL_PROJECT: String = "https://github.com/UnTamed-Fury/ZalithLauncher2-cracked-"
+const val URL_PROJECT_RELEASES: String = "https://github.com/UnTamed-Fury/ZalithLauncher2-cracked-/releases"
 const val URL_PROJECT_INFO: String = "https://api.github.com/repos/UnTamed-Fury/Zalith-Info/contents/v2"
 const val URL_COMMUNITY: String = "https://github.com/UnTamed-Fury/ZalithLauncher2-cracked-/graphs/contributors"
 const val URL_WEBLATE: String = "https://hosted.weblate.org/projects/zalithlauncher2"
+
+const val URL_DEV_GITHUB: String = "https://github.com/UnTamed-Fury"
+const val URL_DEV_DISCORD: String = "https://discord.gg/dwYVAbuhyW"
+const val URL_DEV_INSTAGRAM: String = "https://www.instagram.com/untamed_fury_"
+const val URL_DEV_ALT_DISCORD: String = "https://discord.com/users/1449434581374730391"
+
+const val URL_BASE_PROJECT: String = "https://github.com/ZalithLauncher/ZalithLauncher2"
+const val URL_MOVTERY_SUPPORT: String = "https://ifdian.net/a/MovTery"
+
 const val URL_SUPPORT: String = "https://ifdian.net/a/MovTery"
 const val URL_EASYTIER: String = "https://easytier.cn/"
 

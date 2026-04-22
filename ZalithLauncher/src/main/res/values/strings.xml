@@ -1174,11 +1174,40 @@
     <string name="about_launcher_author_movtery_title">MovTery</string>
     <string name="about_launcher_author_movtery_text">Author of %s</string>
     <string name="about_launcher_project_link">Project Link</string>
-    <string name="about_fork_title">Cracked Fork</string>
-    <string name="about_fork_contributor_title">UnTamed Fury</string>
-    <string name="about_fork_contributor_text">Lead maintainer of the Cracked Fork modifications</string>
-    <string name="about_fork_discord_text">Join our Discord community for support and updates</string>
-    <string name="about_fork_github_link">Fork GitHub</string>
+    <string name="about_fork_primary_title">Fork Build (Primary)</string>
+    <string name="about_fork_name">Zalith Launcher 2 — Fork</string>
+    <string name="about_fork_maintained_by">Maintained by</string>
+    <string name="about_fork_status">Status</string>
+    <string name="about_fork_status_text">Active Development • Community Driven</string>
+    <string name="about_fork_releases_link">Releases / Download</string>
+    <string name="about_fork_join_discord">Join Discord</string>
+
+    <string name="about_developer_title">Developer (Untamed Fury)</string>
+    <string name="about_developer_presence">Profiles &amp; Presence</string>
+    <string name="about_developer_handles">Handles</string>
+    <string name="about_developer_handle_github">GitHub</string>
+    <string name="about_developer_handle_discord">Discord</string>
+    <string name="about_developer_handle_alt_tag">Alt Tag</string>
+    <string name="about_developer_handle_instagram">Instagram</string>
+    <string name="about_developer_handle_github_value">Untamed Fury</string>
+    <string name="about_developer_handle_discord_value">untamed_fury</string>
+    <string name="about_developer_handle_alt_tag_value">enchanted netherite sword</string>
+    <string name="about_developer_handle_instagram_value">untamed_fury_</string>
+    <string name="about_developer_alt_discord">Alt Discord</string>
+
+    <string name="about_ecosystem_title">Project Ecosystem</string>
+    <string name="about_ecosystem_community">Community &amp; Contribution</string>
+    <string name="about_ecosystem_support">Support Project</string>
+
+    <string name="about_base_title">Original Project</string>
+    <string name="about_base_name">Zalith Launcher (Base)</string>
+    <string name="about_base_created_by">Created by</string>
+    <string name="about_base_github">Official GitHub</string>
+    <string name="about_base_support">Support Movtery</string>
+
+    <string name="about_acknowledgements_launchers">Launchers / Projects</string>
+    <string name="about_acknowledgements_platforms">Platforms</string>
+    <string name="about_acknowledgements_community_title">Community</string>
     <string name="feature_disabled_microsoft_auth">Official Microsoft Authentication is currently disabled in this fork. Please use an Offline account or provide a custom OAuth Client ID.</string>
     <string name="feature_disabled_curseforge">CurseForge integration is temporarily unavailable as this fork does not bundle an API key. Support for other platforms remains active.</string>
     <string name="about_sponsor">Sponsorship Support</string>

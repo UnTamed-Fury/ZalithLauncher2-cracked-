@@ -22,6 +22,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -52,6 +53,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -84,6 +86,14 @@ import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.CardPosition
 import com.movtery.zalithlauncher.ui.screens.content.settings.layouts.SettingsCard
 
+import com.movtery.zalithlauncher.path.URL_BASE_PROJECT
+import com.movtery.zalithlauncher.path.URL_DEV_ALT_DISCORD
+import com.movtery.zalithlauncher.path.URL_DEV_DISCORD
+import com.movtery.zalithlauncher.path.URL_DEV_GITHUB
+import com.movtery.zalithlauncher.path.URL_DEV_INSTAGRAM
+import com.movtery.zalithlauncher.path.URL_MOVTERY_SUPPORT
+import com.movtery.zalithlauncher.path.URL_PROJECT_RELEASES
+
 @Composable
 fun AboutInfoScreen(
     key: NestedNavKey.Settings,
@@ -102,50 +112,58 @@ fun AboutInfoScreen(
             isVisible = isVisible,
             contentPadding = PaddingValues(all = 12.dp)
         ) { scope ->
+            // CARD: FORK BUILD (PRIMARY)
             animatedItem(scope) { yOffset ->
                 ChunkLayout(
                     modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
-                    title = stringResource(R.string.about_launcher_title)
+                    title = stringResource(R.string.about_fork_primary_title)
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         ButtonIconItem(
                             icon = painterResource(R.drawable.img_launcher),
-                            title = InfoDistributor.LAUNCHER_NAME,
-                            text = stringResource(R.string.about_launcher_version, BuildConfig.VERSION_NAME),
+                            title = stringResource(R.string.about_fork_name),
+                            text = stringResource(R.string.about_fork_maintained_by) + ": " + stringResource(R.string.about_developer_handle_github_value),
                             button = {
-                                OutlinedButton(
-                                    onClick = checkUpdate
-                                ) {
-                                    Text(text = stringResource(R.string.upgrade_title))
-                                }
-                                OutlinedButton(
-                                    onClick = { openLink(URL_PROJECT) }
-                                ) {
-                                    Text(text = stringResource(R.string.about_launcher_project_link))
+                                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        OutlinedButton(onClick = { openLink(URL_PROJECT) }) {
+                                            Text(text = stringResource(R.string.about_launcher_project_link))
+                                        }
+                                        OutlinedButton(onClick = { openLink(URL_PROJECT_RELEASES) }) {
+                                            Text(text = stringResource(R.string.about_fork_releases_link))
+                                        }
+                                    }
+                                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        OutlinedButton(onClick = { openLink(URL_DEV_DISCORD) }) {
+                                            Text(text = stringResource(R.string.about_fork_join_discord))
+                                        }
+                                        OutlinedButton(onClick = { openLink(URL_COMMUNITY) }) {
+                                            Text(text = stringResource(R.string.about_acknowledgements_github_community))
+                                        }
+                                    }
                                 }
                             }
                         )
-
-                        ButtonIconItem(
-                            icon = painterResource(R.drawable.img_movtery),
-                            title = stringResource(R.string.about_launcher_author_movtery_title),
-                            text = stringResource(R.string.about_launcher_author_movtery_text, InfoDistributor.LAUNCHER_NAME),
-                            button = {
-                                OutlinedButton(
-                                    onClick = { openLink(URL_SUPPORT) }
-                                ) {
-                                    Text(text = stringResource(R.string.about_sponsor))
-                                }
-                            }
-                        )
+                        Column(modifier = Modifier.padding(horizontal = 4.dp)) {
+                            Text(
+                                text = stringResource(R.string.about_fork_status),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Text(
+                                text = stringResource(R.string.about_fork_status_text),
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
                     }
                 }
             }
 
+            // CARD: DEVELOPER (UNTAMED FURY)
             animatedItem(scope) { yOffset ->
                 ChunkLayout(
                     modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
-                    title = stringResource(R.string.about_fork_title)
+                    title = stringResource(R.string.about_developer_title)
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         ButtonIconItem(
@@ -155,26 +173,76 @@ fun AboutInfoScreen(
                                     .crossfade(true)
                                     .build()
                             ),
-                            title = stringResource(R.string.about_fork_contributor_title),
-                            text = stringResource(R.string.about_fork_contributor_text),
+                            title = stringResource(R.string.about_developer_presence),
+                            text = "Lead maintainer of the Cracked Fork",
                             button = {
-                                OutlinedButton(
-                                    onClick = { openLink("https://github.com/UnTamed-Fury/ZalithLauncher2-cracked-") }
-                                ) {
-                                    Text(text = stringResource(R.string.about_fork_github_link))
+                                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        OutlinedButton(onClick = { openLink(URL_DEV_GITHUB) }) {
+                                            Text(text = stringResource(R.string.about_developer_handle_github))
+                                        }
+                                        OutlinedButton(onClick = { openLink(URL_DEV_DISCORD) }) {
+                                            Text(text = stringResource(R.string.about_developer_handle_discord))
+                                        }
+                                    }
+                                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        OutlinedButton(onClick = { openLink(URL_DEV_INSTAGRAM) }) {
+                                            Text(text = stringResource(R.string.about_developer_handle_instagram))
+                                        }
+                                        OutlinedButton(onClick = { openLink(URL_DEV_ALT_DISCORD) }) {
+                                            Text(text = stringResource(R.string.about_developer_alt_discord))
+                                        }
+                                    }
                                 }
                             }
                         )
+                        Column(
+                            modifier = Modifier.padding(horizontal = 4.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.about_developer_handles),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            HandleRow(stringResource(R.string.about_developer_handle_github), stringResource(R.string.about_developer_handle_github_value))
+                            HandleRow(stringResource(R.string.about_developer_handle_discord), stringResource(R.string.about_developer_handle_discord_value))
+                            HandleRow(stringResource(R.string.about_developer_handle_alt_tag), stringResource(R.string.about_developer_handle_alt_tag_value))
+                            HandleRow(stringResource(R.string.about_developer_handle_instagram), stringResource(R.string.about_developer_handle_instagram_value))
+                        }
+                    }
+                }
+            }
 
+            // CARD: PROJECT ECOSYSTEM
+            animatedItem(scope) { yOffset ->
+                ChunkLayout(
+                    modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
+                    title = stringResource(R.string.about_ecosystem_title)
+                ) {
+                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         ButtonIconItem(
                             icon = painterResource(R.drawable.ic_chat_info),
-                            title = "Discord Community",
+                            title = stringResource(R.string.about_ecosystem_community),
                             text = stringResource(R.string.about_fork_discord_text),
                             button = {
-                                OutlinedButton(
-                                    onClick = { openLink("https://discord.gg/dwYVAbuhyW") }
-                                ) {
-                                    Text(text = "Join Discord")
+                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    OutlinedButton(onClick = { openLink(URL_COMMUNITY) }) {
+                                        Text(text = stringResource(R.string.about_acknowledgements_github_community))
+                                    }
+                                    OutlinedButton(onClick = { openLink(URL_WEBLATE) }) {
+                                        Text(text = "Weblate")
+                                    }
+                                }
+                            }
+                        )
+                        ButtonIconItem(
+                            icon = painterResource(R.drawable.ic_chat_info),
+                            title = stringResource(R.string.about_ecosystem_support),
+                            text = "Support the development of this fork",
+                            button = {
+                                OutlinedButton(onClick = checkUpdate) {
+                                    Text(text = stringResource(R.string.upgrade_title))
                                 }
                             }
                         )
@@ -182,87 +250,109 @@ fun AboutInfoScreen(
                 }
             }
 
+            // CARD: ORIGINAL PROJECT
+            animatedItem(scope) { yOffset ->
+                ChunkLayout(
+                    modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
+                    title = stringResource(R.string.about_base_title)
+                ) {
+                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        ButtonIconItem(
+                            icon = painterResource(R.drawable.img_movtery),
+                            title = stringResource(R.string.about_base_name),
+                            text = stringResource(R.string.about_base_created_by) + ": MovTery",
+                            button = {
+                                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        OutlinedButton(onClick = { openLink(URL_BASE_PROJECT) }) {
+                                            Text(text = stringResource(R.string.about_base_github))
+                                        }
+                                        OutlinedButton(onClick = { openLicense(R.raw.gpl_3_license) }) {
+                                            Text(text = "License")
+                                        }
+                                    }
+                                    OutlinedButton(onClick = { openLink(URL_MOVTERY_SUPPORT) }) {
+                                        Text(text = stringResource(R.string.about_base_support))
+                                    }
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+
+            // CARD: ACKNOWLEDGEMENTS
             animatedItem(scope) { yOffset ->
                 ChunkLayout(
                     modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
                     title = stringResource(R.string.about_acknowledgements_title)
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        ButtonIconItem(
-                            icon = painterResource(R.drawable.img_bangbang93),
-                            title = "bangbang93",
-                            text = stringResource(R.string.about_acknowledgements_bangbang93_text, InfoDistributor.LAUNCHER_SHORT_NAME),
-                            button = {
-                                OutlinedButton(
-                                    onClick = { openLink("https://afdian.com/a/bangbang93") }
-                                ) {
-                                    Text(text = stringResource(R.string.about_sponsor))
-                                }
-                            }
-                        )
-                        LinkIconItem(
-                            icon = painterResource(R.drawable.img_launcher_fcl),
-                            title = "Fold Craft Launcher",
-                            text = stringResource(R.string.about_acknowledgements_fcl_text, InfoDistributor.LAUNCHER_SHORT_NAME),
-                            openLicense = { openLicense(R.raw.fcl_license) },
-                            openLink = { openLink("https://github.com/FCL-Team/FoldCraftLauncher") }
-                        )
-                        LinkIconItem(
-                            icon = painterResource(R.drawable.img_launcher_hmcl),
-                            title = "Hello Minecraft! Launcher",
-                            text = stringResource(R.string.about_acknowledgements_hmcl_text, InfoDistributor.LAUNCHER_SHORT_NAME),
-                            openLicense = { openLicense(R.raw.hmcl_license) },
-                            openLink = { openLink("https://github.com/HMCL-dev/HMCL") }
-                        )
-                        LinkIconItem(
-                            icon = painterResource(R.drawable.img_platform_mcmod),
-                            title = stringResource(R.string.about_acknowledgements_mcmod),
-                            text = stringResource(R.string.about_acknowledgements_mcmod_text, InfoDistributor.LAUNCHER_SHORT_NAME),
-                            openLink = { openLink(URL_MCMOD) }
-                        )
-                        ButtonIconItem(
-                            icon = painterResource(R.drawable.img_mcim),
-                            title = "mcmod-info-mirror",
-                            text = stringResource(R.string.about_acknowledgements_mcim_text, InfoDistributor.LAUNCHER_SHORT_NAME),
-                            button = {
-                                OutlinedButton(
-                                    onClick = { openLink("https://www.mcimirror.top/sponsor") }
-                                ) {
-                                    Text(text = stringResource(R.string.about_sponsor))
-                                }
-                            }
-                        )
-                        LinkIconItem(
-                            icon = painterResource(R.drawable.img_launcher_pcl2),
-                            title = "Plain Craft Launcher 2",
-                            text = stringResource(R.string.about_acknowledgements_pcl_text, InfoDistributor.LAUNCHER_SHORT_NAME),
-                            openLink = { openLink("https://github.com/Meloong-Git/PCL") }
-                        )
-                        LinkIconItem(
-                            icon = painterResource(R.drawable.img_launcher_pojav),
-                            title = "PojavLauncher",
-                            text = stringResource(R.string.about_acknowledgements_pojav_text, InfoDistributor.LAUNCHER_SHORT_NAME),
-                            openLicense = { openLicense(R.raw.lgpl_3_license) },
-                            openLink = { openLink("https://github.com/PojavLauncherTeam/PojavLauncher") }
-                        )
-                        LinkIconItem(
-                            icon = painterResource(R.drawable.ic_github),
-                            title = stringResource(R.string.about_acknowledgements_github_community),
-                            text = stringResource(R.string.about_acknowledgements_github_community_text),
-                            openLink = { openLink(URL_COMMUNITY) },
-                            useImage = false
-                        )
-                        LinkIconItem(
-                            icon = painterResource(R.drawable.img_weblate),
-                            title = stringResource(R.string.about_acknowledgements_weblate_community),
-                            text = stringResource(R.string.about_acknowledgements_weblate_community_text),
-                            openLink = { openLink(URL_WEBLATE) }
-                        )
+                        AcknowledgementSection(stringResource(R.string.about_acknowledgements_launchers)) {
+                            LinkIconItem(
+                                icon = painterResource(R.drawable.img_launcher_fcl),
+                                title = "Fold Craft Launcher",
+                                text = "FCL Team",
+                                openLicense = { openLicense(R.raw.fcl_license) },
+                                openLink = { openLink("https://github.com/FCL-Team/FoldCraftLauncher") }
+                            )
+                            LinkIconItem(
+                                icon = painterResource(R.drawable.img_launcher_hmcl),
+                                title = "Hello Minecraft! Launcher",
+                                text = "HMCL-dev",
+                                openLicense = { openLicense(R.raw.hmcl_license) },
+                                openLink = { openLink("https://github.com/HMCL-dev/HMCL") }
+                            )
+                            LinkIconItem(
+                                icon = painterResource(R.drawable.img_launcher_pcl2),
+                                title = "Plain Craft Launcher 2",
+                                text = "LTCat",
+                                openLink = { openLink("https://github.com/Meloong-Git/PCL") }
+                            )
+                            LinkIconItem(
+                                icon = painterResource(R.drawable.img_launcher_pojav),
+                                title = "PojavLauncher",
+                                text = "PojavLauncherTeam",
+                                openLicense = { openLicense(R.raw.lgpl_3_license) },
+                                openLink = { openLink("https://github.com/PojavLauncherTeam/PojavLauncher") }
+                            )
+                        }
+
+                        AcknowledgementSection(stringResource(R.string.about_acknowledgements_platforms)) {
+                            LinkIconItem(
+                                icon = painterResource(R.drawable.img_platform_mcmod),
+                                title = "MCMod",
+                                text = "mcmod.cn",
+                                openLink = { openLink(URL_MCMOD) }
+                            )
+                            LinkIconItem(
+                                icon = painterResource(R.drawable.img_mcim),
+                                title = "mcmod-info-mirror",
+                                text = "mcimirror.top",
+                                openLink = { openLink("https://www.mcimirror.top/") }
+                            )
+                        }
+
+                        AcknowledgementSection(stringResource(R.string.about_acknowledgements_community_title)) {
+                            LinkIconItem(
+                                icon = painterResource(R.drawable.ic_github),
+                                title = "GitHub Contributors",
+                                text = "All code and issue contributors",
+                                openLink = { openLink(URL_COMMUNITY) },
+                                useImage = false
+                            )
+                            LinkIconItem(
+                                icon = painterResource(R.drawable.img_weblate),
+                                title = "Weblate",
+                                text = "All community translators",
+                                openLink = { openLink(URL_WEBLATE) }
+                            )
+                        }
                     }
                 }
             }
 
-            //额外依赖库板块
+            // CARD: LIBRARIES
             animatedItem(scope) { yOffset ->
                 ChunkLayout(
                     modifier = Modifier.offset { IntOffset(x = 0, y = yOffset.roundToPx()) },
@@ -276,7 +366,7 @@ fun AboutInfoScreen(
                 }
             }
 
-            //已加载插件板块
+            // CARD: PLUGINS
             PluginLoader.allPlugins.takeIf { it.isNotEmpty() }?.let { allPlugins ->
                 animatedItem(scope) { yOffset ->
                     ChunkLayout(
@@ -292,6 +382,30 @@ fun AboutInfoScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun HandleRow(label: String, value: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = label + "    :", style = MaterialTheme.typography.bodySmall, modifier = Modifier.alpha(0.7f))
+        Text(text = value, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
+    }
+}
+
+@Composable
+private fun AcknowledgementSection(title: String, content: @Composable ColumnScope.() -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.padding(start = 4.dp, top = 4.dp)
+        )
+        content()
     }
 }
 
