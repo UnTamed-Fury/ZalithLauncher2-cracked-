@@ -36,15 +36,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.HelpOutline
-import androidx.compose.material.icons.filled.CenterFocusStrong
-import androidx.compose.material.icons.filled.DragHandle
-import androidx.compose.material.icons.filled.MoreHoriz
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.CenterFocusStrong
-import androidx.compose.material.icons.outlined.Visibility
-import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -62,6 +53,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -193,7 +185,7 @@ fun MenuBox(
         ) {
             Icon(
                 modifier = Modifier.size(28.dp),
-                imageVector = Icons.Default.Settings,
+                painter = painterResource(R.drawable.ic_settings_filled),
                 contentDescription = null
             )
         }
@@ -280,7 +272,13 @@ fun EditorMenu(
                     targetState = isLayerFocus
                 ) { isFocus ->
                     Icon(
-                        imageVector = if (isFocus) Icons.Filled.CenterFocusStrong else Icons.Outlined.CenterFocusStrong,
+                        painter = painterResource(
+                            if (isFocus) {
+                                R.drawable.ic_center_focus_strong_filled
+                            } else {
+                                R.drawable.ic_center_focus_strong_outlined
+                            }
+                        ),
                         contentDescription = null
                     )
                 }
@@ -384,7 +382,7 @@ private fun EditorMenuContent(
                         enabled = isPreviewMode.not()
                     ) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Outlined.HelpOutline,
+                            painter = painterResource(R.drawable.ic_help_outlined),
                             contentDescription = stringResource(R.string.generic_tip)
                         )
                     }
@@ -715,7 +713,13 @@ private fun ControlLayerItem(
                     targetState = layer.editorHide
                 ) { isHide ->
                     Icon(
-                        imageVector = if (isHide) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,
+                        painter = painterResource(
+                            if (isHide) {
+                                R.drawable.ic_visibility_off_outlined
+                            } else {
+                                R.drawable.ic_visibility_outlined
+                            }
+                        ),
                         contentDescription = null
                     )
                 }
@@ -730,7 +734,7 @@ private fun ControlLayerItem(
                 enabled = enabled
             ) {
                 Icon(
-                    imageVector = Icons.Default.MoreHoriz,
+                    painter = painterResource(R.drawable.ic_more_horiz),
                     contentDescription = stringResource(R.string.control_editor_layers_attribute)
                 )
             }
@@ -742,7 +746,7 @@ private fun ControlLayerItem(
             ) {
                 Icon(
                     modifier = Modifier.padding(all = 4.dp),
-                    imageVector = Icons.Default.DragHandle,
+                    painter = painterResource(R.drawable.ic_drag_handle),
                     contentDescription = null
                 )
             }

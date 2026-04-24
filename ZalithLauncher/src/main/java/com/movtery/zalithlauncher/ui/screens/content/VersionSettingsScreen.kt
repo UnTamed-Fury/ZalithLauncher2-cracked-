@@ -35,15 +35,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Update
-import androidx.compose.material.icons.outlined.Build
-import androidx.compose.material.icons.outlined.Dashboard
-import androidx.compose.material.icons.outlined.Dns
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.Lightbulb
-import androidx.compose.material.icons.outlined.PhotoLibrary
-import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
@@ -274,15 +265,15 @@ fun VersionSettingsScreen(
 }
 
 private val settingItems = listOf(
-    CategoryItem(NormalNavKey.Versions.OverView, { CategoryIcon(Icons.Outlined.Dashboard, R.string.versions_settings_overview) }, R.string.versions_settings_overview),
-    CategoryItem(NormalNavKey.Versions.Config, { CategoryIcon(Icons.Outlined.Build, R.string.versions_settings_config) }, R.string.versions_settings_config),
-    CategoryItem(NormalNavKey.Versions.UpdateLoader, { CategoryIcon(Icons.Default.Update, R.string.versions_update_loader) }, R.string.versions_update_loader),
-    CategoryItem(NormalNavKey.Versions.ModsManager, { CategoryIcon(Icons.Outlined.Extension, R.string.mods_manage) }, R.string.mods_manage, division = true),
-    CategoryItem(NormalNavKey.Versions.SavesManager, { CategoryIcon(Icons.Outlined.Public, R.string.saves_manage) }, R.string.saves_manage),
-    CategoryItem(NormalNavKey.Versions.ResourcePackManager, { CategoryIcon(R.drawable.ic_format_paint, R.string.resource_pack_manage) }, R.string.resource_pack_manage),
-    CategoryItem(NormalNavKey.Versions.ShadersManager, { CategoryIcon(Icons.Outlined.Lightbulb, R.string.shader_pack_manage) }, R.string.shader_pack_manage),
-    CategoryItem(NormalNavKey.Versions.ScreenshotsManager, { CategoryIcon(Icons.Outlined.PhotoLibrary, R.string.screenshots_manage) }, R.string.screenshots_manage),
-    CategoryItem(NormalNavKey.Versions.ServerList, { CategoryIcon(Icons.Outlined.Dns, R.string.servers_list) }, R.string.servers_list, division = true),
+    CategoryItem(NormalNavKey.Versions.OverView, { CategoryIcon(R.drawable.ic_dashboard_filled, R.string.versions_settings_overview) }, R.string.versions_settings_overview),
+    CategoryItem(NormalNavKey.Versions.Config, { CategoryIcon(R.drawable.ic_build_outlined, R.string.versions_settings_config) }, R.string.versions_settings_config),
+    CategoryItem(NormalNavKey.Versions.UpdateLoader, { CategoryIcon(R.drawable.ic_update, R.string.versions_update_loader) }, R.string.versions_update_loader),
+    CategoryItem(NormalNavKey.Versions.ModsManager, { CategoryIcon(R.drawable.ic_extension_outlined, R.string.mods_manage) }, R.string.mods_manage, division = true),
+    CategoryItem(NormalNavKey.Versions.SavesManager, { CategoryIcon(R.drawable.ic_public, R.string.saves_manage) }, R.string.saves_manage),
+    CategoryItem(NormalNavKey.Versions.ResourcePackManager, { CategoryIcon(R.drawable.ic_format_paint_outlined, R.string.resource_pack_manage) }, R.string.resource_pack_manage),
+    CategoryItem(NormalNavKey.Versions.ShadersManager, { CategoryIcon(R.drawable.ic_lightbulb, R.string.shader_pack_manage) }, R.string.shader_pack_manage),
+    CategoryItem(NormalNavKey.Versions.ScreenshotsManager, { CategoryIcon(R.drawable.ic_photo_library_outlined, R.string.screenshots_manage) }, R.string.screenshots_manage),
+    CategoryItem(NormalNavKey.Versions.ServerList, { CategoryIcon(R.drawable.ic_dns_outlined, R.string.servers_list) }, R.string.servers_list, division = true),
 )
 
 @Composable

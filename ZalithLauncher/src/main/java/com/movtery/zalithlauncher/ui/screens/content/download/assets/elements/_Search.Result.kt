@@ -47,11 +47,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowLeft
-import androidx.compose.material.icons.automirrored.rounded.ArrowRight
-import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearWavyProgressIndicator
@@ -77,6 +72,7 @@ import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
@@ -342,7 +338,7 @@ private fun PageController(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowLeft,
+                    painter = painterResource(R.drawable.ic_arrow_left_rounded),
                     contentDescription = stringResource(R.string.download_assets_result_previous_page)
                 )
             }
@@ -355,7 +351,7 @@ private fun PageController(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowRight,
+                    painter = painterResource(R.drawable.ic_arrow_right_rounded),
                     contentDescription = stringResource(R.string.download_assets_result_next_page)
                 )
             }
@@ -490,7 +486,7 @@ private fun ResultItemLayout(
                         ) {
                             Icon(
                                 modifier = Modifier.size(16.dp),
-                                imageVector = Icons.Outlined.Download,
+                                painter = painterResource(R.drawable.ic_download_2_outlined),
                                 contentDescription = null
                             )
                             Text(
@@ -506,7 +502,7 @@ private fun ResultItemLayout(
                             ) {
                                 Icon(
                                     modifier = Modifier.size(14.dp),
-                                    imageVector = Icons.Outlined.FavoriteBorder,
+                                    painter = painterResource(R.drawable.ic_favorite_outlined),
                                     contentDescription = null
                                 )
                                 Text(

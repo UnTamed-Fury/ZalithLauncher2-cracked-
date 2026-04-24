@@ -39,15 +39,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material.icons.outlined.Autorenew
-import androidx.compose.material.icons.outlined.Clear
-import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -329,7 +320,7 @@ private fun <E> AddonListHeader(
                         modifier = Modifier
                             .size(34.dp)
                             .rotate(rotation),
-                        imageVector = Icons.Rounded.ArrowDropDown,
+                        painter = painterResource(R.drawable.ic_arrow_drop_down_rounded),
                         contentDescription = stringResource(if (expanded) R.string.generic_expand else R.string.generic_collapse)
                     )
                     if (selectedItem != null) {
@@ -341,7 +332,7 @@ private fun <E> AddonListHeader(
                         ) {
                             Icon(
                                 modifier = Modifier.size(24.dp),
-                                imageVector = Icons.Outlined.Clear,
+                                painter = painterResource(R.drawable.ic_deselect),
                                 contentDescription = stringResource(R.string.generic_clear)
                             )
                         }
@@ -374,7 +365,7 @@ private fun <E> AddonListHeader(
                     onClick = onReload
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Refresh,
+                        painter = painterResource(R.drawable.ic_refresh),
                         contentDescription = stringResource(R.string.generic_refresh)
                     )
                 }
@@ -444,7 +435,7 @@ fun AddonWarningItem(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(all = 4.dp),
-                    imageVector = Icons.Default.Warning,
+                    painter = painterResource(R.drawable.ic_warning_filled),
                     contentDescription = null
                 )
             }
@@ -481,7 +472,7 @@ fun OptiFineVersionSummary(
         ) {
             Icon(
                 modifier = Modifier.size(iconSize),
-                painter = painterResource(R.drawable.ic_package_2),
+                painter = painterResource(R.drawable.ic_package_2_outlined),
                 contentDescription = null
             )
             Text(text = typeText, style = textStyle)
@@ -494,7 +485,7 @@ fun OptiFineVersionSummary(
             ) {
                 Icon(
                     modifier = Modifier.size(iconSize),
-                    imageVector = Icons.Outlined.Autorenew,
+                    painter = painterResource(R.drawable.ic_autorenew),
                     contentDescription = null
                 )
                 Text(text = releaseDate, style = textStyle)
@@ -510,7 +501,7 @@ fun OptiFineVersionSummary(
                 optifine.forgeVersion == null -> {
                     Icon(
                         modifier = Modifier.size(iconSize),
-                        imageVector = Icons.Default.Close,
+                        painter = painterResource(R.drawable.ic_close),
                         contentDescription = null
                     )
                     Text(
@@ -521,7 +512,7 @@ fun OptiFineVersionSummary(
                 optifine.forgeVersion.isNotEmpty() -> {
                     Icon(
                         modifier = Modifier.size(iconSize),
-                        imageVector = Icons.Default.Check,
+                        painter = painterResource(R.drawable.ic_check),
                         contentDescription = null
                     )
                     Text(
@@ -552,7 +543,7 @@ fun ForgeVersionSummary(
             ) {
                 Icon(
                     modifier = Modifier.size(iconSize),
-                    imageVector = Icons.Filled.Star,
+                    painter = painterResource(R.drawable.ic_star_filled),
                     contentDescription = null
                 )
                 Text(
@@ -568,7 +559,7 @@ fun ForgeVersionSummary(
         ) {
             Icon(
                 modifier = Modifier.size(iconSize),
-                imageVector = Icons.Outlined.Autorenew,
+                painter = painterResource(R.drawable.ic_autorenew),
                 contentDescription = null
             )
             Text(text = forgeVersion.releaseTime, style = textStyle)
@@ -599,7 +590,7 @@ fun NeoForgeSummary(
         ) {
             Icon(
                 modifier = Modifier.size(iconSize),
-                painter = painterResource(R.drawable.ic_package_2),
+                painter = painterResource(R.drawable.ic_package_2_outlined),
                 contentDescription = null
             )
             Text(text = typeText, style = textStyle)
@@ -630,7 +621,7 @@ fun FabricLikeSummary(
         ) {
             Icon(
                 modifier = Modifier.size(iconSize),
-                painter = painterResource(R.drawable.ic_package_2),
+                painter = painterResource(R.drawable.ic_package_2_outlined),
                 contentDescription = null
             )
             Text(text = typeText, style = textStyle)
@@ -652,7 +643,7 @@ fun CleanroomSummary(
     ) {
         Icon(
             modifier = Modifier.size(iconSize),
-            imageVector = Icons.Outlined.Autorenew,
+            painter = painterResource(R.drawable.ic_autorenew),
             contentDescription = null
         )
         Text(
@@ -684,7 +675,7 @@ fun ModSummary(
         ) {
             Icon(
                 modifier = Modifier.size(iconSize),
-                painter = painterResource(R.drawable.ic_package_2),
+                painter = painterResource(R.drawable.ic_package_2_outlined),
                 contentDescription = null
             )
             Text(
@@ -699,7 +690,7 @@ fun ModSummary(
         ) {
             Icon(
                 modifier = Modifier.size(iconSize),
-                imageVector = Icons.Outlined.Autorenew,
+                painter = painterResource(R.drawable.ic_autorenew),
                 contentDescription = null
             )
             Text(

@@ -24,15 +24,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.FormatAlignLeft
-import androidx.compose.material.icons.automirrored.filled.FormatAlignRight
-import androidx.compose.material.icons.filled.FormatAlignCenter
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -151,12 +148,12 @@ private fun LazyListScope.commonStyles(
             label = { item ->
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                     val icon = when (item) {
-                        TextAlignment.Left -> Icons.AutoMirrored.Filled.FormatAlignLeft
-                        TextAlignment.Center -> Icons.Default.FormatAlignCenter
-                        TextAlignment.Right -> Icons.AutoMirrored.Filled.FormatAlignRight
+                        TextAlignment.Left -> R.drawable.ic_format_align_left
+                        TextAlignment.Center -> R.drawable.ic_format_align_center
+                        TextAlignment.Right -> R.drawable.ic_format_align_right
                     }
                     Icon(
-                        imageVector = icon,
+                        painter = painterResource(icon),
                         contentDescription = null
                     )
                 }

@@ -22,9 +22,6 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchColors
@@ -35,7 +32,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.movtery.zalithlauncher.R
 
 @Composable
 fun DefaultSwitch(
@@ -61,7 +60,9 @@ fun DefaultSwitch(
             ) {
                 Icon(
                     modifier = Modifier.size(16.dp),
-                    imageVector = if (it) Icons.Default.Check else Icons.Default.Close,
+                    painter = painterResource(
+                        if (it) R.drawable.ic_check else R.drawable.ic_close
+                    ),
                     contentDescription = null,
                     tint = colors.trackColor(enabled, checked)
                 )

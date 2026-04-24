@@ -20,10 +20,6 @@ package com.movtery.zalithlauncher.game.download.game
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Build
-import androidx.compose.material.icons.outlined.CleaningServices
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.context.GlobalContext
 import com.movtery.zalithlauncher.coroutine.Task
@@ -299,7 +295,7 @@ class GameInstaller(
                 addTask(
                     id = "Download.Game.ClearTemp",
                     title = context.getString(R.string.download_install_clear_temp),
-                    icon = Icons.Outlined.CleaningServices,
+                    icon = R.drawable.ic_auto_delete_outlined,
                 ) {
                     clearTempGameDir()
                     //清理完成缓存目录后，创建新的缓存目录
@@ -336,7 +332,7 @@ class GameInstaller(
                 //最终游戏安装任务
                 addTask(
                     title = context.getString(R.string.download_game_install_game_files_progress),
-                    icon = Icons.Outlined.Build,
+                    icon = R.drawable.ic_build_outlined,
                     //如果有非原版以外的任务，则需要进行处理安装（合并版本Json、迁移文件等）
                     task = if (
                         pathConfig.optifineDir != null ||
@@ -396,7 +392,7 @@ class GameInstaller(
                 addTask(
                     id = "UpdateLoader.ClearTemp",
                     title = context.getString(R.string.download_install_clear_temp),
-                    icon = Icons.Outlined.CleaningServices,
+                    icon = R.drawable.ic_auto_delete_outlined,
                 ) {
                     clearTempGameDir()
                     //清理完成缓存目录后，创建新的缓存目录
@@ -474,7 +470,7 @@ class GameInstaller(
                 //最终游戏安装任务
                 addTask(
                     title = context.getString(R.string.download_game_install_game_files_progress),
-                    icon = Icons.Outlined.Build,
+                    icon = R.drawable.ic_build_outlined,
                     task = createGameInstalledTask(
                         tempMinecraftDir = pathConfig.tempMinecraftDir,
                         targetMinecraftDir = targetGameFolder,
@@ -535,7 +531,7 @@ class GameInstaller(
                         R.string.download_game_install_base_install,
                         ModLoader.OPTIFINE.displayName
                     ),
-                    icon = Icons.Outlined.Build,
+                    icon = R.drawable.ic_build_outlined,
                     task = getOptiFineInstallTask(
                         tempGameDir = tempGameDir,
                         tempMinecraftDir = tempMinecraftDir,
@@ -772,7 +768,7 @@ class GameInstaller(
         tempGameDir: File,
         tempMinecraftDir: File,
         tempFolderName: String,
-        addTask: (title: String, icon: ImageVector?, task: Task) -> Unit
+        addTask: (title: String, icon: Int?, task: Task) -> Unit
     ) {
         //类似 1.19.3-41.2.8 格式，优先使用 Version 中要求的版本而非 Inherit（例如 1.19.3 却使用了 1.19 的 Forge）
         val (processedInherit, processedLoaderVersion) =
@@ -804,7 +800,7 @@ class GameInstaller(
                     R.string.download_game_install_forgelike_analyse,
                     forgeLikeVersion.loaderName
                 ),
-                Icons.Outlined.Build,
+                R.drawable.ic_build_outlined,
                 getForgeLikeAnalyseTask(
                     downloader = downloader,
                     targetTempInstaller = tempInstaller,
@@ -821,7 +817,7 @@ class GameInstaller(
                 R.string.download_game_install_base_install,
                 forgeLikeVersion.loaderName
             ),
-            Icons.Outlined.Build,
+            R.drawable.ic_build_outlined,
             getForgeLikeInstallTask(
                 isNew = isNew,
                 downloader = downloader,
@@ -839,7 +835,7 @@ class GameInstaller(
         fabricLikeVersion: FabricLikeVersion,
         tempMinecraftDir: File,
         tempFolderName: String,
-        addTask: (title: String, icon: ImageVector?, task: Task) -> Unit
+        addTask: (title: String, icon: Int?, task: Task) -> Unit
     ) {
         val tempVersionJson = File(tempMinecraftDir, "versions/$tempFolderName/$tempFolderName.json")
 
@@ -877,7 +873,7 @@ class GameInstaller(
         tempGameDir: File,
         tempMinecraftDir: File,
         tempFolderName: String,
-        addTask: (title: String, icon: ImageVector?, task: Task) -> Unit
+        addTask: (title: String, icon: Int?, task: Task) -> Unit
     ) {
         val tempInstaller = targetTempCleanroomInstaller(tempGameDir)
         //下载安装器
@@ -897,7 +893,7 @@ class GameInstaller(
                 R.string.download_game_install_forgelike_analyse,
                 cleanroomVersion.version
             ),
-            Icons.Outlined.Build,
+            R.drawable.ic_build_outlined,
             getForgeLikeAnalyseTask(
                 downloader = downloader,
                 targetTempInstaller = tempInstaller,
@@ -913,7 +909,7 @@ class GameInstaller(
                 R.string.download_game_install_base_install,
                 cleanroomVersion.version
             ),
-            Icons.Outlined.Build,
+            R.drawable.ic_build_outlined,
             getForgeLikeInstallTask(
                 isNew = true,
                 downloader = downloader,

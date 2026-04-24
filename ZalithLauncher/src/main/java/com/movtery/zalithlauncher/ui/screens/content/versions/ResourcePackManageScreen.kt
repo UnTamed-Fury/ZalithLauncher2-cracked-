@@ -45,17 +45,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Sort
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Deselect
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.MoreHoriz
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.SelectAll
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -82,6 +71,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
@@ -429,7 +419,7 @@ private fun ResourcePackHeader(
                         onClick = { expanded = !expanded }
                     ) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Default.Sort,
+                            painter = painterResource(R.drawable.ic_sort),
                             contentDescription = stringResource(R.string.sort_by)
                         )
                     }
@@ -470,7 +460,7 @@ private fun ResourcePackHeader(
                             onClick = onDeleteAll
                         ) {
                             Icon(
-                                imageVector = Icons.Outlined.Delete,
+                                painter = painterResource(R.drawable.ic_delete_outlined),
                                 contentDescription = null
                             )
                         }
@@ -479,7 +469,7 @@ private fun ResourcePackHeader(
                             onClick = onSelectAll
                         ) {
                             Icon(
-                                imageVector = Icons.Default.SelectAll,
+                                painter = painterResource(R.drawable.ic_select_all),
                                 contentDescription = null
                             )
                         }
@@ -490,7 +480,7 @@ private fun ResourcePackHeader(
                             }
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Deselect,
+                                painter = painterResource(R.drawable.ic_deselect),
                                 contentDescription = null
                             )
                         }
@@ -553,7 +543,7 @@ private fun ResourcePackHeader(
 
                     IconTextButton(
                         onClick = swapToDownload,
-                        imageVector = Icons.Default.Download,
+                        painter = painterResource(R.drawable.ic_download_2_filled),
                         text = stringResource(R.string.generic_download)
                     )
 
@@ -561,7 +551,7 @@ private fun ResourcePackHeader(
                         onClick = onRefresh
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Refresh,
+                            painter = painterResource(R.drawable.ic_refresh),
                             contentDescription = stringResource(R.string.generic_refresh)
                         )
                     }
@@ -712,7 +702,7 @@ private fun ResourcePackItemLayout(
                         }
                     ) {
                         Icon(
-                            imageVector = Icons.Outlined.Info,
+                            painter = painterResource(R.drawable.ic_info_outlined),
                             contentDescription = stringResource(R.string.saves_manage_info)
                         )
                     }
@@ -758,7 +748,7 @@ private fun ResourcePackOperationMenu(
         ) {
             Icon(
                 modifier = Modifier.size(iconSize),
-                imageVector = Icons.Default.MoreHoriz,
+                painter = painterResource(R.drawable.ic_more_horiz),
                 contentDescription = stringResource(R.string.generic_more)
             )
         }
@@ -777,7 +767,7 @@ private fun ResourcePackOperationMenu(
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(20.dp),
-                        imageVector = Icons.Filled.Edit,
+                        painter = painterResource(R.drawable.ic_edit_filled),
                         contentDescription = stringResource(R.string.generic_rename)
                     )
                 },
@@ -793,7 +783,7 @@ private fun ResourcePackOperationMenu(
                 leadingIcon = {
                     Icon(
                         modifier = Modifier.size(20.dp),
-                        imageVector = Icons.Filled.Delete,
+                        painter = painterResource(R.drawable.ic_delete_filled),
                         contentDescription = stringResource(R.string.generic_delete)
                     )
                 },

@@ -38,9 +38,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -405,7 +402,7 @@ private fun VersionHeader(
                         onClick = onRefreshClick
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Refresh,
+                            painter = painterResource(R.drawable.ic_refresh),
                             contentDescription = stringResource(R.string.generic_refresh)
                         )
                     }
@@ -549,7 +546,7 @@ private fun VersionItemLayout(
                     onClick = { onAccessWiki(url) }
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.Link,
+                        painter = painterResource(R.drawable.ic_link),
                         contentDescription = "Wiki"
                     )
                 }

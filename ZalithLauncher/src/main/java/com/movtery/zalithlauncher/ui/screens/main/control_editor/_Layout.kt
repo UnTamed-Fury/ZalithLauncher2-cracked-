@@ -40,9 +40,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowRight
-import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -65,6 +62,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -277,7 +275,7 @@ private fun <E> InfoListLayoutHeader(
                     modifier = Modifier
                         .size(28.dp)
                         .rotate(rotation),
-                    imageVector = Icons.Rounded.ArrowDropDown,
+                    painter = painterResource(R.drawable.ic_arrow_drop_down_rounded),
                     contentDescription = stringResource(if (expanded) R.string.generic_expand else R.string.generic_collapse)
                 )
             }
@@ -380,7 +378,7 @@ fun InfoLayoutTextItem(
                 Icon(
                     modifier = Modifier
                         .size(28.dp),
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowRight,
+                    painter = painterResource(R.drawable.ic_arrow_right_rounded),
                     contentDescription = null
                 )
             }
@@ -455,7 +453,7 @@ fun InfoLayoutColorItem(
                 Icon(
                     modifier = Modifier
                         .size(28.dp),
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowRight,
+                    painter = painterResource(R.drawable.ic_arrow_right_rounded),
                     contentDescription = null
                 )
             }

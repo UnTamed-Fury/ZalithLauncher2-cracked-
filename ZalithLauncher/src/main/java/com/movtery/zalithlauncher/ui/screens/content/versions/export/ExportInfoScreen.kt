@@ -29,9 +29,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lightbulb
-import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -423,7 +421,7 @@ fun ExportInfoScreen(
                                 icon = { innerModifier ->
                                     Icon(
                                         modifier = innerModifier,
-                                        imageVector = Icons.Default.Lightbulb,
+                                        painter = painterResource(R.drawable.ic_lightbulb),
                                         contentDescription = null
                                     )
                                 },
@@ -466,7 +464,7 @@ fun ExportInfoScreen(
                             ) {
                                 val text = stringResource(R.string.versions_export_pack_select_files)
                                 Icon(
-                                    imageVector = Icons.Default.SelectAll,
+                                    painter = painterResource(R.drawable.ic_select_all),
                                     contentDescription = text
                                 )
 

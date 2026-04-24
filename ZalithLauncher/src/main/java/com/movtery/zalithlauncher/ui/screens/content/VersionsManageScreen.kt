@@ -34,9 +34,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -49,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -510,13 +508,13 @@ private fun VersionsLayout(
                     ) {
                         IconTextButton(
                             onClick = onRefresh,
-                            imageVector = Icons.Filled.Refresh,
+                            painter = painterResource(R.drawable.ic_refresh),
                             contentDescription = stringResource(R.string.generic_refresh),
                             text = stringResource(R.string.generic_refresh)
                         )
                         IconTextButton(
                             onClick = onInstall,
-                            imageVector = Icons.Filled.Download,
+                            painter = painterResource(R.drawable.ic_download),
                             contentDescription = stringResource(R.string.versions_manage_install_new),
                             text = stringResource(R.string.versions_manage_install_new),
                         )

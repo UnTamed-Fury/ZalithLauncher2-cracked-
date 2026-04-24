@@ -19,8 +19,6 @@
 package com.movtery.zalithlauncher.game.version.export.platform
 
 import android.content.Context
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.coroutine.TitledTask
 import com.movtery.zalithlauncher.coroutine.addTask
@@ -51,7 +49,7 @@ class MCBBSPackExporter: AbstractExporter(
         addTask(
             id = "MCBBSPackExporter.PackManifest",
             title = context.getString(R.string.versions_export_task_pack_manifest),
-            icon = Icons.Default.Build
+            icon = R.drawable.ic_build_filled
         ) {
             val gameName = info.gamePath.name
             val blackList = listOf(

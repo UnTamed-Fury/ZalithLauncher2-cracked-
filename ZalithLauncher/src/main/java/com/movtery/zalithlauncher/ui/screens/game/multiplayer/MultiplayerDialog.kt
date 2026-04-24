@@ -36,14 +36,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowLeft
-import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.Group
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -60,7 +52,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -325,7 +318,7 @@ private fun WaitingUI(
             //房主
             SimpleCardButton(
                 modifier = Modifier.fillMaxWidth(),
-                icon = Icons.Filled.Home,
+                icon = painterResource(R.drawable.ic_home_filled),
                 title = stringResource(R.string.terracotta_status_waiting_host_title),
                 description = stringResource(R.string.terracotta_status_waiting_host_desc),
                 onClick = onHostClick,
@@ -335,7 +328,7 @@ private fun WaitingUI(
             //房客
             SimpleCardButton(
                 modifier = Modifier.fillMaxWidth(),
-                icon = Icons.Filled.Group,
+                icon = painterResource(R.drawable.ic_group_filled),
                 title = stringResource(R.string.terracotta_status_waiting_guest_title),
                 description = stringResource(R.string.terracotta_status_waiting_guest_desc),
                 onClick = {
@@ -387,12 +380,12 @@ private fun GuestStartingUI(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Icon(
-                    imageVector = when (difficulty) {
+                    painter = when (difficulty) {
                         TerracottaState.GuestStarting.Difficulty.EASIEST,
                         TerracottaState.GuestStarting.Difficulty.SIMPLE ->
-                            Icons.Default.Info
+                            painterResource(R.drawable.ic_info_filled)
                         else ->
-                            Icons.Default.Warning
+                            painterResource(R.drawable.ic_warning_filled)
                     },
                     contentDescription = null
                 )
@@ -481,7 +474,7 @@ private fun OkRoomUI(
                 //复制按钮
                 SimpleRowButton(
                     modifier = Modifier.fillMaxWidth(),
-                    icon = Icons.Default.ContentCopy,
+                    icon = painterResource(R.drawable.ic_copy_all_filled),
                     title = copyTitle,
                     description = copyDesc,
                     onClick = onCopy
@@ -489,7 +482,7 @@ private fun OkRoomUI(
                 //退出按钮
                 SimpleRowButton(
                     modifier = Modifier.fillMaxWidth(),
-                    icon = Icons.AutoMirrored.Default.ArrowBack,
+                    icon = painterResource(R.drawable.ic_arrow_back),
                     title = backTitle,
                     description = backDesc,
                     onClick = onExit
@@ -591,7 +584,7 @@ private fun ExceptionUI(
         //退出按钮
         SimpleRowButton(
             modifier = Modifier.fillMaxWidth(),
-            icon = Icons.AutoMirrored.Default.ArrowBack,
+            icon = painterResource(R.drawable.ic_arrow_back),
             title = stringResource(R.string.terracotta_back),
             description = stringResource(R.string.terracotta_status_exception_back),
             onClick = onExit
@@ -624,7 +617,7 @@ private fun LogUI(
         //退出按钮
         SimpleRowButton(
             modifier = Modifier.fillMaxWidth(),
-            icon = Icons.AutoMirrored.Default.ArrowBack,
+            icon = painterResource(R.drawable.ic_arrow_back),
             title = stringResource(R.string.terracotta_back),
             description = stringResource(R.string.terracotta_log_exit),
             onClick = onExit
@@ -634,11 +627,11 @@ private fun LogUI(
 
 @Composable
 private fun CommonProgressLayout(
+    modifier: Modifier = Modifier,
     progress: String,
     backTitle: String = stringResource(R.string.terracotta_back),
     backDescription: String,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier,
     text: (@Composable ColumnScope.() -> Unit)? = null,
     scrollState: ScrollState = rememberScrollState(),
 ) {
@@ -660,7 +653,7 @@ private fun CommonProgressLayout(
         //退出按钮
         SimpleCardButton(
             modifier = Modifier.fillMaxWidth(),
-            icon = Icons.AutoMirrored.Default.ArrowLeft,
+            icon = painterResource(R.drawable.ic_arrow_left_rounded),
             title = backTitle,
             description = backDescription,
             onClick = onBack
@@ -674,7 +667,7 @@ private fun CommonProgressLayout(
 @Composable
 private fun SimpleCardButton(
     modifier: Modifier = Modifier,
-    icon: ImageVector,
+    icon: Painter,
     title: String,
     description: String,
     onClick: () -> Unit,
@@ -694,7 +687,7 @@ private fun SimpleCardButton(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Icon(
-                imageVector = icon,
+                painter = icon,
                 contentDescription = title
             )
 
@@ -727,7 +720,7 @@ private fun SimpleCardButton(
 @Composable
 private fun SimpleRowButton(
     modifier: Modifier = Modifier,
-    icon: ImageVector,
+    icon: Painter,
     title: String,
     description: String,
     onClick: () -> Unit
@@ -741,7 +734,7 @@ private fun SimpleRowButton(
     ) {
         Icon(
             modifier = Modifier.size(18.dp),
-            imageVector = icon,
+            painter = icon,
             contentDescription = title
         )
 

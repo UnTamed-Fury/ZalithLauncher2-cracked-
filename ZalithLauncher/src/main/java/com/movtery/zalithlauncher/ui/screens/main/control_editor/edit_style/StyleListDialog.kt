@@ -35,10 +35,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowRight
-import androidx.compose.material.icons.outlined.CopyAll
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -48,6 +44,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -193,7 +190,7 @@ private fun StyleItem(
             onClick = onClone
         ) {
             Icon(
-                imageVector = Icons.Outlined.CopyAll,
+                painter = painterResource(R.drawable.ic_copy_all_outlined),
                 contentDescription = stringResource(R.string.generic_copy)
             )
         }
@@ -201,14 +198,14 @@ private fun StyleItem(
             onClick = onDelete
         ) {
             Icon(
-                imageVector = Icons.Outlined.Delete,
+                painter = painterResource(R.drawable.ic_delete_outlined),
                 contentDescription = stringResource(R.string.generic_delete)
             )
         }
         Icon(
             modifier = Modifier
                 .size(28.dp),
-            imageVector = Icons.AutoMirrored.Rounded.ArrowRight,
+            painter = painterResource(R.drawable.ic_arrow_right_rounded),
             contentDescription = null
         )
     }

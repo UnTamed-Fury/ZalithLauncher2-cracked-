@@ -18,20 +18,22 @@
 
 package com.movtery.zalithlauncher.coroutine
 
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.DrawableRes
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 data class TitledTask(
     val title: String,
-    val runningIcon: ImageVector? = null,
+    @field:DrawableRes
+    val runningIcon: Int? = null,
     val task: Task
 )
 
 fun MutableList<TitledTask>.addTask(
     title: String,
-    icon: ImageVector? = null,
+    @DrawableRes
+    icon: Int? = null,
     id: String? = null,
     dispatcher: CoroutineDispatcher = Dispatchers.Default,
     action: suspend CoroutineScope.(Task) -> Unit
@@ -47,7 +49,8 @@ fun MutableList<TitledTask>.addTask(
 
 fun MutableList<TitledTask>.addTask(
     title: String,
-    icon: ImageVector? = null,
+    @DrawableRes
+    icon: Int? = null,
     task: Task
 ) {
     add(

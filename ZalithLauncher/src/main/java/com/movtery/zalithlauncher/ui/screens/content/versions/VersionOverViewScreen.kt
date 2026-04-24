@@ -31,9 +31,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.RestartAlt
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -47,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -262,14 +260,14 @@ private fun VersionInfoLayout(
                             )
                         }
                     },
-                    imageVector = Icons.Outlined.Image,
+                    painter = painterResource(R.drawable.ic_image_outlined),
                     text = stringResource(R.string.versions_overview_custom_version_icon)
                 )
                 if (iconFileExists) {
                     Spacer(modifier = Modifier.width(12.dp))
                     IconTextButton(
                         onClick = resetIcon,
-                        imageVector = Icons.Outlined.RestartAlt,
+                        painter = painterResource(R.drawable.ic_restart_alt),
                         contentDescription = stringResource(R.string.versions_overview_reset_version_icon),
                         text = stringResource(R.string.versions_overview_reset_version_icon)
                     )

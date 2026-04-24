@@ -20,9 +20,6 @@ package com.movtery.zalithlauncher.game.version.export
 
 import android.content.Context
 import android.net.Uri
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.outlined.CleaningServices
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.context.writeLocalFile
 import com.movtery.zalithlauncher.coroutine.TaskFlowExecutor
@@ -108,7 +105,7 @@ class PackExporter(
                 addTask(
                     id = "ExportModpack.Cleanup",
                     title = context.getString(R.string.download_install_clear_temp),
-                    icon = Icons.Outlined.CleaningServices
+                    icon = R.drawable.ic_auto_delete_outlined
                 ) {
                     clearTempModPackDir()
                     tempPath.createDirAndLog()
@@ -126,7 +123,7 @@ class PackExporter(
                 addTask(
                     id = "ExportModpack.Pack",
                     title = context.getString(R.string.versions_export_task_generate_pack),
-                    icon = Icons.Default.Build
+                    icon = R.drawable.ic_build_outlined
                 ) {
                     zipDirectory(
                         sourceDir = tempPath,
@@ -144,7 +141,7 @@ class PackExporter(
                 addTask(
                     id = "ExportModpack.Cleanup_Finished",
                     title = context.getString(R.string.download_install_clear_temp),
-                    icon = Icons.Outlined.CleaningServices
+                    icon = R.drawable.ic_auto_delete_outlined
                 ) {
                     clearTempModPackDir()
                 }

@@ -19,9 +19,6 @@
 package com.movtery.zalithlauncher.game.download.modpack.platform.multimc
 
 import android.content.Context
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Build
-import androidx.compose.material.icons.outlined.Edit
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.coroutine.Task
 import com.movtery.zalithlauncher.coroutine.TaskFlowExecutor
@@ -79,7 +76,7 @@ open class MultiMCPack(
                 addTask(
                     id = "ImportModpack.ParseMMCCfg",
                     title = context.getString(R.string.import_modpack_task_parse),
-                    icon = Icons.Outlined.Build
+                    icon = R.drawable.ic_build_outlined
                 ) { task ->
                     task.updateProgress(-1f)
                     //MMC 实例配置文件
@@ -118,7 +115,7 @@ open class MultiMCPack(
                 addTask(
                     id = "ImportModpack.WaitUserForVersionName",
                     title = context.getString(R.string.download_install_input_version_name),
-                    icon = Icons.Outlined.Edit
+                    icon = R.drawable.ic_edit_outlined
                 ) { task ->
                     task.updateProgress(-1f)
                     targetVersionName = waitForVersionName(configuration?.name ?: "")
@@ -128,7 +125,7 @@ open class MultiMCPack(
                 addTask(
                     id = "ImportModpack.RetrieveLoader",
                     title = context.getString(R.string.download_modpack_get_loaders),
-                    icon = Icons.Outlined.Build
+                    icon = R.drawable.ic_build_outlined
                 ) {
                     val gameVersion = manifest.getMinecraftVersion()!!
 
@@ -161,7 +158,7 @@ open class MultiMCPack(
                                 //整合包临时文件安装任务
                                 val finalTask = TitledTask(
                                     title = context.getString(R.string.download_modpack_final_move),
-                                    runningIcon = Icons.Outlined.Build,
+                                    runningIcon = R.drawable.ic_build_outlined,
                                     task = createFinalInstallTask(
                                         targetClientDir = targetClientDir,
                                         tempVersionsDir = versionFolder,

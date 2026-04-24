@@ -35,13 +35,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.FileCopy
-import androidx.compose.material.icons.filled.FolderZip
-import androidx.compose.material.icons.filled.MoreHoriz
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
@@ -185,7 +178,7 @@ fun GamePathItemLayout(
                 ) {
                     Icon(
                         modifier = Modifier.size(20.dp),
-                        imageVector = Icons.Default.MoreHoriz,
+                        painter = painterResource(R.drawable.ic_more_horiz),
                         contentDescription = stringResource(R.string.generic_more),
                     )
                 }
@@ -202,7 +195,7 @@ fun GamePathItemLayout(
                         leadingIcon = {
                             Icon(
                                 modifier = Modifier.size(20.dp),
-                                imageVector = Icons.Filled.Edit,
+                                painter = painterResource(R.drawable.ic_edit_filled),
                                 contentDescription = stringResource(R.string.generic_rename)
                             )
                         },
@@ -217,7 +210,7 @@ fun GamePathItemLayout(
                         leadingIcon = {
                             Icon(
                                 modifier = Modifier.size(20.dp),
-                                imageVector = Icons.Filled.Delete,
+                                painter = painterResource(R.drawable.ic_delete_filled),
                                 contentDescription = stringResource(R.string.generic_delete)
                             )
                         },
@@ -756,7 +749,7 @@ fun VersionItemLayout(
             ) {
                 Icon(
                     modifier = Modifier.size(24.dp),
-                    imageVector = Icons.Default.Settings,
+                    painter = painterResource(R.drawable.ic_settings_filled),
                     contentDescription = stringResource(R.string.versions_manage_settings)
                 )
             }
@@ -767,7 +760,7 @@ fun VersionItemLayout(
                 IconButton(onClick = { menuExpanded = !menuExpanded }) {
                     Icon(
                         modifier = Modifier.size(24.dp),
-                        imageVector = Icons.Default.MoreHoriz,
+                        painter = painterResource(R.drawable.ic_more_horiz),
                         contentDescription = stringResource(R.string.generic_more)
                     )
                 }
@@ -783,7 +776,7 @@ fun VersionItemLayout(
                         leadingIcon = {
                             Icon(
                                 modifier = Modifier.size(20.dp),
-                                imageVector = Icons.Filled.Edit,
+                                painter = painterResource(R.drawable.ic_edit_filled),
                                 contentDescription = stringResource(R.string.generic_rename)
                             )
                         },
@@ -797,7 +790,7 @@ fun VersionItemLayout(
                         leadingIcon = {
                             Icon(
                                 modifier = Modifier.size(20.dp),
-                                imageVector = Icons.Filled.FileCopy,
+                                painter = painterResource(R.drawable.ic_file_copy_filled),
                                 contentDescription = stringResource(R.string.generic_copy)
                             )
                         },
@@ -811,7 +804,7 @@ fun VersionItemLayout(
                         leadingIcon = {
                             Icon(
                                 modifier = Modifier.size(20.dp),
-                                imageVector = Icons.Filled.FolderZip,
+                                painter = painterResource(R.drawable.ic_folder_zip_filled),
                                 contentDescription = stringResource(R.string.versions_export)
                             )
                         },
@@ -825,7 +818,7 @@ fun VersionItemLayout(
                         leadingIcon = {
                             Icon(
                                 modifier = Modifier.size(20.dp),
-                                imageVector = Icons.Filled.Delete,
+                                painter = painterResource(R.drawable.ic_delete_filled),
                                 contentDescription = stringResource(R.string.generic_delete)
                             )
                         },

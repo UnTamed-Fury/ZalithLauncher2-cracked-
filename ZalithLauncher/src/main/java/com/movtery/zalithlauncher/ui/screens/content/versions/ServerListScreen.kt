@@ -49,15 +49,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.MoreHoriz
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -653,7 +644,7 @@ private fun ServerListHeader(
                     //添加服务器
                     IconTextButton(
                         onClick = onAddServer,
-                        imageVector = Icons.Default.Add,
+                        painter = painterResource(R.drawable.ic_add),
                         text = stringResource(R.string.servers_list_add_server)
                     )
 
@@ -661,7 +652,7 @@ private fun ServerListHeader(
                         onClick = refreshServers
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Refresh,
+                            painter = painterResource(R.drawable.ic_refresh),
                             contentDescription = stringResource(R.string.generic_refresh)
                         )
                     }
@@ -861,7 +852,7 @@ private fun ServerItem(
                             ) {
                                 Icon(
                                     modifier = Modifier.size(16.dp),
-                                    imageVector = Icons.Outlined.Person,
+                                    painter = painterResource(R.drawable.ic_person_outlined),
                                     contentDescription = null
                                 )
                                 Text(
@@ -912,8 +903,8 @@ private fun ServerItem(
                     onClick = onPlay,
                 ) {
                     Icon(
-                        imageVector = Icons.Default.PlayArrow,
-                        contentDescription = stringResource(R.string.generic_copy)
+                        painter = painterResource(R.drawable.ic_play_arrow_filled),
+                        contentDescription = stringResource(R.string.main_launch_game)
                     )
                 }
 
@@ -923,7 +914,7 @@ private fun ServerItem(
                     IconButton(onClick = { expanded = !expanded }) {
                         Icon(
                             modifier = Modifier.size(24.dp),
-                            imageVector = Icons.Default.MoreHoriz,
+                            painter = painterResource(R.drawable.ic_more_horiz),
                             contentDescription = stringResource(R.string.generic_more)
                         )
                     }
@@ -944,7 +935,7 @@ private fun ServerItem(
                             leadingIcon = {
                                 Icon(
                                     modifier = Modifier.size(20.dp),
-                                    imageVector = Icons.Default.Refresh,
+                                    painter = painterResource(R.drawable.ic_refresh),
                                     contentDescription = stringResource(R.string.generic_refresh)
                                 )
                             },
@@ -959,8 +950,8 @@ private fun ServerItem(
                             text = { Text(text = stringResource(R.string.servers_list_copy_server_address)) },
                             leadingIcon = {
                                 Icon(
-                                    modifier = Modifier.size(18.dp),
-                                    imageVector = Icons.Default.ContentCopy,
+                                    modifier = Modifier.size(20.dp),
+                                    painter = painterResource(R.drawable.ic_copy_all_filled),
                                     contentDescription = stringResource(R.string.servers_list_copy_server_address)
                                 )
                             },
@@ -977,7 +968,7 @@ private fun ServerItem(
                             leadingIcon = {
                                 Icon(
                                     modifier = Modifier.size(20.dp),
-                                    imageVector = Icons.Filled.Edit,
+                                    painter = painterResource(R.drawable.ic_edit_filled),
                                     contentDescription = stringResource(R.string.servers_list_edit_server)
                                 )
                             },
@@ -994,7 +985,7 @@ private fun ServerItem(
                             leadingIcon = {
                                 Icon(
                                     modifier = Modifier.size(20.dp),
-                                    imageVector = Icons.Filled.Delete,
+                                    painter = painterResource(R.drawable.ic_delete_filled),
                                     contentDescription = stringResource(R.string.servers_list_delete_server)
                                 )
                             },

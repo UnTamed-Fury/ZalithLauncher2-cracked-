@@ -31,9 +31,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Copyright
-import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -347,7 +344,7 @@ private fun LinkIconItem(
                     ) {
                         Icon(
                             modifier = Modifier.size(22.dp),
-                            imageVector = Icons.Outlined.Copyright,
+                            painter = painterResource(R.drawable.ic_copyright_outlined),
                             contentDescription = "License"
                         )
                     }
@@ -357,7 +354,7 @@ private fun LinkIconItem(
                         onClick = it
                     ) {
                         Icon(
-                            imageVector = Icons.Outlined.Link,
+                            painter = painterResource(R.drawable.ic_link),
                             contentDescription = stringResource(R.string.generic_open_link)
                         )
                     }
@@ -549,7 +546,7 @@ private fun LibraryInfoItem(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.Link,
+                    painter = painterResource(R.drawable.ic_link),
                     contentDescription = null
                 )
             }

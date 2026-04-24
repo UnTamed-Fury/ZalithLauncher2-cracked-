@@ -19,10 +19,6 @@
 package com.movtery.zalithlauncher.game.version.installed.cleanup
 
 import android.content.Context
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Article
-import androidx.compose.material.icons.outlined.Build
-import androidx.compose.material.icons.outlined.CleaningServices
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.coroutine.Task
 import com.movtery.zalithlauncher.coroutine.TaskFlowExecutor
@@ -132,7 +128,7 @@ class GameAssetCleaner(
                 addTask(
                     id = "GameAssetCleaner.CollectFiles",
                     title = context.getString(R.string.versions_manage_cleanup_collect_files),
-                    icon = Icons.AutoMirrored.Outlined.Article,
+                    icon = R.drawable.ic_article_outlined,
                 ) { task ->
                     task.updateProgress(-1f)
 
@@ -144,7 +140,7 @@ class GameAssetCleaner(
                 addTask(
                     id = "GameAssetCleaner.CollectGameFiles",
                     title = context.getString(R.string.versions_manage_cleanup_collect_game_files),
-                    icon = Icons.AutoMirrored.Outlined.Article
+                    icon = R.drawable.ic_article_outlined
                 ) { task ->
                     task.updateProgress(-1f)
 
@@ -179,7 +175,7 @@ class GameAssetCleaner(
                 addTask(
                     id = "GameAssetCleaner.CompareFiles",
                     title = context.getString(R.string.versions_manage_cleanup_compare_files),
-                    icon = Icons.Outlined.Build
+                    icon = R.drawable.ic_build_outlined
                 ) { task ->
                     task.updateProgress(-1f)
 
@@ -193,7 +189,7 @@ class GameAssetCleaner(
                 addTask(
                     id = "GameAssetsCleaner.Cleanup",
                     title = context.getString(R.string.versions_manage_cleanup_cleanup),
-                    icon = Icons.Outlined.CleaningServices,
+                    icon = R.drawable.ic_auto_delete_outlined,
                     dispatcher = Dispatchers.IO
                 ) { task ->
                     task.updateProgress(-1f)

@@ -32,10 +32,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.MenuOpen
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -666,11 +662,13 @@ private fun ScreenHeader(
                         }
                     ) {
                         Icon(
-                            imageVector = if (showMenu) {
-                                Icons.AutoMirrored.Default.MenuOpen
-                            } else {
-                                Icons.Default.Menu
-                            },
+                            painter = painterResource(
+                                if (showMenu) {
+                                    R.drawable.ic_menu_open
+                                } else {
+                                    R.drawable.ic_menu
+                                }
+                            ),
                             contentDescription = stringResource(R.string.download_game_version_overwrite_select)
                         )
                     }
@@ -714,7 +712,7 @@ private fun ScreenHeader(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Download,
+                    painter = painterResource(R.drawable.ic_download_2_filled),
                     contentDescription = stringResource(R.string.download_install)
                 )
             }
