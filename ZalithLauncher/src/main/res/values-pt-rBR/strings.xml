@@ -460,8 +460,8 @@
     <string name="account_supporting_password_invalid_empty">Senha obrigatória</string>
     <string name="account_supporting_microsoft_tip_title">Adicionar conta da Microsoft</string>
     <string name="account_supporting_microsoft_tip_link_text">Atalhos que você pode precisar:</string>
-    <string name="account_supporting_microsoft_tip_link_purchase">Compre o Minecraft</string>
-    <string name="account_supporting_microsoft_tip_link_make_gameid">Criar novo Perfil / Editar nome do Perfil</string>
+    <string name="account_supporting_microsoft_tip_link_purchase">1° - Compre o Minecraft Java</string>
+    <string name="account_supporting_microsoft_tip_link_make_gameid">2° - Vá no seu perfil do minecraft.net, coloque um Nickname e volte para o launcher</string>
     <string name="account_supporting_microsoft_tip_hint_t1">Siga os passos abaixo para adicionar sua conta:</string>
     <string name="account_supporting_microsoft_tip_hint_t2">1. Clique no botão Login - o launcher tentará recuperar um código de verificação;\n</string>
     <string name="account_supporting_microsoft_tip_hint_t3">2. Digite o código fornecido por %s na página pop-up e clique em Permitir acesso;\n</string>
@@ -609,7 +609,7 @@
     <string name="versions_overview_resource_pack_folder">Pasta do Pacote de Recursos</string>
     <string name="versions_overview_shaders_pack_folder">Pasta do Pacote de Shaders</string>
     <string name="versions_overview_mod_folder">Pasta Mod</string>
-    <string name="versions_overview_screenshot_folder">Pasta de Capturas de Tela</string>
+    <string name="versions_overview_screenshot_folder">Pasta de prints</string>
     <string name="versions_overview_logs_folder">Pasta de Logs</string>
     <string name="versions_overview_crash_report_folder">Pasta de relatório de falha</string>
     <string name="versions_config_version_settings">Configurações específicas da versão</string>
@@ -1174,4 +1174,15 @@
     <string name="download_game_version_overwrite_select_subtitle">Selecione a versão para sobrescrever. Você pode usar este recurso para atualizar/rebaixar a versão selecionada.</string>
     <string name="plugin_download_title">Baixar Plugin</string>
     <string name="plugin_download_summary">Baixe o plugin e instale-o como um aplicativo. Basta reabrir o launcher e ele será carregado automaticamente!</string>
+    <string name="settings_game_graphics_api_default_opengl">Defina para OpenGL somente na primeira inicialização</string>
+    <string name="account_label_server_url">Digite o endereço do servidor</string>
+    <string name="screenshots_manage">Prints</string>
+    <string name="screenshots_manage_no_screenshots">Sem nenhuma print para esta versão</string>
+    <string name="screenshots_manage_export">Exportar</string>
+    <string name="screenshots_manage_export_title">Exportar Prints</string>
+    <string name="screenshots_manage_export_success">Exportação concluída</string>
+    <string name="screenshots_manage_export_failed">Exportação falhou</string>
+    <string name="screenshots_manage_export_all_message">Exportar todas as suas print para a sua galeria?</string>
+    <string name="screenshots_manage_export_selected_message">Exportar %1$d prints selecionadas para a galeria do celular?</string>
+    <string name="unpack_screen_jna">Permite que o Minecraft chame diretamente funções de baixo nível do sistema operacional.</string>
 </resources>

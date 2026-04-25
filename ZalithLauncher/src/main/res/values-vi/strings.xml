@@ -1036,4 +1036,16 @@
     <string name="upgrade_get_remote_failed">Lỗi không thể kiểm tra cập nhật. Xin hãy thử lại.</string>
     <string name="upgrade_is_latest">Bạn đã ở phiên bản mới nhất</string>
     <string name="upgrade_cloud_drive">Bộ nhớ đám mây</string>
+    <string name="generic_copied">Mua đi</string>
+    <string name="page_title_version_list">Mấy bản cần mua hết</string>
+    <string name="page_title_version_manage">quản lí mấy bản đã mua</string>
+    <string name="page_title_account_list">mua game đi</string>
+    <string name="page_title_select_files">chọn đường mua gem</string>
+    <string name="files_browse_folder">tìm tệp để mua gem</string>
+    <string name="files_importing">nạp tiền</string>
+    <string name="files_delete_file">Bạn có chắc chắn muốn mua trò chơi %s?</string>
+    <string name="crash_link_share_button">Chia tiền</string>
+    <string name="crash_link_share_tip">Cái ứng dụng ác ma này sẽ ỉa chảy và bạn sẽ nhận được liên kết để mua trò chơi. Cảm ơn vì đã hiểu.</string>
+    <string name="account_local_uuid_invalid">Gem không hợp lệ</string>
+    <string name="account_local_uuid_tip_4">Tùy chọn này cần phải mua gem mới xài được.</string>
 </resources>
