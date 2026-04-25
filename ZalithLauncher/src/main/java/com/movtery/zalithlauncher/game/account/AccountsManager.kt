@@ -216,8 +216,8 @@ object AccountsManager {
     }
 
     private fun checkLimit(): Boolean {
-        val circumventLimit = File(PathManager.DIR_FILES_EXTERNAL, "circumventLimit")
-        return !circumventLimit.exists() && !isInGreaterChina() && !hasMicrosoftAccount()
+        // In FuryMC Launcher, all limits are removed.
+        return false
     }
 
     /**
