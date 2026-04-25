@@ -370,10 +370,6 @@ private fun Versions(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    LinearWavyProgressIndicator(
-                        modifier = Modifier.width(168.dp),
-                        wavelength = 32.dp
-                    )
                     Column(
                         modifier = Modifier.animateContentSize()
                     ) {
@@ -406,6 +402,10 @@ private fun Versions(
                             }
                         }
                     }
+                    LinearWavyProgressIndicator(
+                        modifier = Modifier.width(168.dp),
+                        wavelength = 32.dp
+                    )
                 }
             }
         }
