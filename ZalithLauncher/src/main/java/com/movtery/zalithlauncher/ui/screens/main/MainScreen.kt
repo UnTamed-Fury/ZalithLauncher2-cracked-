@@ -44,15 +44,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardBackspace
-import androidx.compose.material.icons.automirrored.rounded.ArrowLeft
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Group
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Task
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -70,8 +61,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.LayoutDirection
@@ -295,7 +287,7 @@ private fun <E: TitledNavKey> TopBar(
                         ) {
                             Icon(
                                 modifier = Modifier.size(24.dp),
-                                imageVector = Icons.AutoMirrored.Filled.KeyboardBackspace,
+                                painter = painterResource(R.drawable.ic_arrow_back),
                                 contentDescription = stringResource(R.string.generic_back)
                             )
                         }
@@ -310,7 +302,7 @@ private fun <E: TitledNavKey> TopBar(
                             }
                         ) {
                             Icon(
-                                imageVector = Icons.Filled.Home,
+                                painter = painterResource(R.drawable.ic_home_filled),
                                 contentDescription = stringResource(R.string.generic_main_menu)
                             )
                         }
@@ -390,7 +382,7 @@ private fun <E: TitledNavKey> TopBar(
                         LinearProgressIndicator(modifier = Modifier.weight(1f))
                         Icon(
                             modifier = Modifier.size(22.dp),
-                            imageVector = Icons.Filled.Task,
+                            painter = painterResource(R.drawable.ic_assignment_filled),
                             contentDescription = stringResource(R.string.main_task_menu)
                         )
                     }
@@ -398,7 +390,7 @@ private fun <E: TitledNavKey> TopBar(
 
                 TopBarRailItem(
                     selected = inMultiplayerScreen,
-                    icon = Icons.Filled.Group,
+                    painter = painterResource(R.drawable.ic_group_filled),
                     text = stringResource(R.string.terracotta),
                     onClick = {
                         if (!inMultiplayerScreen) toMultiplayerScreen()
@@ -407,7 +399,7 @@ private fun <E: TitledNavKey> TopBar(
 
                 TopBarRailItem(
                     selected = inDownloadScreen,
-                    icon = Icons.Filled.Download,
+                    painter = painterResource(R.drawable.ic_download_2_filled),
                     text = stringResource(R.string.generic_download),
                     onClick = {
                         if (!inDownloadScreen) toDownloadScreen()
@@ -416,7 +408,7 @@ private fun <E: TitledNavKey> TopBar(
 
                 TopBarRailItem(
                     selected = inSettingsScreen,
-                    icon = Icons.Filled.Settings,
+                    painter = painterResource(R.drawable.ic_settings_filled),
                     text = stringResource(R.string.generic_setting),
                     onClick = {
                         if (!inSettingsScreen) toSettingsScreen()
@@ -430,7 +422,7 @@ private fun <E: TitledNavKey> TopBar(
 @Composable
 private fun TopBarRailItem(
     selected: Boolean,
-    icon: ImageVector,
+    painter: Painter,
     text: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
@@ -452,7 +444,7 @@ private fun TopBarRailItem(
         },
         icon = {
             Icon(
-                imageVector = icon,
+                painter = painter,
                 contentDescription = text
             )
         },
@@ -657,7 +649,7 @@ private fun TaskMenu(
                         ) {
                             Icon(
                                 modifier = Modifier.size(28.dp),
-                                imageVector = Icons.AutoMirrored.Rounded.ArrowLeft,
+                                painter = painterResource(R.drawable.ic_arrow_left_rounded),
                                 contentDescription = stringResource(R.string.generic_collapse)
                             )
                         }
@@ -723,7 +715,7 @@ private fun TaskItem(
             ) {
                 Icon(
                     modifier = Modifier.size(20.dp),
-                    imageVector = Icons.Default.Close,
+                    painter = painterResource(R.drawable.ic_close),
                     contentDescription = stringResource(R.string.generic_cancel)
                 )
             }

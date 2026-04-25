@@ -47,14 +47,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowLeft
-import androidx.compose.material.icons.automirrored.rounded.ArrowRight
-import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -77,6 +72,7 @@ import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
@@ -140,14 +136,20 @@ fun ResultListLayout(
     onNavigatePage: (Int) -> Unit,
     swapToDownload: (Platform, projectId: String, iconUrl: String?) -> Unit = { _, _, _ -> }
 ) {
-    when (val state = searchState) {
+    when (searchState) {
         is SearchAssetsState.Searching -> {
-            Box(modifier.padding(all = 12.dp)) {
-                CircularProgressIndicator(Modifier.align(Alignment.Center))
+            Box(
+                modifier.padding(all = 12.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                LinearWavyProgressIndicator(
+                    modifier = Modifier.width(168.dp),
+                    wavelength = 32.dp
+                )
             }
         }
         is SearchAssetsState.Success -> {
-            val page = state.page
+            val page = searchState.page
 
             val listState = rememberLazyListState()
             val maxCollapsePx = with(LocalDensity.current) { controllerHeight.toPx() }
@@ -208,10 +210,10 @@ fun ResultListLayout(
         }
         is SearchAssetsState.Error -> {
             Box(modifier.padding(all = 12.dp)) {
-                val message = if (state.args != null) {
-                    stringResource(state.message, *state.args)
+                val message = if (searchState.args != null) {
+                    stringResource(searchState.message, *searchState.args)
                 } else {
-                    stringResource(state.message)
+                    stringResource(searchState.message)
                 }
 
                 ScalingLabel(
@@ -336,7 +338,7 @@ private fun PageController(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowLeft,
+                    painter = painterResource(R.drawable.ic_arrow_left_rounded),
                     contentDescription = stringResource(R.string.download_assets_result_previous_page)
                 )
             }
@@ -349,7 +351,7 @@ private fun PageController(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowRight,
+                    painter = painterResource(R.drawable.ic_arrow_right_rounded),
                     contentDescription = stringResource(R.string.download_assets_result_next_page)
                 )
             }
@@ -484,7 +486,7 @@ private fun ResultItemLayout(
                         ) {
                             Icon(
                                 modifier = Modifier.size(16.dp),
-                                imageVector = Icons.Outlined.Download,
+                                painter = painterResource(R.drawable.ic_download_2_outlined),
                                 contentDescription = null
                             )
                             Text(
@@ -500,7 +502,7 @@ private fun ResultItemLayout(
                             ) {
                                 Icon(
                                     modifier = Modifier.size(14.dp),
-                                    imageVector = Icons.Outlined.FavoriteBorder,
+                                    painter = painterResource(R.drawable.ic_favorite_outlined),
                                     contentDescription = null
                                 )
                                 Text(

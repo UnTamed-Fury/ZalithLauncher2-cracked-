@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonColors
@@ -145,7 +146,7 @@ private fun InternalSurface(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewRadioCard() {
-    MaterialTheme {
+    MaterialExpressiveTheme {
         Column(
             modifier = Modifier.padding(all = 12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)

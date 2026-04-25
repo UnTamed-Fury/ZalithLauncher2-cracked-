@@ -19,7 +19,6 @@
 package com.movtery.zalithlauncher.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
@@ -93,7 +92,7 @@ fun ScalingActionButton(
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale = animateFloatAsState(
         targetValue = if (isPressed) 0.95f else 1f,
-        animationSpec = spring(dampingRatio = 0.4f),
+        animationSpec = MaterialTheme.motionScheme.fastSpatialSpec(),
         label = "ButtonScale"
     )
 

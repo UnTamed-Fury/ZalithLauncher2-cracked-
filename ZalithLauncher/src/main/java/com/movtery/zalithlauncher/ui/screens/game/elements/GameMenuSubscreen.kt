@@ -31,11 +31,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Dashboard
-import androidx.compose.material.icons.outlined.Mouse
-import androidx.compose.material.icons.outlined.SportsEsports
-import androidx.compose.material.icons.outlined.TouchApp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SecondaryScrollableTabRow
@@ -46,7 +41,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -70,22 +64,19 @@ import com.movtery.zalithlauncher.ui.theme.cardTitleColor
 import com.movtery.zalithlauncher.ui.theme.onCardColor
 import com.movtery.zalithlauncher.viewmodel.GamepadViewModel
 
-private sealed interface IconTab {
-    data class ImageVectorTab(val icon: ImageVector, val iconSize: Dp = 18.dp): IconTab
-    data class PainterTab(val iconRes: Int, val iconSize: Dp = 18.dp): IconTab
-}
+private data class IconTab(val iconRes: Int, val iconSize: Dp = 18.dp)
 
 private val controlTabs = listOf(
     //概览
-    IconTab.ImageVectorTab(Icons.Outlined.Dashboard),
+    IconTab(R.drawable.ic_dashboard_filled),
     //虚拟鼠标设置
-    IconTab.ImageVectorTab(Icons.Outlined.Mouse, iconSize = 16.dp),
+    IconTab(R.drawable.ic_mouse_filled, iconSize = 16.dp),
     //手柄设置
-    IconTab.ImageVectorTab(Icons.Outlined.SportsEsports),
+    IconTab(R.drawable.ic_sports_esports_filled),
     //手势控制设置
-    IconTab.ImageVectorTab(Icons.Outlined.TouchApp),
+    IconTab(R.drawable.ic_touch_app_filled),
     //陀螺仪设置
-    IconTab.PainterTab(R.drawable.ic_mobile_rotate)
+    IconTab(R.drawable.ic_mobile_rotate_filled)
 )
 
 @Composable
@@ -131,22 +122,11 @@ fun GameMenuSubscreen(
                                 onControlMenuTabChange(index)
                             },
                             icon = {
-                                when (iconTab) {
-                                    is IconTab.ImageVectorTab -> {
-                                        Icon(
-                                            modifier = Modifier.size(iconTab.iconSize),
-                                            imageVector = iconTab.icon,
-                                            contentDescription = null
-                                        )
-                                    }
-                                    is IconTab.PainterTab -> {
-                                        Icon(
-                                            modifier = Modifier.size(iconTab.iconSize),
-                                            painter = painterResource(iconTab.iconRes),
-                                            contentDescription = null
-                                        )
-                                    }
-                                }
+                                Icon(
+                                    modifier = Modifier.size(iconTab.iconSize),
+                                    painter = painterResource(iconTab.iconRes),
+                                    contentDescription = null
+                                )
                             }
                         )
                     }

@@ -31,16 +31,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.outlined.ImportContacts
-import androidx.compose.material.icons.outlined.Link
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -373,7 +370,6 @@ private fun Versions(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    CircularProgressIndicator()
                     Column(
                         modifier = Modifier.animateContentSize()
                     ) {
@@ -406,6 +402,10 @@ private fun Versions(
                             }
                         }
                     }
+                    LinearWavyProgressIndicator(
+                        modifier = Modifier.width(168.dp),
+                        wavelength = 32.dp
+                    )
                 }
             }
         }
@@ -639,7 +639,7 @@ private fun ProjectInfo(
                                     IconTextButton(
                                         onClick = { openLink(url) },
                                         iconSize = 18.dp,
-                                        imageVector = Icons.Default.Code,
+                                        painter = painterResource(R.drawable.ic_code),
                                         text = stringResource(R.string.download_assets_source_link)
                                     )
                                 }
@@ -655,7 +655,7 @@ private fun ProjectInfo(
                                     IconTextButton(
                                         onClick = { openLink(url) },
                                         iconSize = 18.dp,
-                                        imageVector = Icons.Outlined.ImportContacts,
+                                        painter = painterResource(R.drawable.ic_import_contacts_outlined),
                                         text = stringResource(R.string.download_assets_wiki_link)
                                     )
                                 }
@@ -669,7 +669,7 @@ private fun ProjectInfo(
                                     IconTextButton(
                                         onClick = { openLink(url) },
                                         iconSize = 18.dp,
-                                        imageVector = Icons.Outlined.Link,
+                                        painter = painterResource(R.drawable.ic_link),
                                         text = "MC 百科" //品牌名不需要翻译，硬编码
                                     )
                                 }

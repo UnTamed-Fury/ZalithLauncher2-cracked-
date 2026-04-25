@@ -29,9 +29,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowRight
-import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -431,14 +428,14 @@ fun GamepadSettingsScreen(
                                     }
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Default.RestartAlt,
+                                        painter = painterResource(R.drawable.ic_restart_alt),
                                         contentDescription = stringResource(R.string.generic_reset)
                                     )
                                 }
 
                                 Icon(
                                     modifier = Modifier.size(28.dp),
-                                    imageVector = Icons.AutoMirrored.Rounded.ArrowRight,
+                                    painter = painterResource(R.drawable.ic_arrow_right_rounded),
                                     contentDescription = null
                                 )
                             }

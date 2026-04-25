@@ -20,10 +20,6 @@ package com.movtery.zalithlauncher.game.download.modpack.install
 
 import android.content.Context
 import android.net.Uri
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Build
-import androidx.compose.material.icons.outlined.CleaningServices
-import androidx.compose.material.icons.outlined.Unarchive
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.context.copyLocalFile
 import com.movtery.zalithlauncher.coroutine.TaskFlowExecutor
@@ -128,7 +124,7 @@ class ModpackImporter(
                 addTask(
                     id = "ImportModpack.Cleanup",
                     title = context.getString(R.string.download_install_clear_temp),
-                    icon = Icons.Outlined.CleaningServices
+                    icon = R.drawable.ic_auto_delete_outlined
                 ) { _ ->
                     GamePathManager.waitForRefresh()
                     VersionsManager.waitForRefresh()
@@ -146,7 +142,7 @@ class ModpackImporter(
                     id = "ImportModpack.ImportFile",
                     title = context.getString(R.string.import_modpack_task_unpack),
                     dispatcher = Dispatchers.IO,
-                    icon = Icons.Outlined.Unarchive
+                    icon = R.drawable.ic_unarchive_outlined
                 ) { task ->
                     task.updateProgress(-1f)
                     context.copyLocalFile(uri, installerFile)
@@ -187,7 +183,7 @@ class ModpackImporter(
                 addTask(
                     id = "ImportModpack.ParsePack",
                     title = context.getString(R.string.import_modpack_task_parse),
-                    icon = Icons.Outlined.Build
+                    icon = R.drawable.ic_build_outlined
                 ) { task ->
                     task.updateProgress(-1f)
 

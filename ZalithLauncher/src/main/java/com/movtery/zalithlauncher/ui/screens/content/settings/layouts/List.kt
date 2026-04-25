@@ -33,8 +33,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +47,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
@@ -139,7 +138,7 @@ private fun <E> BaseListSettingsCard(
                         onClick = { onExpandChange(!expanded) }
                     ) {
                         Icon(
-                            imageVector = Icons.Rounded.ArrowDropDown,
+                            painter = painterResource(R.drawable.ic_arrow_drop_down_rounded),
                             contentDescription = stringResource(if (expanded) R.string.generic_expand else R.string.generic_collapse)
                         )
                     }

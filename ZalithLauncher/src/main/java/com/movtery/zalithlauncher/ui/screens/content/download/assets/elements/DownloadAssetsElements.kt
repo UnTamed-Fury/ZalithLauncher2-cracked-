@@ -40,11 +40,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Autorenew
-import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -329,7 +324,7 @@ private fun AssetsVersionHeadLayout(
         if (isAdapt) {
             Icon(
                 modifier = Modifier.size(18.dp),
-                imageVector = Icons.Filled.Star,
+                painter = painterResource(R.drawable.ic_star_filled),
                 contentDescription = null
             )
         }
@@ -347,7 +342,7 @@ private fun AssetsVersionHeadLayout(
                     modifier = Modifier
                         .size(28.dp)
                         .rotate(rotation),
-                    imageVector = Icons.Rounded.ArrowDropDown,
+                    painter = painterResource(R.drawable.ic_arrow_drop_down_rounded),
                     contentDescription = stringResource(if (expanded) R.string.generic_expand else R.string.generic_collapse)
                 )
             }
@@ -411,7 +406,7 @@ private fun AssetsVersionListItem(
                 ) {
                     Icon(
                         modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Outlined.Download,
+                        painter = painterResource(R.drawable.ic_download_2_outlined),
                         contentDescription = null
                     )
                     Text(
@@ -426,7 +421,7 @@ private fun AssetsVersionListItem(
                 ) {
                     Icon(
                         modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Outlined.Autorenew,
+                        painter = painterResource(R.drawable.ic_autorenew),
                         contentDescription = null
                     )
                     Text(
@@ -444,7 +439,7 @@ private fun AssetsVersionListItem(
                 ) {
                     Icon(
                         modifier = Modifier.size(16.dp),
-                        painter = painterResource(R.drawable.ic_package_2),
+                        painter = painterResource(R.drawable.ic_package_2_outlined),
                         contentDescription = null
                     )
                     Text(

@@ -33,10 +33,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.outlined.FolderZip
-import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +45,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -227,14 +224,14 @@ private fun TaskItem(
                 InstallableItem.State.NOT_STARTED -> {
                     Icon(
                         modifier = iconModifier,
-                        imageVector = Icons.Outlined.FolderZip,
+                        painter = painterResource(R.drawable.ic_folder_zip_outlined),
                         contentDescription = null
                     )
                 }
                 InstallableItem.State.PENDING -> {
                     Icon(
                         modifier = iconModifier,
-                        imageVector = Icons.Outlined.Update,
+                        painter = painterResource(R.drawable.ic_update),
                         contentDescription = null
                     )
                 }
@@ -247,7 +244,7 @@ private fun TaskItem(
                 InstallableItem.State.FINISHED -> {
                     Icon(
                         modifier = iconModifier,
-                        imageVector = Icons.Default.Done,
+                        painter = painterResource(R.drawable.ic_check),
                         contentDescription = null
                     )
                 }

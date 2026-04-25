@@ -30,9 +30,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.RestartAlt
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -143,7 +140,7 @@ fun ControlSettingsScreen(
                                 tooltipMessage = stringResource(R.string.settings_control_mouse_physical_mouse_warning)
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.Warning,
+                                    painter = painterResource(R.drawable.ic_warning_filled),
                                     contentDescription = stringResource(R.string.generic_warning),
                                     tint = MaterialTheme.colorScheme.error.copy(alpha = 0.8f)
                                 )
@@ -456,7 +453,7 @@ fun ControlSettingsScreen(
                                     tooltipMessage = stringResource(R.string.settings_control_gyroscope_unsupported)
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Default.Warning,
+                                        painter = painterResource(R.drawable.ic_warning_filled),
                                         contentDescription = stringResource(R.string.generic_warning),
                                         tint = MaterialTheme.colorScheme.error.copy(alpha = 0.8f)
                                     )
@@ -610,7 +607,7 @@ private fun PhysicalKeyImeTrigger(
                 else -> {
                     IconTextButton(
                         onClick = { AllSettings.physicalKeyImeCode.save(null) },
-                        imageVector = Icons.Default.RestartAlt,
+                        painter = painterResource(R.drawable.ic_restart_alt),
                         contentDescription = stringResource(R.string.generic_reset),
                         text = stringResource(
                             R.string.settings_control_physical_key_bind_ime_bound,
@@ -750,7 +747,7 @@ private fun MousePointerCard(
                                 changeOperation(MousePointerOperation.PreReset)
                             }
                         },
-                        imageVector = Icons.Default.RestartAlt,
+                        painter = painterResource(R.drawable.ic_restart_alt),
                         contentDescription = stringResource(R.string.generic_reset),
                         text = stringResource(R.string.generic_reset)
                     )

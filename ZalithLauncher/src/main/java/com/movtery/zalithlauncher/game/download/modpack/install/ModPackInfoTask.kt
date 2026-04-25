@@ -19,9 +19,6 @@
 package com.movtery.zalithlauncher.game.download.modpack.install
 
 import android.content.Context
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Build
-import androidx.compose.material.icons.outlined.Edit
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.coroutine.Task
 import com.movtery.zalithlauncher.coroutine.TaskFlowExecutor
@@ -88,7 +85,7 @@ abstract class ModPackInfoTask(
                 addTask(
                     id = "ImportModpack.ExtractFiles",
                     title = context.getString(R.string.import_modpack_task_extract_files_and_schedule_download),
-                    icon = Icons.Outlined.Build
+                    icon = R.drawable.ic_build_outlined
                 ) { task ->
                     modpackInfo = readInfo(task, versionFolder, root)
                 }
@@ -97,7 +94,7 @@ abstract class ModPackInfoTask(
                 addTask(
                     id = "ImportModpack.WaitUserForVersionName",
                     title = context.getString(R.string.download_install_input_version_name),
-                    icon = Icons.Outlined.Edit
+                    icon = R.drawable.ic_edit_outlined
                 ) { task ->
                     task.updateProgress(-1f)
                     targetVersionName = waitForVersionName(modpackInfo.name)
@@ -117,7 +114,7 @@ abstract class ModPackInfoTask(
                 addTask(
                     id = "ImportModpack.RetrieveLoader",
                     title = context.getString(R.string.download_modpack_get_loaders),
-                    icon = Icons.Outlined.Build
+                    icon = R.drawable.ic_build_outlined
                 ) { _ ->
                     //构建游戏安装信息
                     gameDownloadInfo = modpackInfo.retrieveLoaderTask(
@@ -134,7 +131,7 @@ abstract class ModPackInfoTask(
                                 //整合包临时文件安装任务
                                 val finalTask = TitledTask(
                                     title = context.getString(R.string.download_modpack_final_move),
-                                    runningIcon = Icons.Outlined.Build,
+                                    runningIcon = R.drawable.ic_build_outlined,
                                     task = createFinalInstallTask(
                                         targetClientDir = targetClientDir,
                                         tempVersionsDir = versionFolder,

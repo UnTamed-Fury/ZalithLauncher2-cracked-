@@ -21,7 +21,8 @@ package com.movtery.zalithlauncher.ui.theme
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialExpressiveTheme
+import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -782,8 +783,9 @@ fun ZalithLauncherTheme(
         LocalBackgroundViewModel provides backgroundViewModel,
         LocalFestivals provides festivals
     ) {
-        MaterialTheme(
+        MaterialExpressiveTheme(
             colorScheme = currentDisplayScheme,
+            motionScheme = MotionScheme.expressive(),
             typography = AppTypography,
             content = content
         )

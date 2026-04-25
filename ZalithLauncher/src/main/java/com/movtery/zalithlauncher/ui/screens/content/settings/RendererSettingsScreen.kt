@@ -27,8 +27,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Download
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -126,7 +125,7 @@ fun RendererSettingsScreen(
                                 }
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.Download,
+                                    painter = painterResource(R.drawable.ic_download_2_filled),
                                     contentDescription = stringResource(R.string.generic_download)
                                 )
                             }
@@ -159,7 +158,7 @@ fun RendererSettingsScreen(
                                 }
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.Download,
+                                    painter = painterResource(R.drawable.ic_download_2_filled),
                                     contentDescription = stringResource(R.string.generic_download)
                                 )
                             }

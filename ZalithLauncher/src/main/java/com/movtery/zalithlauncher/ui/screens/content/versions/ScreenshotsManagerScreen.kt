@@ -55,18 +55,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Sort
-import androidx.compose.material.icons.filled.Deselect
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.SelectAll
-import androidx.compose.material.icons.outlined.Archive
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -86,6 +79,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.IntOffset
@@ -505,7 +499,7 @@ fun ScreenshotsManagerScreen(
                                 contentColor = MaterialTheme.colorScheme.onPrimary
                             ) {
                                 Icon(
-                                    imageVector = Icons.Outlined.Archive,
+                                    painter = painterResource(R.drawable.ic_file_export_outlined),
                                     contentDescription = stringResource(R.string.screenshots_manage_export)
                                 )
                             }
@@ -514,8 +508,11 @@ fun ScreenshotsManagerScreen(
                 }
 
                 is LoadingState.Loading -> {
-                    Box(Modifier.fillMaxSize()) {
-                        CircularProgressIndicator(Modifier.align(Alignment.Center))
+                    Box(
+                        Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        LoadingIndicator()
                     }
                 }
             }
@@ -588,7 +585,7 @@ private fun ScreenshotHeader(
                     var expanded by remember { mutableStateOf(false) }
                     IconButton(onClick = { expanded = !expanded }) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Default.Sort,
+                            painter = painterResource(R.drawable.ic_sort),
                             contentDescription = stringResource(R.string.sort_by)
                         )
                     }
@@ -637,13 +634,13 @@ private fun ScreenshotHeader(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         IconButton(onClick = onDeleteAll) {
-                            Icon(Icons.Outlined.Delete, contentDescription = null)
+                            Icon(painterResource(R.drawable.ic_delete_outlined), contentDescription = null)
                         }
                         IconButton(onClick = onSelectAll) {
-                            Icon(Icons.Default.SelectAll, contentDescription = null)
+                            Icon(painterResource(R.drawable.ic_select_all), contentDescription = null)
                         }
                         IconButton(onClick = { if (isFilesSelected) onClearFilesSelected() }) {
-                            Icon(Icons.Default.Deselect, contentDescription = null)
+                            Icon(painterResource(R.drawable.ic_deselect), contentDescription = null)
                         }
                         Spacer(modifier = Modifier.width(6.dp))
                         VerticalDivider(
@@ -658,7 +655,7 @@ private fun ScreenshotHeader(
 
                 IconButton(onClick = onRefresh) {
                     Icon(
-                        imageVector = Icons.Default.Refresh,
+                        painter = painterResource(R.drawable.ic_refresh),
                         contentDescription = stringResource(R.string.generic_refresh)
                     )
                 }

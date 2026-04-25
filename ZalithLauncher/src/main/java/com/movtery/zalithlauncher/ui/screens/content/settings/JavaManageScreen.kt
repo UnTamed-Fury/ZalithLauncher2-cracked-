@@ -33,10 +33,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -53,6 +49,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -137,7 +134,7 @@ fun JavaManageScreen(
                 ) {
                     IconTextButton(
                         onClick = { runtimes = getRuntimes(true) },
-                        imageVector = Icons.Filled.Refresh,
+                        painter = painterResource(R.drawable.ic_refresh),
                         contentDescription = stringResource(R.string.generic_refresh),
                         text = stringResource(R.string.generic_refresh),
                     )
@@ -168,7 +165,7 @@ fun JavaManageScreen(
                                 }
                             }
                         },
-                        imageVector = Icons.Default.Terminal,
+                        painter = painterResource(R.drawable.ic_terminal_outlined),
                         text = stringResource(R.string.execute_jar_title)
                     )
                 }
@@ -378,7 +375,7 @@ private fun JavaRuntimeItem(
             ) {
                 Icon(
                     modifier = Modifier.padding(all = 8.dp),
-                    imageVector = Icons.Filled.Delete,
+                    painter = painterResource(R.drawable.ic_delete_filled),
                     contentDescription = stringResource(R.string.generic_delete)
                 )
             }

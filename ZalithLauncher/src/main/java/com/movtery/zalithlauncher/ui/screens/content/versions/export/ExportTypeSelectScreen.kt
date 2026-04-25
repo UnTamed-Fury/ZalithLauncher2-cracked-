@@ -28,9 +28,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowRight
-import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -86,7 +83,7 @@ fun ExportTypeSelectScreen(
                     icon = { innerModifier ->
                         Icon(
                             modifier = innerModifier,
-                            imageVector = Icons.Default.Lightbulb,
+                            painter = painterResource(R.drawable.ic_lightbulb),
                             contentDescription = null
                         )
                     },
@@ -218,7 +215,7 @@ private fun TypeItem(
             }
 
             Icon(
-                imageVector = Icons.AutoMirrored.Default.ArrowRight,
+                painter = painterResource(R.drawable.ic_arrow_right_rounded),
                 contentDescription = null
             )
         }

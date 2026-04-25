@@ -34,9 +34,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowRight
-import androidx.compose.material.icons.filled.Output
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -55,6 +52,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.IntOffset
@@ -135,7 +133,7 @@ fun ExportSelectFilesScreen(
                 ) {
                     val text = stringResource(R.string.versions_export_pack_select_output)
                     Icon(
-                        imageVector = Icons.Default.Output,
+                        painter = painterResource(R.drawable.ic_file_export_outlined),
                         contentDescription = text
                     )
 
@@ -250,7 +248,7 @@ private fun FileNodeItem(
 
                             Icon(
                                 modifier = Modifier.rotate(rotation),
-                                imageVector = Icons.AutoMirrored.Default.ArrowRight,
+                                painter = painterResource(R.drawable.ic_arrow_right_rounded),
                                 contentDescription = null
                             )
                         }

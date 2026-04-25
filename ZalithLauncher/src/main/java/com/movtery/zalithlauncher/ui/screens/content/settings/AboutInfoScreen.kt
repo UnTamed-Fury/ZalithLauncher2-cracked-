@@ -31,13 +31,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Copyright
-import androidx.compose.material.icons.outlined.Link
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -110,12 +107,12 @@ fun AboutInfoScreen(
                             title = InfoDistributor.LAUNCHER_NAME,
                             text = stringResource(R.string.about_launcher_version, BuildConfig.VERSION_NAME),
                             button = {
-                                OutlinedButton(
+                                Button(
                                     onClick = checkUpdate
                                 ) {
                                     Text(text = stringResource(R.string.upgrade_title))
                                 }
-                                OutlinedButton(
+                                Button(
                                     onClick = { openLink(URL_PROJECT) }
                                 ) {
                                     Text(text = stringResource(R.string.about_launcher_project_link))
@@ -128,7 +125,7 @@ fun AboutInfoScreen(
                             title = stringResource(R.string.about_launcher_author_movtery_title),
                             text = stringResource(R.string.about_launcher_author_movtery_text, InfoDistributor.LAUNCHER_NAME),
                             button = {
-                                OutlinedButton(
+                                Button(
                                     onClick = { openLink(URL_SUPPORT) }
                                 ) {
                                     Text(text = stringResource(R.string.about_sponsor))
@@ -150,7 +147,7 @@ fun AboutInfoScreen(
                             title = "bangbang93",
                             text = stringResource(R.string.about_acknowledgements_bangbang93_text, InfoDistributor.LAUNCHER_SHORT_NAME),
                             button = {
-                                OutlinedButton(
+                                Button(
                                     onClick = { openLink("https://afdian.com/a/bangbang93") }
                                 ) {
                                     Text(text = stringResource(R.string.about_sponsor))
@@ -182,7 +179,7 @@ fun AboutInfoScreen(
                             title = "mcmod-info-mirror",
                             text = stringResource(R.string.about_acknowledgements_mcim_text, InfoDistributor.LAUNCHER_SHORT_NAME),
                             button = {
-                                OutlinedButton(
+                                Button(
                                     onClick = { openLink("https://www.mcimirror.top/sponsor") }
                                 ) {
                                     Text(text = stringResource(R.string.about_sponsor))
@@ -347,7 +344,7 @@ private fun LinkIconItem(
                     ) {
                         Icon(
                             modifier = Modifier.size(22.dp),
-                            imageVector = Icons.Outlined.Copyright,
+                            painter = painterResource(R.drawable.ic_copyright_outlined),
                             contentDescription = "License"
                         )
                     }
@@ -357,7 +354,7 @@ private fun LinkIconItem(
                         onClick = it
                     ) {
                         Icon(
-                            imageVector = Icons.Outlined.Link,
+                            painter = painterResource(R.drawable.ic_link),
                             contentDescription = stringResource(R.string.generic_open_link)
                         )
                     }
@@ -549,7 +546,7 @@ private fun LibraryInfoItem(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.Link,
+                    painter = painterResource(R.drawable.ic_link),
                     contentDescription = null
                 )
             }

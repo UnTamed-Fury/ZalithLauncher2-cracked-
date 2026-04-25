@@ -36,7 +36,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -44,17 +43,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.outlined.AddBox
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
@@ -75,6 +69,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -458,7 +453,7 @@ private fun ControlLayoutList(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator()
+                LoadingIndicator()
             }
         } else {
             ControlListHeader(
@@ -531,7 +526,7 @@ private fun ControlListHeader(
         ) {
             IconTextButton(
                 onClick = onRefresh,
-                imageVector = Icons.Filled.Refresh,
+                painter = painterResource(R.drawable.ic_refresh),
                 contentDescription = stringResource(R.string.generic_refresh),
                 text = stringResource(R.string.generic_refresh),
             )
@@ -543,7 +538,7 @@ private fun ControlListHeader(
             )
             IconTextButton(
                 onClick = onCreate,
-                imageVector = Icons.Outlined.AddBox,
+                painter = painterResource(R.drawable.ic_add_box_outlined),
                 contentDescription = stringResource(R.string.control_manage_create_new),
                 text = stringResource(R.string.control_manage_create_new),
             )
@@ -631,8 +626,7 @@ private fun ControlLayoutItem(
                 onClick = onCopy
             ) {
                 Icon(
-                    modifier = Modifier.size(21.dp),
-                    imageVector = Icons.Default.ContentCopy,
+                    painter = painterResource(R.drawable.ic_copy_all_outlined),
                     contentDescription = stringResource(R.string.generic_copy)
                 )
             }
@@ -641,7 +635,7 @@ private fun ControlLayoutItem(
                 onClick = onDelete
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.Delete,
+                    painter = painterResource(R.drawable.ic_delete_outlined),
                     contentDescription = stringResource(R.string.generic_delete)
                 )
             }
@@ -673,7 +667,7 @@ private fun ControlLayoutInfo(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator()
+                LoadingIndicator()
             }
         } else if (data == null) {
             Box(

@@ -20,11 +20,13 @@ package com.movtery.zalithlauncher.ui.screens.game.elements
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkOut
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -34,8 +36,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -45,7 +45,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.ui.components.FloatingBall
 import com.movtery.zalithlauncher.ui.screens.content.elements.MemoryPreview
 
@@ -56,6 +58,7 @@ fun DraggableGameBall(
     onSavePos: () -> Unit,
     gameFps: Int?,
     showMemory: Boolean,
+    opened: Boolean,
     alpha: Float = 1f,
     onClick: () -> Unit = {}
 ) {
@@ -71,7 +74,8 @@ fun DraggableGameBall(
     ) {
         GameBallContent(
             gameFps = gameFps,
-            showMemory = showMemory
+            showMemory = showMemory,
+            opened = opened,
         )
     }
 }
@@ -79,7 +83,8 @@ fun DraggableGameBall(
 @Composable
 private fun GameBallContent(
     gameFps: Int?,
-    showMemory: Boolean
+    showMemory: Boolean,
+    opened: Boolean,
 ) {
     val showFps = remember(gameFps) {
         gameFps != null
@@ -89,11 +94,24 @@ private fun GameBallContent(
         modifier = Modifier.padding(all = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
+        Box(
             modifier = Modifier.size(28.dp),
-            imageVector = Icons.Default.Settings,
-            contentDescription = null
-        )
+            contentAlignment = Alignment.Center
+        ) {
+            Crossfade(opened) { state ->
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(
+                        if (state) {
+                            R.drawable.ic_menu_open
+                        } else {
+                            R.drawable.ic_menu
+                        }
+                    ),
+                    contentDescription = null
+                )
+            }
+        }
 
         AnimatedVisibility(
             visible = showFps || showMemory

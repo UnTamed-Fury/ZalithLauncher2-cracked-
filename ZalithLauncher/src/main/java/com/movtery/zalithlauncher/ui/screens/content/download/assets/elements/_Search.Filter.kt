@@ -43,10 +43,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.Clear
-import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -349,7 +345,7 @@ private fun <E> SuggestionsText(
                     onClick = onSearch
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Search,
+                        painter = painterResource(R.drawable.ic_search),
                         contentDescription = stringResource(R.string.generic_search)
                     )
                 }
@@ -567,7 +563,7 @@ private fun FilterHeader(
                 modifier = Modifier
                     .size(28.dp)
                     .rotate(rotation),
-                imageVector = Icons.Rounded.ArrowDropDown,
+                painter = painterResource(R.drawable.ic_arrow_drop_down_rounded),
                 contentDescription = null
             )
             AnimatedVisibility(
@@ -580,7 +576,7 @@ private fun FilterHeader(
                 ) {
                     Icon(
                         modifier = Modifier.size(20.dp),
-                        imageVector = Icons.Outlined.Clear,
+                        painter = painterResource(R.drawable.ic_deselect),
                         contentDescription = stringResource(R.string.generic_clear)
                     )
                 }

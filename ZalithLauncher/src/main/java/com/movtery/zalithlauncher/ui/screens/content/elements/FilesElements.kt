@@ -24,9 +24,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -38,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.movtery.zalithlauncher.R
@@ -66,7 +64,13 @@ fun BaseFileItem(
     ) {
         Icon(
             modifier = Modifier.size(24.dp).align(Alignment.CenterVertically),
-            imageVector = if (file.isDirectory) Icons.Outlined.Folder else Icons.Outlined.Description,
+            painter = painterResource(
+                if (file.isDirectory) {
+                    R.drawable.ic_folder_outlined
+                } else {
+                    R.drawable.ic_description_outlined
+                }
+            ),
             contentDescription = null
         )
         Column(

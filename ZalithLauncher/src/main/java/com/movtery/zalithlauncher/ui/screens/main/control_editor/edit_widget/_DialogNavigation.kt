@@ -18,11 +18,6 @@
 
 package com.movtery.zalithlauncher.ui.screens.main.control_editor.edit_widget
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Style
-import androidx.compose.material.icons.outlined.TextFormat
-import androidx.compose.material.icons.outlined.TouchApp
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.ui.screens.TitledNavKey
 import com.movtery.zalithlauncher.ui.screens.content.elements.CategoryIcon
@@ -44,8 +39,8 @@ sealed interface EditWidgetCategory : TitledNavKey {
  * 编辑控件标签页
  */
 val editWidgetCategories = listOf(
-    CategoryItem(EditWidgetCategory.Info, { CategoryIcon(Icons.Outlined.Info, R.string.control_editor_edit_category_info) }, R.string.control_editor_edit_category_info),
-    CategoryItem(EditWidgetCategory.TextStyle, { CategoryIcon(Icons.Outlined.TextFormat, R.string.control_editor_edit_text) }, R.string.control_editor_edit_text),
-    CategoryItem(EditWidgetCategory.ClickEvent, { CategoryIcon(Icons.Outlined.TouchApp, R.string.control_editor_edit_category_event) }, R.string.control_editor_edit_category_event),
-    CategoryItem(EditWidgetCategory.Style, { CategoryIcon(Icons.Outlined.Style, R.string.control_editor_edit_category_style) }, R.string.control_editor_edit_category_style)
+    CategoryItem(EditWidgetCategory.Info, { CategoryIcon(R.drawable.ic_info_outlined, R.string.control_editor_edit_category_info) }, R.string.control_editor_edit_category_info),
+    CategoryItem(EditWidgetCategory.TextStyle, { CategoryIcon(R.drawable.ic_text_format, R.string.control_editor_edit_text) }, R.string.control_editor_edit_text),
+    CategoryItem(EditWidgetCategory.ClickEvent, { CategoryIcon(R.drawable.ic_touch_app_outlined, R.string.control_editor_edit_category_event) }, R.string.control_editor_edit_category_event),
+    CategoryItem(EditWidgetCategory.Style, { CategoryIcon(R.drawable.ic_style_outlined, R.string.control_editor_edit_category_style) }, R.string.control_editor_edit_category_style)
 )

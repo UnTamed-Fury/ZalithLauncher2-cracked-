@@ -36,12 +36,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -226,7 +225,7 @@ private fun RightMenuContent(
                     onClick = toVersionSettingsScreen
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.Settings,
+                        painter = painterResource(R.drawable.ic_settings_filled),
                         contentDescription = stringResource(R.string.versions_manage_settings)
                     )
                 }
@@ -303,9 +302,11 @@ private fun VersionManagerLayout(
     ) {
         if (isRefreshing) {
             Box(modifier = Modifier.fillMaxWidth()) {
-                CircularProgressIndicator(modifier = Modifier
-                    .size(24.dp)
-                    .align(Alignment.Center))
+                LoadingIndicator(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.Center)
+                )
             }
         } else {
             VersionIconImage(

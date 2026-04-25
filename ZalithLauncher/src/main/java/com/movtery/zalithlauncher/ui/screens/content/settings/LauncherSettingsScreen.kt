@@ -30,8 +30,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -43,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -483,7 +482,7 @@ private fun CustomBackground(
             visible = backgroundViewModel.isValid
         ) {
             IconTextButton(
-                imageVector = Icons.Default.RestartAlt,
+                painter = painterResource(R.drawable.ic_restart_alt),
                 text = stringResource(R.string.generic_reset),
                 onClick = {
                     if (operation == BackgroundOperation.None) {

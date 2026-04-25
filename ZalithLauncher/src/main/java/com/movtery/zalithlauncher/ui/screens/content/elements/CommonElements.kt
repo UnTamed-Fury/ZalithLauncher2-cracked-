@@ -23,6 +23,8 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -30,7 +32,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -44,12 +45,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.KeyboardDoubleArrowUp
-import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -71,7 +66,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -112,20 +107,14 @@ import java.io.IOException
 const val DisabledAlpha = 0.38f
 
 @Composable
-fun CategoryIcon(iconRes: Int, textRes: Int, iconPadding: PaddingValues = PaddingValues()) {
+fun CategoryIcon(
+    @DrawableRes
+    icon: Int,
+    @StringRes
+    textRes: Int
+) {
     Icon(
-        painter = painterResource(iconRes),
-        contentDescription = stringResource(textRes),
-        modifier = Modifier
-            .size(24.dp)
-            .padding(iconPadding)
-    )
-}
-
-@Composable
-fun CategoryIcon(image: ImageVector, textRes: Int) {
-    Icon(
-        imageVector = image,
+        painter = painterResource(icon),
         contentDescription = stringResource(textRes),
         modifier = Modifier.size(24.dp)
     )
@@ -191,7 +180,7 @@ fun SortByDropdownMenu(
                             )
                             Icon(
                                 modifier = Modifier.rotate(rotation),
-                                imageVector = Icons.Default.KeyboardDoubleArrowUp,
+                                painter = painterResource(R.drawable.ic_keyboard_double_arrow_up),
                                 contentDescription = null
                             )
                         }
@@ -272,7 +261,7 @@ fun ImportMultipleFileButton(
     extension: String,
     progressUris: (uris: List<Uri>) -> Unit,
     modifier: Modifier = Modifier,
-    imageVector: ImageVector = Icons.Default.Add,
+    painter: Painter = painterResource(R.drawable.ic_add),
     text: String = stringResource(R.string.generic_import)
 ) {
     val launcher = rememberLauncherForActivityResult(
@@ -288,7 +277,7 @@ fun ImportMultipleFileButton(
         onClick = {
             launcher.launch(extension.extensionToMimeType())
         },
-        imageVector = imageVector,
+        painter = painter,
         text = text
     )
 }
@@ -298,7 +287,7 @@ fun ImportSingleFileButton(
     extension: String,
     progressUris: (uris: List<Uri>) -> Unit,
     modifier: Modifier = Modifier,
-    imageVector: ImageVector = Icons.Default.Add,
+    painter: Painter = painterResource(R.drawable.ic_add),
     text: String = stringResource(R.string.generic_import)
 ) {
     val launcher = rememberLauncherForActivityResult(
@@ -314,7 +303,7 @@ fun ImportSingleFileButton(
         onClick = {
             launcher.launch(extension.extensionToMimeType())
         },
-        imageVector = imageVector,
+        painter = painter,
         text = text
     )
 }
@@ -325,7 +314,7 @@ fun <I, O> ImportFileButton(
     onLaunch: (launcher: ManagedActivityResultLauncher<I, O>) -> Unit,
     progressOutput: (output: O) -> Unit,
     modifier: Modifier = Modifier,
-    imageVector: ImageVector = Icons.Default.Add,
+    painter: Painter = painterResource(R.drawable.ic_add),
     text: String = stringResource(R.string.generic_import)
 ) {
     val launcher = rememberLauncherForActivityResult(
@@ -338,7 +327,7 @@ fun <I, O> ImportFileButton(
         onClick = {
             onLaunch(launcher)
         },
-        imageVector = imageVector,
+        painter = painter,
         text = text
     )
 }
@@ -414,7 +403,8 @@ fun TitleTaskFlowDialog(
 private fun InstallingTaskItem(
     modifier: Modifier = Modifier,
     title: String,
-    runningIcon: ImageVector? = null,
+    @DrawableRes
+    runningIcon: Int? = null,
     task: Task
 ) {
     Row(
@@ -422,13 +412,13 @@ private fun InstallingTaskItem(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         val icon = when (task.taskState) {
-            TaskState.PREPARING -> Icons.Outlined.Schedule
-            TaskState.RUNNING -> runningIcon ?: Icons.Outlined.Download
-            TaskState.COMPLETED -> Icons.Outlined.Check
+            TaskState.PREPARING -> R.drawable.ic_schedule_outlined
+            TaskState.RUNNING -> runningIcon ?: R.drawable.ic_download
+            TaskState.COMPLETED -> R.drawable.ic_check
         }
         Icon(
             modifier = Modifier.size(24.dp),
-            imageVector = icon,
+            painter = painterResource(icon),
             contentDescription = null
         )
 

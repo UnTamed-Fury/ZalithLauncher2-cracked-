@@ -24,10 +24,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.FileCopy
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -40,8 +36,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
@@ -139,7 +136,7 @@ fun BoxWithConstraintsScope.ControlEditor(
             floatingButtons = {
                 //设置属性
                 ActionButton(
-                    icon = Icons.Default.Settings,
+                    painter = painterResource(R.drawable.ic_settings_filled),
                     text = stringResource(R.string.generic_setting),
                     onClick = {
                         if (viewModel.selectedWidget != null) {
@@ -149,7 +146,7 @@ fun BoxWithConstraintsScope.ControlEditor(
                 )
                 //复制控件
                 ActionButton(
-                    icon = Icons.Default.FileCopy,
+                    painter = painterResource(R.drawable.ic_file_copy_filled),
                     text = stringResource(R.string.control_editor_edit_dialog_clone_widget),
                     onClick = {
                         val widget = viewModel.selectedWidget
@@ -162,7 +159,7 @@ fun BoxWithConstraintsScope.ControlEditor(
                 )
                 //删除
                 ActionButton(
-                    icon = Icons.Default.Delete,
+                    painter = painterResource(R.drawable.ic_delete_filled),
                     text = stringResource(R.string.generic_delete),
                     onClick = {
                         val widget = viewModel.selectedWidget
@@ -291,7 +288,8 @@ fun BoxWithConstraintsScope.ControlEditor(
 
     MenuBox(
         position = viewModel.editorBallPosition,
-        onPositionChanged = { viewModel.editorBallPosition = it }
+        onPositionChanged = { viewModel.editorBallPosition = it },
+        opened = viewModel.editorMenu == MenuState.SHOW
     ) {
         viewModel.switchMenu()
     }
@@ -424,7 +422,7 @@ fun BoxWithConstraintsScope.ControlEditor(
 
 @Composable
 private fun ActionButton(
-    icon: ImageVector,
+    painter: Painter,
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -445,7 +443,7 @@ private fun ActionButton(
                 modifier = Modifier
                     .padding(start = 6.dp)
                     .size(20.dp),
-                imageVector = icon,
+                painter = painter,
                 contentDescription = text
             )
             Text(

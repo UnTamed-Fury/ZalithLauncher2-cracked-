@@ -19,12 +19,6 @@
 package com.movtery.zalithlauncher.game.version.mod.update
 
 import android.content.Context
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Checklist
-import androidx.compose.material.icons.outlined.Build
-import androidx.compose.material.icons.outlined.CleaningServices
-import androidx.compose.material.icons.outlined.FilterAlt
-import androidx.compose.material.icons.outlined.Schedule
 import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.coroutine.Task
 import com.movtery.zalithlauncher.coroutine.TaskFlowExecutor
@@ -137,7 +131,7 @@ class ModUpdater(
                 addTask(
                     id = "ModUpdater.ClearTemp",
                     title = context.getString(R.string.download_install_clear_temp),
-                    icon = Icons.Outlined.CleaningServices
+                    icon = R.drawable.ic_auto_delete_outlined
                 ) {
                     clearTempModUpdaterDir()
                     //清理后，重新创建缓存目录
@@ -148,7 +142,7 @@ class ModUpdater(
                 addTask(
                     id = "ModUpdater.Filter",
                     title = context.getString(R.string.mods_update_task_filter),
-                    icon = Icons.Outlined.FilterAlt
+                    icon = R.drawable.ic_filter_alt_outlined
                 ) { task ->
                     val totalSize = mods.size
                     val needLoad = mutableListOf<RemoteMod>()
@@ -200,7 +194,7 @@ class ModUpdater(
                 addTask(
                     id = "ModUpdater.CheckUpdate",
                     title = context.getString(R.string.mods_update_task_check_update),
-                    icon = Icons.Default.Checklist
+                    icon = R.drawable.ic_list_alt_check_outlined
                 ) { task ->
                     // 最大并发数为 5
                     val semaphore = Semaphore(5)
@@ -241,7 +235,7 @@ class ModUpdater(
                 addTask(
                     id = "ModUpdater.WaitForUser",
                     title = context.getString(R.string.mods_update_task_wait_for_user),
-                    icon = Icons.Outlined.Schedule
+                    icon = R.drawable.ic_schedule_outlined
                 ) {
                     if (!waitForUserConfirm(allModsUpdate.toMap())) {
                         //用户取消了更新，这里抛出取消异常，结束全部任务
@@ -263,7 +257,7 @@ class ModUpdater(
                 addTask(
                     id = " ModUpdater.ReplaceMod",
                     title = context.getString(R.string.mods_update_task_replace),
-                    icon = Icons.Outlined.Build
+                    icon = R.drawable.ic_build_outlined
                 ) { task ->
                     val totalCount = allModsUpdate.entries.size
                     allModsUpdate.entries.forEachIndexed { index, entry ->
@@ -293,7 +287,7 @@ class ModUpdater(
                 addTask(
                     id = "ModUpdater.ClearTempEnds",
                     title = context.getString(R.string.download_install_clear_temp),
-                    icon = Icons.Outlined.CleaningServices
+                    icon = R.drawable.ic_auto_delete_outlined
                 ) {
                     clearTempModUpdaterDir()
                 }
